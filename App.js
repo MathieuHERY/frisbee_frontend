@@ -5,25 +5,34 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Map from './views/Map';
+import {
+  Card,
+  Title,
+  Paragraph,
+  List,
+  Provider as PaperProvider,
+} from 'react-native-paper';
 
-const Stack =  createStackNavigator();
+/* import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; */
+import { Ionicons } from '@expo/vector-icons';
 
+import HomeScreen from './Screens/HomeScreen';
+import BottomBar from './Screens/BottomBar';
+
+const Stack = createStackNavigator();
+
+// Création de la bottom navigation : on renvoie vers le fichier BottomBar.js (dans dossier Screens) qui contient la navbar
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Map" component={Map} />
-    </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="BottomBar" component={BottomBar} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+

@@ -4,7 +4,7 @@ import MapView, {Marker} from 'react-native-maps';
 import { StyleSheet, Text, View } from 'react-native';
 import { FAB } from 'react-native-paper'
 
-export default function Map(props) {
+export default function MapScreen(props) {
     return (
         <View style={styles.container}>
       <MapView 
