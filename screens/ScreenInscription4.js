@@ -17,7 +17,7 @@ export default function ScreenInscription4(props) {
 
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("http://172.16.188.152:3000/sign-up", {
+    const data = await fetch("http://192.168.1.67:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Description=${signUpDescription}&Age=${signUpAge}`
@@ -58,7 +58,7 @@ export default function ScreenInscription4(props) {
         activeOpacity={0.7}
       />
 
-      <Text style={{ marginBottom: 100, color: "#7C4DFF"}}>Ajouter votre plus belle photo ! </Text>
+      <Text style={{ marginBottom: 100, color: "#7C4DFF", textDecorationLine: 'underline'}}>Ajouter votre plus belle photo ! </Text>
      
      
 
