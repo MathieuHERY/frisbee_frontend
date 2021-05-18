@@ -59,7 +59,7 @@ export default function MapScreen(props) {
                             onPress={() => { setVisibleFilterOverlay(false) }} />
                     </View>
                     <Text style={{
-                        fontFamily: 'Montserrat_300Light', fontSize: 30, textAlign: 'center', paddingTop: 50
+                        fontFamily: 'Montserrat_300Light', fontSize: 30, textAlign: 'center', paddingTop: 30
                     }}>Les terrains de jeu
             autour de moi</Text>
                     <View style={styles.overlay}>
@@ -205,13 +205,13 @@ const styles = StyleSheet.create({
     },
     overlay: {
         flex: 1,
-        paddingTop: 40,
+        paddingTop: 20,
     },
     checkboxContainer: {
         flexDirection: 'column',
         alignContent: 'flex-start',
         justifyContent: 'center',
-        marginBottom: 20,
+        marginBottom: 10,
         backgroundColor: '#FFFFFF'
     },
     checkbox: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
         borderColor: '#FFFFFF',
     },
     checkboxText: {
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: 'Nunito_400Regular'
     },
     overlayButton: {
