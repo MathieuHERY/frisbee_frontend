@@ -14,7 +14,8 @@ function HomeScreen(props) {
             <Button buttonStyle={{
                 backgroundColor: "#009788"
             }}
-                title="Go to HomeScreen" type='solid'
+                title="Go to MapScreen"
+                type='solid'
                 onPress={() => props.navigation.navigate('BottomBar')}
             />
         </View>
