@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {connect} from 'react-redux';
 import {Button, Input, Text} from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { createPortal } from 'react-dom';
 
 
 export default function ScreenInscription1(props) {
@@ -16,7 +17,7 @@ export default function ScreenInscription1(props) {
 
       var handleSubmitSignup = async () => {
     
-        const data = await fetch("http://192.168.1.67:3000/sign-up", { 
+        const data = await fetch("http://172.16.188.152:3000/sign-up", { 
           method: 'POST', 
           headers: {'Content-Type': 'application/x-www-form-urlencoded'}, 
           body: `Email=${signUpEmail}&Password=${signUpPassword}` 
@@ -30,6 +31,10 @@ export default function ScreenInscription1(props) {
         } else {
           setErrorsSignup(body.error) 
         }
+      }
+
+      var HandleClickchangeStep = () => {
+        props.HandleClickParentchangeStep()
       }
 
       var ErrorsSignup = listErrorsSignup.map((error,i) => {
@@ -60,7 +65,7 @@ export default function ScreenInscription1(props) {
 <Button
     buttonStyle={{backgroundColor: "#00CEC9"}}
     title="Je m'inscris !"
-    onPress={() => {handleSubmitSignup(); props.navigation.navigate('ScreenInscription2')}}
+    onPress={() => {handleSubmitSignup(); /* props.navigation.navigate('ScreenInscription2') */; HandleClickchangeStep()}}
     >
 </Button>
 
