@@ -18,16 +18,16 @@ export default function BottomBar(props) {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color }) => {
 
-            if (route.name == 'Accueil') {
+            if (route.name == 'ACCUEIL') {
               return <FontAwesome name='home' size={25} color={color} />;
 
-            } else if (route.name == 'Users') {
+            } else if (route.name == 'SPORTIFS') {
               return <FontAwesome name='users' size={25} color={color} />;
 
             } else if (route.name == 'FRISBEE') {
               return <Ionicons name='disc-outline' size={25} color={color} />;
 
-            } else if (route.name == 'Mon profil') {
+            } else if (route.name == 'MON PROFIL') {
               return <FontAwesome name='user-o' size={25} color={color} />;
             }
 
@@ -41,10 +41,10 @@ export default function BottomBar(props) {
           }
         }}
       >
-        <Tab.Screen name="Accueil" component={MapScreen} />
-        <Tab.Screen name="Users" component={UsersScreen} />
+        <Tab.Screen name="ACCUEIL" component={MapScreen} />
+        <Tab.Screen name="SPORTIFS" component={UsersScreen} />
         <Tab.Screen name="FRISBEE" component={FrisbeeScreen} />
-        <Tab.Screen name="Mon profil" component={ProfileScreen} />
+        <Tab.Screen name="MON PROFIL" component={ProfileScreen} />
       </Tab.Navigator>
     );
   }

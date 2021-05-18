@@ -2,7 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import { StyleSheet, Text, View } from 'react-native';
-import { FAB } from 'react-native-paper'
+import { FAB, Icon } from 'react-native-elements';
+import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
 
 export default function MapScreen(props) {
     return (
@@ -22,17 +25,29 @@ export default function MapScreen(props) {
         <FAB
     style={styles.fab1}
     small
-    color='#000000'
-    label="Filtres"
-    icon="plus"
+    color='#FFFFFF'
+    title="Filtres" titleStyle={{color:'#000000'}}
+    icon={
+        <Icon
+        Ionicons name="filter-list"
+          size={20}
+          color="black"
+        />
+      }
     onPress={() => console.log('Pressed')}
   />
    <FAB
     style={styles.fab2}
     small
-    label="Ajouter"
-    color='#000000'
-    icon="plus"
+    color='#FFFFFF'
+    title="Ajouter" titleStyle={{color:'#000000'}}
+    icon={
+        <Icon
+          Entypo name="location-pin"
+          size={20}
+          color="black"
+        />
+      }
     onPress={() => console.log('Pressed')}
   />
   </View>
@@ -52,19 +67,18 @@ const styles = StyleSheet.create({
       },
       fab1: {
         position: 'absolute',
+        fontSize:10,
         margin: 16,
-        right: 20,
+        right: 40,
         bottom: 10,
         backgroundColor:'#FFFFFF',
-        borderRadius:10
       },
       fab2: {
         position: 'absolute',
         margin: 16,
-        left: 20,
+        left: 40,
         bottom: 10,
         backgroundColor:'#FFFFFF',
-        borderRadius:10
       },
   });
   
