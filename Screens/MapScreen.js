@@ -60,11 +60,11 @@ export default function MapScreen(props) {
         };
         askPermissions();
     }, []);
-
     /* List of sports facilities  */
 
     const [listPoint, setListPoint] = useState([{ latitude: 45.77110395105471, longitude: 4.885508828899401, title: 'Football' },
     { latitude: 45.75894183984044, longitude: 4.84632232892967, title: 'Basket-Ball' },
+    { latitude: 45.76531511693534, longitude: 4.850302872420629, title: 'Basket-Ball' },
     { latitude: 45.74338143926319, longitude: 4.856411368842694, title: 'Volley-Ball' },
     { latitude: 45.746525053057326, longitude: 4.8359916278657185, title: 'Ping-Pong' },
     { latitude: 45.77795794280737, longitude: 4.8530653036769715, title: 'Running' },
@@ -80,8 +80,8 @@ export default function MapScreen(props) {
                     coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
                     title={info.title} 
                     image={require('../assets/Markers/footballPin.png')}
-                    centerOffset={{ x: 10, y: 10 }}
-                    calloutOffset={{ x: 10, y: 10 }}
+                    anchor={{x: 0.5, y: 1}}
+                    centerOffset={{x: 0.5, y: 1}}
                     />)
         }
         )
@@ -94,7 +94,9 @@ export default function MapScreen(props) {
                 <Marker
                     coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
                     title={info.title} 
-                    image={require('../assets/Markers/basketBallPin.png')} />)
+                    image={require('../assets/Markers/basketBallPin.png')} 
+                    anchor={{x: 0.5, y: 1}}
+                    centerOffset={{x: 0.5, y: 1}}/>)
         }
         )
     }
@@ -106,7 +108,9 @@ export default function MapScreen(props) {
                 <Marker
                     coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
                     title={info.title} 
-                    pinColor={'yellow'} />)
+                    image={require('../assets/Markers/volleyballPin.png')} 
+                    anchor={{x: 0.5, y: 1}}
+                    centerOffset={{x: 0.5, y: 1}}/>)
         }
         )
     }
@@ -118,7 +122,9 @@ export default function MapScreen(props) {
                 <Marker
                     coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
                     title={info.title} 
-                    pinColor={'yellow'} />)
+                    image={require('../assets/Markers/pingPongPin.png')}
+                    anchor={{x: 0.5, y: 1}}
+                    centerOffset={{x: 0.5, y: 1}}/>)
         }
         )
     }
@@ -130,7 +136,9 @@ export default function MapScreen(props) {
                 <Marker
                     coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
                     title={info.title} 
-                    image={require('../assets/Markers/runningPin.png')} />)
+                    image={require('../assets/Markers/runningPin.png')}
+                    anchor={{x: 0.5, y: 1}}
+                    centerOffset={{x: 0.5, y: 1}}/>)
         }
         )
     }
@@ -142,7 +150,9 @@ export default function MapScreen(props) {
                 <Marker
                     coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
                     title={info.title} 
-                    pinColor={'yellow'} />)
+                    image={require('../assets/Markers/yogaPin.png')}
+                    anchor={{x: 0.5, y: 1}}
+                    centerOffset={{x: 0.5, y: 1}}/>)
         }
         )
     }
@@ -154,7 +164,9 @@ export default function MapScreen(props) {
                 <Marker
                     coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
                     title={info.title} 
-                    pinColor={'yellow'} />)
+                    image={require('../assets/Markers/workoutPin.png')}
+                    anchor={{x: 0.5, y: 1}}
+                    centerOffset={{x: 0.5, y: 1}}/>)
         }
         )
     }
@@ -278,7 +290,7 @@ export default function MapScreen(props) {
                     <FAB
                         style={styles.fabFilters}
                         small
-                        color='#FFFFFF'
+                        color='#FFFFFF80'
                         title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
@@ -292,7 +304,7 @@ export default function MapScreen(props) {
                     <FAB
                         style={styles.fabAddLocation}
                         small
-                        color='#FFFFFF'
+                        color='#FFFFFF80'
                         title="Ajouter" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
@@ -322,14 +334,14 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 40,
         bottom: 10,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF80',
     },
     fabAddLocation: {
         position: 'absolute',
         margin: 16,
         left: 40,
         bottom: 10,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF80',
     },
     iconCloseOverlay: {
         marginTop: 20,
@@ -364,9 +376,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 30
     },
-    MarkerStyle:{
-
-    }
-
-
 });
