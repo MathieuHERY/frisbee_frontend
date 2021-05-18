@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import { StyleSheet, View } from 'react-native';
-import { FAB, Icon, Overlay, CheckBox, Text, Button } from 'react-native-elements';
+import { FAB, Icon, Overlay, CheckBox, Text, Button, Image } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -22,15 +24,15 @@ export default function MapScreen(props) {
         Nunito_400Regular,
     });
 
-    const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
     const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
 
-    /* Filter overlay  */
+    /* Filter sports overlay  */
 
+    const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
     const [footballFilter, setFootballFilter] = useState(true);
     const [basketballFilter, setBasketballFilter] = useState(true);
     const [volleyballFilter, setVolleyballFilter] = useState(true);
-    const [PingPong, setPingPong] = useState(true);
+    const [PingPongFilter, setPingPongFilter] = useState(true);
     const [runningFilter, setRunningFilter] = useState(true);
     const [yogaFilter, setYogaFilter] = useState(true);
     const [workoutFilter, setWorkoutFilter] = useState(true);
@@ -38,6 +40,126 @@ export default function MapScreen(props) {
     var OpenFilterSport = () => {
         setVisibleFilterOverlay(true)
     }
+
+    /* Get user Location  */
+
+    const [currentLatitude, setCurrentLatitude] = useState();
+    const [currentLongitude, setCurrentLongitude] = useState();
+
+    useEffect(() => {
+        async function askPermissions() {
+            let { status } = await Permissions.askAsync(Permissions.LOCATION);
+            if (status === 'granted') {
+                Location.watchPositionAsync({ distanceInterval: 10 },
+                    (location) => {
+                        setCurrentLatitude(location.coords.latitude)
+                        setCurrentLongitude(location.coords.longitude)
+                    }
+                );
+            }
+        };
+        askPermissions();
+    }, []);
+
+    /* List of sports facilities  */
+
+    const [listPoint, setListPoint] = useState([{ latitude: 45.77110395105471, longitude: 4.885508828899401, title: 'Football' },
+    { latitude: 45.75894183984044, longitude: 4.84632232892967, title: 'Basket-Ball' },
+    { latitude: 45.74338143926319, longitude: 4.856411368842694, title: 'Volley-Ball' },
+    { latitude: 45.746525053057326, longitude: 4.8359916278657185, title: 'Ping-Pong' },
+    { latitude: 45.77795794280737, longitude: 4.8530653036769715, title: 'Running' },
+    { latitude: 45.76162177729573, longitude: 4.840675222803018, title: 'Yoga' },
+    { latitude: 45.7857921497694, longitude: 4.887434281473106, title: 'Work-Out' }
+    ])
+
+    if (footballFilter) {
+        var footballPoint = listPoint.filter(item => item.title === 'Football')
+        var footballFacilities = footballPoint.map(function (info, i) {
+            return (
+                <Marker
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
+                    title={info.title} 
+                    image={require('../assets/Markers/footballPin.png')}
+                    centerOffset={{ x: 10, y: 10 }}
+                    calloutOffset={{ x: 10, y: 10 }}
+                    />)
+        }
+        )
+    }
+
+    if (basketballFilter) {
+        var basketballPoint = listPoint.filter(item => item.title === 'Basket-Ball')
+        var basketballFacilities = basketballPoint.map(function (info, i) {
+            return (
+                <Marker
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
+                    title={info.title} 
+                    image={require('../assets/Markers/basketBallPin.png')} />)
+        }
+        )
+    }
+
+    if (volleyballFilter) {
+        var volleyballPoint = listPoint.filter(item => item.title === 'Volley-Ball')
+        var volleyballFacilities = volleyballPoint.map(function (info, i) {
+            return (
+                <Marker
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
+                    title={info.title} 
+                    pinColor={'yellow'} />)
+        }
+        )
+    }
+
+    if (PingPongFilter) {
+        var pingPongPoint = listPoint.filter(item => item.title === 'Ping-Pong')
+        var pingPongFacilities = pingPongPoint.map(function (info, i) {
+            return (
+                <Marker
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
+                    title={info.title} 
+                    pinColor={'yellow'} />)
+        }
+        )
+    }
+
+    if (runningFilter) {
+        var runningPoint = listPoint.filter(item => item.title === 'Running')
+        var runningFacilities = runningPoint.map(function (info, i) {
+            return (
+                <Marker
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
+                    title={info.title} 
+                    image={require('../assets/Markers/runningPin.png')} />)
+        }
+        )
+    }
+
+    if (yogaFilter) {
+        var yogaPoint = listPoint.filter(item => item.title === 'Yoga')
+        var YogaFacilities = yogaPoint.map(function (info, i) {
+            return (
+                <Marker
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
+                    title={info.title} 
+                    pinColor={'yellow'} />)
+        }
+        )
+    }
+
+    if (workoutFilter) {
+        var workoutPoint = listPoint.filter(item => item.title === 'Work-Out')
+        var workoutFacilities = workoutPoint.map(function (info, i) {
+            return (
+                <Marker
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
+                    title={info.title} 
+                    pinColor={'yellow'} />)
+        }
+        )
+    }
+
+    /* Render Front-end  */
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -94,7 +216,7 @@ export default function MapScreen(props) {
                                 checkedIcon='check-square'
                                 checkedColor='#7C4DFF'
                                 uncheckedIcon='square-o'
-                                checked={PingPong}
+                                checked={PingPongFilter}
                             />
                             <CheckBox containerStyle={styles.checkbox}
                                 onPress={() => { setRunningFilter(!runningFilter) }}
@@ -126,20 +248,30 @@ export default function MapScreen(props) {
                             <Button
                                 title="Appliquer les filtres"
                                 buttonStyle={styles.overlayButton}
-                                onPress={() => { setVisibleFilterOverlay(false) }} 
+                                onPress={() => { setVisibleFilterOverlay(false) }}
                             />
                         </View>
                     </View>
                 </Overlay>
                 <MapView
                     style={styles.map}
-                    Region={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
+                    region={{
+                        latitude: currentLatitude,
+                        longitude: currentLongitude,
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
                 >
+                    <Marker
+                        coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} image={require('../assets/Markers/userMarker.png')}
+                    />
+                {workoutFacilities}
+                {footballFacilities}
+                {basketballFacilities}
+                {volleyballFacilities}
+                {pingPongFacilities}
+                {YogaFacilities}
+                {runningFacilities}
 
                 </MapView>
                 <View style={{ flexDirection: 'row' }}>
@@ -147,7 +279,7 @@ export default function MapScreen(props) {
                         style={styles.fabFilters}
                         small
                         color='#FFFFFF'
-                        title="Filtres" titleStyle={{ color: '#000000' }}
+                        title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
                                 Ionicons name="filter-list"
@@ -161,7 +293,7 @@ export default function MapScreen(props) {
                         style={styles.fabAddLocation}
                         small
                         color='#FFFFFF'
-                        title="Ajouter" titleStyle={{ color: '#000000' }}
+                        title="Ajouter" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
                                 Entypo name="location-pin"
@@ -231,8 +363,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingTop: 30
-    }
+    },
+    MarkerStyle:{
 
+    }
 
 
 });
