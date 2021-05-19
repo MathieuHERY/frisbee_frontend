@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet ,View, Text, KeyboardAvoidingView} from 'react-native';
-import { Button, Input } from 'react-native-elements'
+import { Button, Input, Icon } from 'react-native-elements'
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Icon } from 'react-native-elements'
 import AppLoading from 'expo-app-loading';
 import {
     useFonts,
@@ -42,7 +41,7 @@ export default function ScreenInscription2(props) {
   //bouton inscription
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("http://192.168.1.67:3000/sign-up", {
+    const data = await fetch("http://172.16.188.158:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Age=${signUpAge}&Description=${signUpDescription}`
