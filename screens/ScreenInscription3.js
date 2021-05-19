@@ -26,7 +26,7 @@ export default function ScreenInscription3(props) {
   //bouton inscription
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("http://192.168.1.67:3000/sign-up", {
+    const data = await fetch("192.168.1.7..9:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Description=${signUpDescription}&Age=${signUpAge}`
@@ -35,6 +35,11 @@ export default function ScreenInscription3(props) {
     const body = await data.json()
 
   }
+
+  var HandleClickchangeStep = () => {
+    props.HandleClickParentchangeStep()
+  }
+
 
 
   return (
@@ -124,7 +129,7 @@ export default function ScreenInscription3(props) {
       <Button
         buttonStyle={{ marginTop: 25, backgroundColor: "#00CEC9" }}
         title="Suivant"
-        onPress={() => { handleSubmitSignup(); props.navigation.navigate('ScreenInscription4') }}
+        onPress={() => { handleSubmitSignup(); /* props.navigation.navigate('ScreenInscription4') */; HandleClickchangeStep() }}
       >
       </Button>
 

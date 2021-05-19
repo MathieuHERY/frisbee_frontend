@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Card, Badge, ListItem, Icon, Input, Button } from 'react-native-elements';
+import { Card, Badge, ListItem, Icon, Input, Button, Avatar } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 
 const users = [
@@ -41,7 +41,7 @@ function UsersScreen() {
 
     const [usersFiltered, setUsersFiltered] = useState([]);
 
-    useEffect( async () => {
+    useEffect(async () => {
 
         var rawResponse = await fetch('http://172.16.190.9:3000/users');
         var response = await rawResponse.json();
@@ -53,69 +53,89 @@ function UsersScreen() {
 
         <ScrollView style={{ marginTop: 40 }}>
 
+            <View style={{ flexDirection: 'row' }}>
+                <Input
+                    onChangeText={(value) => setText(value)}
+                    value=''
+                    // value={text} // À DÉCOMMENTER QUAND JE METTRAI LE FILTRE EN PLACE
+                    placeholder='Rechercher par sports'
+                    containerStyle={{ marginTop: 5, marginBottom: 5, marginLeft: 10, width: "60%" }}
+                    style={{ fontSize: '15' }}
+                />
+                <Button
+                    title="Filtrer"
+                    type="solid"
+                    buttonStyle={{ backgroundColor: "#7C4DFF", marginLeft: 10, marginTop: 10, paddingLeft: 30, paddingRight: 30 }}
+                    onPress={() => console.log('Appui sur filtrer')}
+                // onPress={()=>console.log(text)} // À DÉCOMMENTER QUAND JE METTRAI LE FILTRE EN PLACE
+                />
+            </View>
+
             <Text style={{ textAlign: 'center' }}>
                 Les sportifs autour de vous
             </Text>
 
             {
                 users.map((user, i) => (
-                    <Card containerStyle={styles.container}>
-                        {/* <View style={{ flex: 1 }} > */}
-                            <Card.Image
-                                style={{ width: '35%', height: 100, marginBottom: 10 }}
-                                source={users[i].UserPicture}
+                    <Card containerStyle={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+
+                        <Avatar
+                            rounded
+                            size="xlarge"
+                            source={users[i].UserPicture}
+                        />
+
+
+                        <Text>
+                            {user.FirstName}
+                        </Text>
+
+                        <Text>
+                            {user.Age}
+                        </Text>
+
+                        <Badge status='success' value={user.FavoritesSports} />
+                        <Text>
+                            <Icon
+                                type="fontawesome"
+                                name='calendar'
+                                size={24}
+                                color='#838383'
                             />
+                            {user.SportsHabits}
+                        </Text>
 
-                        {/* <View style={{ flex: 1 }}> */}
-                        {/* <View> */}
-                            <Text>
-                                {user.FirstName}
-                            </Text>
-
-                            <Text>
-                                {user.Age}
-                            </Text>
-
-                            <Badge status='success' value={user.FavoritesSports} />
-                            <Text>
-                                <Icon
-                                    type="fontawesome"
-                                    name='calendar'
-                                    size={24}
-                                    color='#838383'
-                                />
-                                {user.SportsHabits}
-                            </Text>
-
-                            <Text>
-                                <Icon
-                                    FontAwesome name='calendar'
-                                    size={24}
-                                    color='#838383'
-                                />
-                                {user.SportsHours}
-                            </Text>
-
-                            <Button
-                                title='Envoyer un FRISBEE'
-                                type='solid'
-                                style={{ color: '#00cec9' }}
-                                icon={
-                                    <Icon
-                                        name="user"
-                                        size={20}
-                                        color="#FFFFFF"
-                                    />
-                                }
-                                // onPress={() => {
-                                //     fetch('http://172.16.190.9.:3000/users', {
-                                //         method: 'POST',
-                                //         body: data 
-                                //     })
-                                // }
-                                // }
+                        <Text>
+                            <Icon
+                                FontAwesome name='calendar'
+                                size={24}
+                                color='#838383'
                             />
-                        {/* </View> */}
+                            {user.SportsHours}
+                        </Text>
+
+                        <Button
+                            title='Envoyer un FRISBEE'
+                            type='solid'
+                            style={{ color: '#00cec9' }}
+                            icon={
+                                <Icon
+                                    name="user"
+                                    size={20}
+                                    color="#FFFFFF"
+                                />
+                            }
+                        />
+
+                        {/* // onPress={() => {
+                        //     fetch('http://172.16.190.9.:3000/users', {
+                        //         method: 'POST',
+                        //         body: data 
+                        //     })
+                        // }
+                        // }
+                        // /> */}
+
                     </Card>
                 ))
             }

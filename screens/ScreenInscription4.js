@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
 import { Button, Input, Avatar } from 'react-native-elements'
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
+import {BottomBar} from './BottomBar';
 
-
-export default function ScreenInscription2(props) {
+export default function ScreenInscription4(props) {
 
 
   const [signUpFirstname, setSignUpFirstname] = useState('')
@@ -17,7 +17,7 @@ export default function ScreenInscription2(props) {
 
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("http://192.168.1.67:3000/sign-up", {
+    const data = await fetch("192.168.1.7..9:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Description=${signUpDescription}&Age=${signUpAge}`
@@ -26,8 +26,10 @@ export default function ScreenInscription2(props) {
     const body = await data.json()
 
   }
-
-
+/* 
+  var HandleClickchangeStep = () => {
+    props.HandleClickParentchangeStep()
+  } */
 
 
   return (
@@ -63,7 +65,7 @@ export default function ScreenInscription2(props) {
       <Button
         title="Finito"
         buttonStyle={{ marginBottom: 25, backgroundColor: "#00CEC9"}}
-        onPress={() => { handleSubmitSignup(); props.navigation.navigate('ScreenInscription3') }}
+        onPress={() => { handleSubmitSignup(); props.navigation.navigate('BottomBar', {screen:"ACCUEIL"})}}
       >
       </Button>
 
