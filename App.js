@@ -21,13 +21,12 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // redux
-import {createStore, combineReducers} from 'redux';
-import {Provider} from 'react-redux';
+// import {createStore, combineReducers} from 'redux';
+// import {Provider} from 'react-redux';
 
 
 /* import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; */
 import { Ionicons } from '@expo/vector-icons';
-
 
 
 // Création de la bottom navigation : on renvoie vers le fichier BottomBar.js (dans dossier Screens) qui contient la navbar

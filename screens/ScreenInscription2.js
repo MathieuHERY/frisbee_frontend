@@ -41,7 +41,7 @@ export default function ScreenInscription2(props) {
   //bouton inscription
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("http://172.16.188.158:3000/sign-up", {
+    const data = await fetch("http://172.16.190.11:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Age=${signUpAge}&Description=${signUpDescription}`
@@ -116,7 +116,8 @@ export default function ScreenInscription2(props) {
 
       <Text style={{ fontFamily: 'Nunito_400Regular', margin: 30, marginTop: 10, width: '70%' }}>Vendez-nous du rêve : </Text>
       <Input
-        containerStyle={{ marginBottom: 50, width: '90%' }}
+        // containerStyle={{ marginBottom: 50, width: '90%' }} // ORIGINAL VERSION
+        containerStyle={{ marginBottom: 0.5, width: '10%' }}
         placeholder='Décrivez-vous en quelques mots ...'
         onChangeText={(e) => setSignUpDescription(e)} 
         value={signUpDescription}

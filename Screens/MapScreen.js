@@ -582,4 +582,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_400Regular'
         
     }
+
+    
+
 });
