@@ -39,14 +39,17 @@ export default function MapScreen(props) {
     const [workoutFilter, setWorkoutFilter] = useState(true);
 
     const [userPosition, setUserPosition] = useState([])
+    const [focusInfo, setfocusInfo] = useState([])
 
     var OpenFilterSport = () => {
         setVisibleFilterOverlay(true)
     }
 
-    var onPressMarker = (e, id) => {
+    var onPressMarker = (e, id, Pins) => {
         setvisibleFocusPinOverlay(true)
+        setfocusInfo([...focusInfo, Pins])
     }
+    console.log(focusInfo)
 
     /* Get user Location  */
 
@@ -72,7 +75,7 @@ export default function MapScreen(props) {
 
     /* List of sports facilities  */
 
-    const [listPoint, setListPoint] = useState([{ id: "1", latitude: 45.77110395105471, longitude: 4.885508828899401, sport: ['Football'] },
+    const [listPoint, setListPoint] = useState([{ id: "1", title: 'Stade 1 Football', latitude: 45.77110395105471, longitude: 4.885508828899401, sport: ['Football'], description:'', image:'' },
     { id: "2", latitude: 45.75894183984044, longitude: 4.84632232892967, sport: ['Basket-Ball'] },
     { id: "3", latitude: 45.76531511693534, longitude: 4.850302872420629, sport: ['Basket-Ball'] },
     { id: "4", latitude: 45.74338143926319, longitude: 4.856411368842694, sport: ['Volley-Ball'] },
@@ -219,7 +222,7 @@ export default function MapScreen(props) {
                 image={require('../assets/Markers/footballPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id)}
+                onPress={e => onPressMarker(e, info.id, {id:info.id, title:info.title, address: info.address, sport:info.sport, description:info.drescription, image:info.image})}
             />)
     }
     )
@@ -293,9 +296,35 @@ export default function MapScreen(props) {
                 image={require('../assets/Markers/workoutPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id)} />)
+                onPress={e => onPressMarker(e, info.id )} />)
     }
     )
+
+var overlayFocus = focusInfo.map(function (item, i) {
+       return (
+    <Card containerStyle={styles.focusPin}>
+                                <Card.Image source={require('../assets/image_stade_Football.jpg')} />
+                                <Text style={{ marginTop: 30, marginBottom: 15, textAlign: 'center', fontFamily: 'Nunito_400Regular', fontSize: 30 }}>
+                                    {item.title}
+                            </Text>
+                            <Card.Divider style={{marginBottom: 20}}/>
+                                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 30 }}>
+                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
+                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
+                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 30 }}>
+                                    <Ionicons name="location-sharp" size={20} color="#838383" />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
+                                        {item.address}</Text>
+                                </View>
+
+                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 18 }}>
+                                    {item.description}</Text>
+                            </Card>
+       )
+       }
+)
 
     /* Render Front-end  */
 
@@ -323,26 +352,7 @@ export default function MapScreen(props) {
                                 onPress={() => { setvisibleFocusPinOverlay(false) }} />
                         </View>
                         <View style={styles.overlay}>
-                            <Card containerStyle={styles.focusPin}>
-                                <Card.Image source={require('../assets/image_stade_Football.jpg')} />
-                                <Text style={{ marginTop: 30, marginBottom: 15, textAlign: 'center', fontFamily: 'Nunito_400Regular', fontSize: 30 }}>
-                                    Stade de la Viabert
-                            </Text>
-                            <Card.Divider style={{marginBottom: 20}}/>
-                                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 30 }}>
-                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
-                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
-                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
-                                </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 30 }}>
-                                    <Ionicons name="location-sharp" size={20} color="#838383" />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
-                                        169 Rue Anatole France, 69100 Villeurbanne</Text>
-                                </View>
-
-                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 18 }}>
-                                    Un terrain ouvert aux amoureux du ballon rond et tout ceux qui aiment le sport en général.  Cependant, la vétusté du terrain contraste avec les locaux rénové il y a quelques années. </Text>
-                            </Card>
+                            {overlayFocus}
                             <View style={styles.button}>
                                 <Button
                                     title="Fermer"
