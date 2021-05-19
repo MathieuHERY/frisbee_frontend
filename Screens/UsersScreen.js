@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Card, Badge, ListItem, Icon, Input, Button, Avatar } from 'react-native-elements';
+import {connect} from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import {
     useFonts,
@@ -10,6 +11,8 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 
+
+
 const users = [
     {
         FirstName: 'Mathieu',
@@ -18,8 +21,8 @@ const users = [
         SportsHabits: 'Soir & week-end',
         SportsHours: '17h à 19h',
         UserPicture: require('../assets/mathieu_circle.png'),
-        UserLatitude: '37.78825',
-        UserLongitude: '-122.4324',
+        UserLatitude: 45.612702572114344,
+        UserLongitude: 5.1561502826745675,
     },
     {
         FirstName: 'Marilène',
@@ -28,8 +31,8 @@ const users = [
         SportsHabits: 'Tous les jours',
         SportsHours: '10h à 15h',
         UserPicture: require('../assets/marilene_circle.png'),
-        UserLatitude: '37.78825',
-        UserLongitude: '-122.4324',
+        UserLatitude: 45.74331694361425,
+        UserLongitude: 4.820524695285364,
     },
     {
         FirstName: 'Axelle',
@@ -38,27 +41,55 @@ const users = [
         SportsHabits: 'Weekend',
         SportsHours: '9h à 20h',
         UserPicture: require('../assets/axelle_circle.png'),
-        UserLatitude: '37.78825',
-        UserLongitude: '-122.4324',
+        UserLatitude: 45.75625192925815,
+        UserLongitude: 4.833841439222393,
+    },
+    {
+        FirstName: 'Sandara',
+        Age: '20-35 ans',
+        FavoritesSports: 'Yoga',
+        SportsHabits: 'Tous les jours',
+        SportsHours: '9h à 20h',
+        UserPicture: require('../assets/sandara_circle.png'),
+        UserLatitude: 45.7770178075458,
+        UserLongitude: 4.853280793708863,
     },
 ];
 
+const myLatitude = 45.75945278353232;
+const myLongitude = 4.855654313440548;
+
 
 function UsersScreen() {
-
-    const [usersFiltered, setUsersFiltered] = useState([]);
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
     });
 
+    // USERS FILTERED
+    useEffect(() => {
 
-    useEffect(async () => {
+        async function usersAroundMe(props) {
 
-        var rawResponse = await fetch('http://172.16.190.9:3000/users');
-        var response = await rawResponse.json();
-        // setUsersFiltered();
+            const rawResponse = await fetch('http://172.16.190.9:3000/users'); // Appel à la route
+            const response = await rawResponse.json(); // Réponse du back transformé au format Json
+            console.log(response, 'Tous les users du Back'); 
+
+            const rawLocationFromBack = await fetch('http://172.16.190.9:3000/my-location');
+            const responseLocation = await rawLocationFromBack.json(); // Réponse du back transformé au format Json
+            console.log(responseLocation, 'Ma longitude et ma latitude');
+
+            console.log(myUserId, 'Mon ID')
+
+            
+
+            // const usersFromDB = response.usersData.map((userFiltered, i) {
+            //     return (name: usersData.FirstName, age: usersData.Age) // Je dois indiquer les informations que je veux afficher à l'écran
+            // }
+            // )
+        };
+        usersAroundMe()
 
     }, []);
 
@@ -155,6 +186,8 @@ function UsersScreen() {
 }
 
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -166,4 +199,11 @@ const styles = StyleSheet.create({
 });
 
 
-export default UsersScreen;
+function mapStateToProps(state) {
+    return { myUserId: state.userId }
+   }
+    
+export default connect(
+mapStateToProps,
+null
+)(UsersScreen);

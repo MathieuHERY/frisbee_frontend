@@ -68,6 +68,18 @@ export default function MapScreen(props) {
         askPermissions();
     }, []);
 
+    // SEND MY GEOLOC TO BACKEND
+    useEffect(() => {
+        const myLocation = async function () {
+            const myLocation = await fetch('http://172.16.190.11:3000/my-location', {
+                method: 'POST',
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: `latitude=${currentLatitude}&longitude${currentLongitude}`,
+            })
+        };
+        myLocation();
+    })
+
     console.log(userPosition)
 
     /* List of sports facilities  */
