@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet ,View, Text, KeyboardAvoidingView} from 'react-native';
-import { Button, Input } from 'react-native-elements'
+import { Button, Input, Icon } from 'react-native-elements'
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Icon } from 'react-native-elements'
+import AppLoading from 'expo-app-loading';
+import {
+    useFonts,
+    Nunito_400Regular,
+} from '@expo-google-fonts/nunito';
+import {
+    Montserrat_300Light,
+} from '@expo-google-fonts/montserrat';
+
+
 
 export default function ScreenInscription2(props) {
+
+  let [fontsLoaded] = useFonts({
+    Montserrat_300Light,
+    Nunito_400Regular,
+});
 
 
   const [signUpFirstname, setSignUpFirstname] = useState('')
@@ -27,7 +41,7 @@ export default function ScreenInscription2(props) {
   //bouton inscription
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("192.168.1.7.:3000/sign-up", {
+    const data = await fetch("http://172.16.190.11:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Age=${signUpAge}&Description=${signUpDescription}`
@@ -41,6 +55,10 @@ export default function ScreenInscription2(props) {
     props.HandleClickParentchangeStep()
   }
 
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+} else {
   return (
     <View style={styles.container}>
 
@@ -53,18 +71,34 @@ export default function ScreenInscription2(props) {
         size={20}
       />
 
-    <Text h3 style={{ marginBottom: 40, fontSize: 25, width: "60%"}}>Allez, parlez nous un peu de vous ... </Text>
+    <Text h3 style={{marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light' }}>Allez, parlez nous un peu de vous ... </Text>
+
+    <Input
+        containerStyle={{ marginBottom: 5, width: '70%' }}
+        placeholder='Ton email'
+        onChangeText={(e) => setSignUpEmail(e)}
+        style={{fontFamily: 'Nunito_400Regular', fontSize: 17}}
+      />
 
       <Input
-        containerStyle={{ width: '70%', marginBottom: 40 }}
+        containerStyle={{ marginBottom: 5, width: '70%' }}
+        placeholder='Ton mot de passe'
+        onChangeText={(e) => setSignUpPassword(e)}
+        secureTextEntry={true}
+        style={{fontFamily: 'Nunito_400Regular', fontSize: 17}}
+        />
+
+      <Input
+        containerStyle={{ width: '70%', marginBottom: 20 }}
         placeholder='Ton prénom'
         onChangeText={(e) => setSignUpFirstname(e)}
+        style={{fontFamily: 'Nunito_400Regular', fontSize: 17}}
       />
 
 
       <Text>Toujours aussi jeune, hein : </Text>
       <DropDownPicker
-        style={{ margin: 50, marginTop: 20, width: '70%'}}
+        style={{ fontFamily: 'Nunito_400Regular', fontSize: 15, margin: 50, marginTop: 20, width: '70%'}}
 
         open={open}
         value={value}
@@ -80,9 +114,10 @@ export default function ScreenInscription2(props) {
 <KeyboardAvoidingView   
      behavior={Platform.OS === "ios" ? "padding" : "height"}>
 
-      <Text style={{ margin: 50, marginTop: 20, width: '70%' }}>Vendez-nous du rêve : </Text>
+      <Text style={{ fontFamily: 'Nunito_400Regular', margin: 30, marginTop: 10, width: '70%' }}>Vendez-nous du rêve : </Text>
       <Input
-        containerStyle={{ marginBottom: 50, width: '90%' }}
+        // containerStyle={{ marginBottom: 50, width: '90%' }} // ORIGINAL VERSION
+        containerStyle={{ marginBottom: 0.5, width: '10%' }}
         placeholder='Décrivez-vous en quelques mots ...'
         onChangeText={(e) => setSignUpDescription(e)} 
         value={signUpDescription}
@@ -95,16 +130,21 @@ export default function ScreenInscription2(props) {
 
 
       <Button
-      buttonStyle={{backgroundColor: "#00CEC9"}}
+      buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17}}
         title="Suivant"
         onPress={() => { handleSubmitSignup(); /* props.navigation.navigate('ScreenInscription3') */ HandleClickchangeStep()}}
+        titleStyle={{
+          fontFamily: 'Nunito_400Regular',
+          marginLeft: 15,
+          marginRight: 15   
+      }}
       >
       </Button>
 
     </View>
 
   );
-}
+}}
 
 
 

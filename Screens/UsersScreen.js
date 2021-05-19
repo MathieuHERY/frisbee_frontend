@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Card, Badge, ListItem, Icon, Input, Button, Avatar } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
+import {
+    useFonts,
+    Nunito_400Regular,
+} from '@expo-google-fonts/nunito';
+import {
+    Montserrat_300Light,
+} from '@expo-google-fonts/montserrat';
 
 const users = [
     {
@@ -41,6 +48,12 @@ function UsersScreen() {
 
     const [usersFiltered, setUsersFiltered] = useState([]);
 
+    let [fontsLoaded] = useFonts({
+        Montserrat_300Light,
+        Nunito_400Regular,
+    });
+
+
     useEffect(async () => {
 
         var rawResponse = await fetch('http://172.16.190.9:3000/users');
@@ -60,21 +73,25 @@ function UsersScreen() {
                     // value={text} // À DÉCOMMENTER QUAND JE METTRAI LE FILTRE EN PLACE
                     placeholder='Rechercher par sports'
                     containerStyle={{ marginTop: 5, marginBottom: 5, marginLeft: 10, width: "60%" }}
-                    style={{ fontSize: '15' }}
+                    style={{ fontFamily: 'Nunito_400Regular', fontSize: 15 }}
                 />
                 <Button
                     title="Filtrer"
-                    type="solid"
-                    buttonStyle={{ backgroundColor: "#7C4DFF", marginLeft: 10, marginTop: 10, paddingLeft: 30, paddingRight: 30 }}
+                    buttonStyle={{ backgroundColor: "#7C4DFF", borderRadius: 17, marginLeft: 10, marginTop: 10, paddingLeft: 30, paddingRight: 30, fontFamily: 'Nunito_400Regular' }}
                     onPress={() => console.log('Appui sur filtrer')}
-                // onPress={()=>console.log(text)} // À DÉCOMMENTER QUAND JE METTRAI LE FILTRE EN PLACE
                 />
+
+
             </View>
 
-            <Text style={{ textAlign: 'center' }}>
-                Les sportifs autour de vous
+            <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 30, paddingTop: 20, }}>
+                Les sportifs autour
+                de vous
             </Text>
 
+            
+
+            {/* LOOP ON CARD TO BE DYNAMISED */}
             {
                 users.map((user, i) => (
                     <Card containerStyle={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -83,6 +100,7 @@ function UsersScreen() {
                             rounded
                             size="xlarge"
                             source={users[i].UserPicture}
+                            onPress={() => console.log('Appui sur photo profil')}
                         />
 
 
@@ -115,9 +133,9 @@ function UsersScreen() {
                         </Text>
 
                         <Button
-                            title='Envoyer un FRISBEE'
-                            type='solid'
-                            style={{ color: '#00cec9' }}
+                            title='Envoie-lui un FRISBEE'
+
+                            style={{ backgroundColor: "#00CEC9", marginBottom: 70, titleStyle: 'Montserrat_300Light', borderRadius: 17 }}
                             icon={
                                 <Icon
                                     name="user"
@@ -125,16 +143,8 @@ function UsersScreen() {
                                     color="#FFFFFF"
                                 />
                             }
+                            onPress={() => console.log('Appui sur FRISBEE')}
                         />
-
-                        {/* // onPress={() => {
-                        //     fetch('http://172.16.190.9.:3000/users', {
-                        //         method: 'POST',
-                        //         body: data 
-                        //     })
-                        // }
-                        // }
-                        // /> */}
 
                     </Card>
                 ))

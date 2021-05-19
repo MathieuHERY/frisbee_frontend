@@ -4,9 +4,23 @@ import { connect } from 'react-redux';
 import { Button, Input } from 'react-native-elements'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Icon } from 'react-native-elements'
+import AppLoading from 'expo-app-loading';
+import {
+    useFonts,
+    Nunito_400Regular,
+} from '@expo-google-fonts/nunito';
+import {
+    Montserrat_300Light,
+} from '@expo-google-fonts/montserrat';
 
 
 export default function ScreenInscription3(props) {
+
+  let [fontsLoaded] = useFonts({
+    Montserrat_300Light,
+    Nunito_400Regular,
+});
+
 
 
   const [signUpFirstname, setSignUpFirstname] = useState('')
@@ -26,7 +40,7 @@ export default function ScreenInscription3(props) {
   //bouton inscription
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("192.168.1.7..9:3000/sign-up", {
+    const data = await fetch("http://172.16.190.11:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Description=${signUpDescription}&Age=${signUpAge}`
@@ -41,7 +55,9 @@ export default function ScreenInscription3(props) {
   }
 
 
-
+  if (!fontsLoaded) {
+    return <AppLoading />;
+} else {
   return (
     <View style={styles.container}>
 
@@ -127,16 +143,21 @@ export default function ScreenInscription3(props) {
 
 
       <Button
-        buttonStyle={{ marginTop: 25, backgroundColor: "#00CEC9" }}
+        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17 }}
         title="Suivant"
         onPress={() => { handleSubmitSignup(); /* props.navigation.navigate('ScreenInscription4') */; HandleClickchangeStep() }}
+        titleStyle={{
+          fontFamily: 'Nunito_400Regular',
+          marginLeft: 15,
+          marginRight: 15   
+      }}
       >
       </Button>
 
     </View>
 
   );
-}
+}}
 
 
 

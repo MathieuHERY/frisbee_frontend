@@ -4,7 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { StyleSheet, View } from 'react-native';
-import { FAB, Icon, Overlay, CheckBox, Text, Button, Image } from 'react-native-elements';
+import { FAB, Icon, Overlay, CheckBox, Text, Button, Image, Card, Badge } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -25,6 +25,7 @@ export default function MapScreen(props) {
     });
 
     const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
+    const [visibleFocusPinOverlay, setvisibleFocusPinOverlay] = useState(false);
 
     /* Filter sports overlay  */
 
@@ -36,9 +37,14 @@ export default function MapScreen(props) {
     const [runningFilter, setRunningFilter] = useState(true);
     const [yogaFilter, setYogaFilter] = useState(true);
     const [workoutFilter, setWorkoutFilter] = useState(true);
+    const [userPosition, setUserPosition] = useState([])
 
     var OpenFilterSport = () => {
         setVisibleFilterOverlay(true)
+    }
+
+    var onPressMarker = (e, id) => {
+        setvisibleFocusPinOverlay(true)
     }
 
     /* Get user Location  */
@@ -54,6 +60,7 @@ export default function MapScreen(props) {
                     (location) => {
                         setCurrentLatitude(location.coords.latitude)
                         setCurrentLongitude(location.coords.longitude)
+                        setUserPosition([...userPosition, {lat:location.coords.latitude, lon:location.coords.longitude}])
                     }
                 );
             }
@@ -61,15 +68,18 @@ export default function MapScreen(props) {
         askPermissions();
     }, []);
 
+    console.log(userPosition)
+
     /* List of sports facilities  */
 
-    const [listPoint, setListPoint] = useState([{ latitude: 45.77110395105471, longitude: 4.885508828899401, title: 'Football' },
-    { latitude: 45.75894183984044, longitude: 4.84632232892967, title: 'Basket-Ball' },
-    { latitude: 45.74338143926319, longitude: 4.856411368842694, title: 'Volley-Ball' },
-    { latitude: 45.746525053057326, longitude: 4.8359916278657185, title: 'Ping-Pong' },
-    { latitude: 45.77795794280737, longitude: 4.8530653036769715, title: 'Running' },
-    { latitude: 45.76162177729573, longitude: 4.840675222803018, title: 'Yoga' },
-    { latitude: 45.7857921497694, longitude: 4.887434281473106, title: 'Work-Out' }
+    const [listPoint, setListPoint] = useState([{ id: "1", latitude: 45.77110395105471, longitude: 4.885508828899401, title: 'Football' },
+    { id: "2", latitude: 45.75894183984044, longitude: 4.84632232892967, title: 'Basket-Ball' },
+    { id: "3", latitude: 45.76531511693534, longitude: 4.850302872420629, title: 'Basket-Ball' },
+    { id: "4", latitude: 45.74338143926319, longitude: 4.856411368842694, title: 'Volley-Ball' },
+    { id: "5", latitude: 45.746525053057326, longitude: 4.8359916278657185, title: 'Ping-Pong' },
+    { id: "6", latitude: 45.77795794280737, longitude: 4.8530653036769715, title: 'Running' },
+    { id: "7", latitude: 45.76162177729573, longitude: 4.840675222803018, title: 'Yoga' },
+    { id: "8", latitude: 45.7857921497694, longitude: 4.887434281473106, title: 'Work-Out' }
     ])
 
     if (footballFilter) {
@@ -77,12 +87,13 @@ export default function MapScreen(props) {
         var footballFacilities = footballPoint.map(function (info, i) {
             return (
                 <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
+                    key={info.id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                     image={require('../assets/Markers/footballPin.png')}
-                    centerOffset={{ x: 10, y: 10 }}
-                    calloutOffset={{ x: 10, y: 10 }}
-                    />)
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id)}
+                />)
         }
         )
     }
@@ -92,9 +103,12 @@ export default function MapScreen(props) {
         var basketballFacilities = basketballPoint.map(function (info, i) {
             return (
                 <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    image={require('../assets/Markers/basketBallPin.png')} />)
+                    key={info.id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/basketBallPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id)} />)
         }
         )
     }
@@ -104,9 +118,12 @@ export default function MapScreen(props) {
         var volleyballFacilities = volleyballPoint.map(function (info, i) {
             return (
                 <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
+                    key={info.id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/volleyballPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id)} />)
         }
         )
     }
@@ -116,9 +133,13 @@ export default function MapScreen(props) {
         var pingPongFacilities = pingPongPoint.map(function (info, i) {
             return (
                 <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
+                    key={info.id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/pingPongPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id)}
+                />)
         }
         )
     }
@@ -128,9 +149,12 @@ export default function MapScreen(props) {
         var runningFacilities = runningPoint.map(function (info, i) {
             return (
                 <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    image={require('../assets/Markers/runningPin.png')} />)
+                    key={info.id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/runningPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id)} />)
         }
         )
     }
@@ -140,9 +164,12 @@ export default function MapScreen(props) {
         var YogaFacilities = yogaPoint.map(function (info, i) {
             return (
                 <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
+                    key={info.id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/yogaPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id)} />)
         }
         )
     }
@@ -152,11 +179,15 @@ export default function MapScreen(props) {
         var workoutFacilities = workoutPoint.map(function (info, i) {
             return (
                 <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
+                    key={info.id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/workoutPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id)} />)
         }
         )
+        console.log(workoutFacilities)
     }
 
     /* Render Front-end  */
@@ -166,6 +197,49 @@ export default function MapScreen(props) {
     } else {
         return (
             <View style={styles.container}>
+
+                {/*         Focus Pin overlay */}
+
+                <Overlay
+                    isVisible={visibleFocusPinOverlay}
+                    fullScreen={true}
+                    onBackdropPress={() => { setvisibleFocusPinOverlay(false) }}
+                >
+                    <View>
+                        <Icon
+                            iconStyle={styles.iconCloseOverlay}
+                            name='close'
+                            size={30}
+                            type='Ionicons'
+                            color='#FF4757'
+                            onPress={() => { setvisibleFocusPinOverlay(false) }} />
+                    </View>
+                    <View style={styles.overlay}>
+                        <Card containerStyle={styles.focusPin}>
+                            <Card.Image source={require('../assets/image_stade_Football.jpg')} />
+                            <Text style={{ marginTop: 30, marginBottom: 30, textAlign: 'center', fontFamily: 'Nunito_400Regular', fontSize: 30 }}>
+                                Stade de la Viabert
+                            </Text>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 80 }}>
+                                <Badge badgeStyle={styles.badgeFocus} value={<Text>My Custom Badge</Text>} />
+                                <Badge badgeStyle={styles.badgeFocus} value={<Text>My Custom Badge</Text>} />
+                                <Badge badgeStyle={styles.badgeFocus} value={<Text>My Custom Badge</Text>} />
+                            </View>
+                            <View style={{flexDirection: 'row', justifyContent: 'center', marginBottom: 30}}>
+                                <Ionicons name="location-sharp" size={20} color="#838383" />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
+                                    169 Rue Anatole France, 69100 Villeurbanne</Text>
+                            </View>
+
+                            <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 18 }}>
+                                Un terrain ouvert aux amoureux du ballon rond et tout ceux qui aiment le sport en général.  Cependant, la vétusté du terrain contraste avec les locaux rénové il y a quelques années. </Text>
+                        </Card>
+                    </View>
+                </Overlay>
+
+
+                {/*         Filter sports overlay */}
+
                 <Overlay
                     isVisible={visibleFilterOverlay}
                     fullScreen={true}
@@ -253,6 +327,9 @@ export default function MapScreen(props) {
                         </View>
                     </View>
                 </Overlay>
+
+                {/*         Render Map View with Markers */}
+
                 <MapView
                     style={styles.map}
                     region={{
@@ -265,20 +342,20 @@ export default function MapScreen(props) {
                     <Marker
                         coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} image={require('../assets/Markers/userMarker.png')}
                     />
-                {workoutFacilities}
-                {footballFacilities}
-                {basketballFacilities}
-                {volleyballFacilities}
-                {pingPongFacilities}
-                {YogaFacilities}
-                {runningFacilities}
+                    {workoutFacilities}
+                    {footballFacilities}
+                    {basketballFacilities}
+                    {volleyballFacilities}
+                    {pingPongFacilities}
+                    {YogaFacilities}
+                    {runningFacilities}
 
                 </MapView>
                 <View style={{ flexDirection: 'row' }}>
                     <FAB
                         style={styles.fabFilters}
                         small
-                        color='#FFFFFF'
+                        color='#FFFFFF80'
                         title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
@@ -292,7 +369,7 @@ export default function MapScreen(props) {
                     <FAB
                         style={styles.fabAddLocation}
                         small
-                        color='#FFFFFF'
+                        color='#FFFFFF80'
                         title="Ajouter" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
@@ -322,14 +399,14 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 40,
         bottom: 10,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF80',
     },
     fabAddLocation: {
         position: 'absolute',
         margin: 16,
         left: 40,
         bottom: 10,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF80',
     },
     iconCloseOverlay: {
         marginTop: 20,
@@ -364,8 +441,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 30
     },
-    MarkerStyle:{
-
+    focusPin: {
+        flex: 1,
+        borderWidth: 0,
+        shadowColor: 'rgba(0,0,0, 0.0)',
+        shadowOffset: { height: 0, width: 0 },
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        elevation: 0
+    },
+    badgeFocus: {
+        height: 25,
     }
 
     
