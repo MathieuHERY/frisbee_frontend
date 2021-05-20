@@ -101,6 +101,9 @@ const users = [
 const myLatitude = 45.7594378131077;
 const myLongitude = 4.855718686456417;
 
+// Un ID existant dans MongoDB
+const idFromBack = '60a508e824195637381ab662';
+
 
 function UsersScreen() {
 
@@ -111,33 +114,55 @@ function UsersScreen() {
 
     const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
 
+    var clickOnFilterSport = () => {
+        setVisibleFilterOverlay(true)
+    }
+
     // USERS FILTERED
     useEffect(() => {
 
-        async function usersAroundMe(props) {
+        const usersAroundMe = async function() {
 
-            const usersRawResponse = await fetch('http://172.16.190.9:3000/users'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.10:3000/users'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
-            console.log(usersResponse, 'Tous les users du Back'); // Je suis censée récupérer un tableau
+            // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
 
-            console.log(myUserId, "Mon ID lors de l'inscription");
+            if (usersResponse.usersData){
+                let userToFind = usersResponse.usersData.find(user => user._id === idFromBack);
+            console.log(userToFind);
+            }
+            
+            // for (let user of usersResponse.usersData){
+            //     if (user._id === idFromBack){
+            //         console.log(user);
+            //     }
+            // }
 
+            // console.log(myUserId, "Mon ID stocké dans réduceur");
+
+            // À DÉCOMMENTER QUAND JE POURRAIS RÉCUPÉRER MON ID DU RÉDUCEUR //
+            // ------------------------------------------------ //
             // Je compare l'ID du réduceur avec mon ID
             // S'il y a correspondance = je recupère ma latitude et ma longitude
             // Et je compare ma latitude + la longitude avec celle des users
             // Je mappe le tableau de tous les users
-            const myIdFromBack = usersResponse.map(function (id, i) {
-                if (myUserId == usersResponse.id) {
-                    console.log(usersResponse.latitude, 'ma latitude');
-                    console.log(usersReponse.longitude, 'ma longitude');
-                    return (usersResponse.latitude, usersReponse.longitude)
-                }
-            })
+            // ------------------------------------------------ //
+            // const myIdFromBack = usersResponse.map(function (id, i) {
+            //     if (myUserId == usersResponse.id) {
+            //         console.log(usersResponse.latitude, 'ma latitude');
+            //         console.log(usersReponse.longitude, 'ma longitude');
+            //         return (usersResponse.latitude, usersReponse.longitude)
+            //     }
+            // })
+            // ------------------------------------------------ /
+            // const myIdFromBack = usersResponse.map(function (id, i) {
+            //     if (idFromBack == id._id) {
+            //         console.log(id.email, 'ma latitude');
+            //         console.log(id.FirstName, 'ma longitude');
+            //         return (id.email, id.FirstName)
+            //     }
+            // })
 
-            // const usersFromDB = response.usersData.map((userFiltered, i) {
-            //     return (name: usersData.FirstName, age: usersData.Age) // Je dois indiquer les informations que je veux afficher à l'écran
-            // }
-            // )
         };
         usersAroundMe()
 
@@ -155,7 +180,7 @@ function UsersScreen() {
             {/* LOOP ON CARD TO BE DYNAMISED */}
             {
                 users.map((user, i) => (
-                    <View>
+                    <View key={i}>
                         <View style={{ flexDirection: 'row', marginBottom: 30 }}>
 
                             <View style={{ marginLeft: 20, marginRight: 20 }}>
@@ -222,21 +247,23 @@ function UsersScreen() {
                 ))
             }
 
-            <FAB
-                style={styles.fabFilters}
-                small
-                color='#FFFFFF80'
-                title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
-                icon={
-                    <Icon
-                        Ionicons name="filter-list"
-                        size={20}
-                        color="black"
-                    />
-                }
-                // onPress={() => { setVisibleFilterOverlay(true) }}
-                onPress={() => console.log('Appui sur filtrer')}
-            />
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <FAB
+                    style={styles.fabFilters}
+                    small
+                    color='#FFFFFF80'
+                    title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
+                    icon={
+                        <Icon
+                            Ionicons name="filter-list"
+                            size={20}
+                            color="black"
+                        />
+                    }
+                    onPress={() => { setVisibleFilterOverlay(true) }}
+                    // onPress={() => console.log('Appui sur filtrer')}
+                />
+            </View>
 
         </ScrollView>
     )
@@ -299,7 +326,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         fontSize: 10,
         margin: 16,
-        right: 40,
+        // right: 100,
         bottom: 10,
         backgroundColor: '#FFFFFF80',
     },
