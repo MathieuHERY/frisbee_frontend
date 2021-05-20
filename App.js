@@ -11,18 +11,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs" ;
 import HomeScreen from './Screens/HomeScreen';
 import BottomBar from './Screens/BottomBar';
 
-
-
-
 // navigation
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// redux
-/* import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import newUser from './reducers/newUser'
-const store = createStore(combineReducers({newUser})) */
+const store = createStore(combineReducers({newUser}))
 
 
 /* import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; */
@@ -32,13 +28,14 @@ import { Ionicons } from '@expo/vector-icons';
 // Création de la bottom navigation : on renvoie vers le fichier BottomBar.js (dans dossier Screens) qui contient la navbar
 export default function App() {
   return (
-
+<Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="BottomBar" component={BottomBar} />
         </Stack.Navigator>
       </NavigationContainer>
+      </Provider>
 
      
     

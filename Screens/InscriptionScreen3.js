@@ -144,7 +144,7 @@ const handleWorkout = () => {
         name='ios-arrow-back'
         type='ionicon'
         color='#7C4DFF'
-        onPress={() => props.navigation.navigate('SignInUpScreen')}
+        onPress={() => props.navigation.navigate('InscriptionScreen2')}
         size={30}
       />
     </View>

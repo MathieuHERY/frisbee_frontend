@@ -59,14 +59,20 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
         name='ios-arrow-back'
         type='ionicon'
         color='#7C4DFF'
-        onPress={() => props.navigation.navigate('SignInUpScreen')}
+        onPress={() => props.navigation.navigate('InscriptionScreen3')}
         size={30}
       />
 </View>
 <View style={styles.content}>
     <Text h3 style={{marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center' }}>Quand pratiques-tu tes activités préférées ?</Text>
-    <Text style={{ marginBottom: 10 }}>Tu pratiques tes activités plutôt : </Text>
-    <RNPickerSelect
+    <Text style={{marginBottom: 20, fontSize: 16, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center'}}>Tu pratiques tes activités :</Text>
+    <View style={{
+          borderColor: '#7C4DFF',
+          borderWidth: 2,
+          borderRadius:17,
+        }}>
+    <RNPickerSelect style={pickerStyle}
+    placeholder={{ label: "Choisis la fréquence", value: null }}
             onValueChange={(value) => setSignUpSportsHabits(value)}
             items={[
               { label: 'En semaine', value: 'En semaine' },
@@ -74,11 +80,18 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
               { label: 'Tous les jours', value: 'Tous les jours' },
             ]}
         />
-        <View style={{ flexDirection: "row" }}>
-
-          <Text style={{ marginBottom: 10 }}>Tu es dispo : </Text>
-
-          <RNPickerSelect
+        </View>
+        <Text style={{marginBottom: 20,marginTop: 40, fontSize: 16, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center'}}>Tu es disponible :</Text>
+        <View style={{ flexDirection: "row", }}>
+        
+        <View style={{
+          borderBottomColor: '#dfe6e9',
+          borderBottomWidth: 1,
+          borderRadius:1,
+        }}>
+          
+          <RNPickerSelect style={pickerStyleDate}
+          placeholder={{ label: "Heure", value: null }}
             onValueChange={(value) => setSignUpSportsHoursStart(value)}
             items={[
               { label: '00h', value: '00h' },
@@ -106,10 +119,18 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
               { label: '23h', value: '23h' },
             ]}
         />
+ </View>
+ <View style={{alignItems:'center', justifyContent:'center'}}>
+<Text style={{ marginBottom: 10, fontSize:17, }}> à  </Text>
+</View>
+<View style={{
+          borderBottomColor: '#dfe6e9',
+          borderBottomWidth: 1,
+          borderRadius:1,
+        }}>
 
-<Text style={{ marginBottom: 10 }}>à : </Text>
-
-<RNPickerSelect
+<RNPickerSelect style={pickerStyleDate}
+placeholder={{ label: "Heure", value: null }}
             onValueChange={(value) => setSignUpSportsHoursEnd(value)}
             items={[
               { label: '00h', value: '00h' },
@@ -137,9 +158,11 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
               { label: '23h', value: '23h' },
             ]}
         />
-
+        </View>
+        </View>
+<View>
       <Button
-      buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17,  marginTop: 20 }}
+      buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17,  marginTop: 50 }}
         title="Suivant"
         onPress={() => {GoToNextStepSignUp(signUpSportsHabits, signUpSportsHoursStart, signUpSportsHoursEnd)}}
         titleStyle={{
@@ -150,7 +173,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
       >
       </Button>
       </View>
-    </View>
+      </View>
     </View>
   );
 }}
@@ -172,3 +195,46 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+
+const pickerStyle = {
+  inputIOS: {
+    fontSize:15,
+      color: '#7C4DFF',
+      paddingHorizontal: 40,
+      paddingVertical: 15,
+      backgroundColor: '#white',
+      borderRadius: 17,
+  },
+  placeholder: {
+      color: '#7C4DFF',
+    },
+  inputAndroid: {
+    fontSize:15,
+      color: 'white',
+      paddingHorizontal: 10,
+      backgroundColor: 'red',
+      borderRadius: 5,
+  },
+};
+
+const pickerStyleDate = {
+  inputIOS: {
+    fontSize:17,
+      color: '#7C4DFF',
+      paddingHorizontal: 40,
+      paddingVertical: 15,
+      backgroundColor: '#white',
+      borderRadius: 17,
+  },
+  placeholder: {
+      color: '#7C4DFF',
+      fontSize:17,
+    },
+  inputAndroid: {
+    fontSize:15,
+      color: 'white',
+      paddingHorizontal: 10,
+      backgroundColor: 'red',
+      borderRadius: 5,
+  },
+};

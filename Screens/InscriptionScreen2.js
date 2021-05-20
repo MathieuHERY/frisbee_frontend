@@ -15,7 +15,9 @@ import {
 
 
 
-export default function InscriptionScreen2(props) {
+function InscriptionScreen2(props) {
+
+  console.log(props.newUser.value)
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -61,7 +63,7 @@ if (signUpDescription && signUpAge) {
         name='ios-arrow-back'
         type='ionicon'
         color='#7C4DFF'
-        onPress={() => props.navigation.navigate('SignInUpScreen')}
+        onPress={() => props.navigation.navigate('InscriptionScreen1')}
         size={30}
       />
 </View>
@@ -123,6 +125,15 @@ if (signUpDescription && signUpAge) {
 
   );
 }}
+
+function mapStateToProps(state) {
+  return { newUser : state.newUser}
+ }
+
+export default connect(
+  mapStateToProps,
+  null
+)(InscriptionScreen2);
 
 
 

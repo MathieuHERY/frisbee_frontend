@@ -12,7 +12,7 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 
-export default function InscriptionScreen1(props) {
+function InscriptionScreen1(props) {
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -33,7 +33,10 @@ export default function InscriptionScreen1(props) {
 if (signUpEmail && signUpFirstname && signUpPassword) {
 
     let user = {email:signUpEmail, password:signUpPassword, firstname:signUpFirstname};
-    console.log(user);
+    console.log(signUpEmail);
+
+    props.UserFirstInfo(signUpEmail)
+
     HandleClickchangeStep(); 
   }
   }
@@ -95,6 +98,20 @@ if (signUpEmail && signUpFirstname && signUpPassword) {
 }}
 
 
+function mapDispatchToProps(dispatch) {
+  return {
+    UserFirstInfo: function (email) {
+      console.log();
+      dispatch({ type: 'addInfoFirstStep', newUser : email})
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(InscriptionScreen1);
+
 
 const styles = StyleSheet.create({
   container: {
@@ -111,3 +128,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+
+
