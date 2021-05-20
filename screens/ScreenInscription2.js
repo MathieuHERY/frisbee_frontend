@@ -41,7 +41,7 @@ export default function ScreenInscription2(props) {
   //bouton inscription
   var handleSubmitSignup = async () => {
 
-    const data = await fetch("http://172.16.190.11:3000/sign-up", {
+    const data = await fetch("http://192.168.1.63:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Firstname=${signUpFirstname}&Age=${signUpAge}&Description=${signUpDescription}`
