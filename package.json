@@ -29,6 +29,7 @@
     "react-native-advanced-select": "^1.0.7",
     "react-native-dropdown-picker": "^5.1.15",
     "react-native-elements": "^3.4.1",
+    "react-native-expo-viewport-units": "^0.0.8",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-maps": "^0.28.0",
     "react-native-paper": "^4.8.1",

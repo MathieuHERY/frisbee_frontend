@@ -1,6 +1,6 @@
-// import React, {useState} from 'react';
-// import { View, Text, StyleSheet, Button } from 'react-native';
-// import { NavigationContainer } from '@react-navigation/native';
+/* import React, {useState} from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
   
 // // screens
 // import ScreenInscription1 from "./ScreenInscription1";
@@ -36,4 +36,4 @@
 // }
 // }
 
-// export default HomeScreen;
+export default HomeScreen; */

@@ -76,10 +76,15 @@ function ScreenInscription4(props) {
         </Button>
 
 
-        {/* <Text style={{ color: "#7C4DFF" }}
-          onPress={() => { props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }), { saveUser(newUser) } }}>Non, ça ira, je ne veux pas me montrer ... </Text> */}
+       {/*  <Text style={{ color: "#7C4DFF" }}
+          onPress={() => { props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }), {saveUser(newUser)} }}>Non, ça ira, je ne veux pas me montrer ... </Text> */}
 
-        <Text style={{ color: "#7C4DFF" }}>Non, ça ira, je ne veux pas me montrer ... </Text>
+{/* <Button
+          title="Non, ça ira"
+          buttonStyle={{ marginBottom: 25, backgroundColor: "#00CEC9" }}
+          onPress={() => {props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }); { saveUser(newUser) } }}
+        >
+        </Button> */}
 
       </View>
 
