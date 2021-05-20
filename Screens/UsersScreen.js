@@ -109,6 +109,8 @@ function UsersScreen() {
         Nunito_400Regular,
     });
 
+    const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
+
     // USERS FILTERED
     useEffect(() => {
 

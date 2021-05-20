@@ -69,7 +69,7 @@ export default function MapScreen(props) {
                     }
                 );
             };
-            var request = await fetch(`http://172.16.188.160:3000/places`);
+            var request = await fetch(`http://172.16.190.10:3000/places`);
             var response = await request.json();
             setListPoint(response.PinsData)
         };
