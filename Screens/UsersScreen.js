@@ -72,17 +72,27 @@ function UsersScreen() {
 
         async function usersAroundMe(props) {
 
-            const rawResponse = await fetch('http://172.16.190.9:3000/users'); // Appel à la route
-            const response = await rawResponse.json(); // Réponse du back transformé au format Json
-            console.log(response, 'Tous les users du Back'); 
+            const usersRawResponse = await fetch('http://172.16.190.9:3000/users'); // Appel à la route
+            const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
+            console.log(usersResponse, 'Tous les users du Back'); // Je suis censée récupérer un tableau
 
-            const rawLocationFromBack = await fetch('http://172.16.190.9:3000/my-location');
-            const responseLocation = await rawLocationFromBack.json(); // Réponse du back transformé au format Json
-            console.log(responseLocation, 'Ma longitude et ma latitude');
+            console.log(myUserId, "Mon ID lors de l'inscription");
 
-            console.log(myUserId, 'Mon ID')
+            // Je compare l'ID du réduceur avec mon ID
+            
+            const myIdFromBack = usersResponse.map(function(id, i) {
+                if (myUserId == usersResponse.id) {
+                    console.log(usersResponse.latitude, 'ma latitude');
+                    console.log(usersReponse.longitude, 'ma longitude');
+                    return (usersResponse.latitude, usersReponse.longitude)
+                }
+            })
 
             
+            // const rawLocationFromBack = await fetch('http://172.16.190.9:3000/my-location');
+            // const responseLocation = await rawLocationFromBack.json(); // Réponse du back transformé au format Json
+            // console.log(responseLocation, 'Ma longitude et ma latitude');
+
 
             // const usersFromDB = response.usersData.map((userFiltered, i) {
             //     return (name: usersData.FirstName, age: usersData.Age) // Je dois indiquer les informations que je veux afficher à l'écran
