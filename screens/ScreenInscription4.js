@@ -21,7 +21,7 @@ function ScreenInscription4(props) {
     var saveUser = async newUser => {
       props.newUser(newUser)
 
-      const data = await fetch("http://172.16.188.160:3000/sign-up", {
+      const data = await fetch("http://172.16.190.10:3000/sign-up", {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `UserPicture=${newUser.setSignUpUserPicture}`
