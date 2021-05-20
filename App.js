@@ -31,7 +31,6 @@ const store = createStore(combineReducers({newUser}))
 import { Ionicons } from '@expo/vector-icons';
 
 
-
 // Création de la bottom navigation : on renvoie vers le fichier BottomBar.js (dans dossier Screens) qui contient la navbar
 export default function App() {
   return (

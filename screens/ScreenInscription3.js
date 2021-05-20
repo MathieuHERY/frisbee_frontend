@@ -48,6 +48,7 @@ function ScreenInscription3(props) {
   //bouton inscription
   var handleSubmitSignup = async () => {
 
+<<<<<<< HEAD
     var saveUser = async newUser => {
       props.newUser(newUser)
 
@@ -58,6 +59,13 @@ function ScreenInscription3(props) {
       })
 
     }
+=======
+    const data = await fetch("http://192.168.1.63:3000/sign-up", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `Firstname=${signUpFirstname}&Description=${signUpDescription}&Age=${signUpAge}`
+    })
+>>>>>>> 7d3fee7bdb1302c1f571f4b7c37950e4bedc8672
 
     const body = await data.json()
 

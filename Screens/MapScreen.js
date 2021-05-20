@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { StyleSheet, View } from 'react-native';
-import { FAB, Icon, Overlay, CheckBox, Text, Button, Image } from 'react-native-elements';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { FAB, Icon, Overlay, CheckBox, Text, Button, Image, Card, Chip } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -25,8 +25,9 @@ export default function MapScreen(props) {
     });
 
     const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
+    const [visibleFocusPinOverlay, setvisibleFocusPinOverlay] = useState(false);
 
-    /* Filter sports overlay  */
+    /* Filter checkbox sports overlay  */
 
     const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
     const [footballFilter, setFootballFilter] = useState(true);
@@ -37,14 +38,24 @@ export default function MapScreen(props) {
     const [yogaFilter, setYogaFilter] = useState(true);
     const [workoutFilter, setWorkoutFilter] = useState(true);
 
+    const [userPosition, setUserPosition] = useState([])
+    const [focusInfo, setfocusInfo] = useState([])
+
     var OpenFilterSport = () => {
         setVisibleFilterOverlay(true)
     }
+
+    var onPressMarker = (e, id, Pins) => {
+        setvisibleFocusPinOverlay(true)
+        setfocusInfo([...focusInfo, Pins])
+    }
+    console.log(focusInfo)
 
     /* Get user Location  */
 
     const [currentLatitude, setCurrentLatitude] = useState();
     const [currentLongitude, setCurrentLongitude] = useState();
+    const [listPoint, setListPoint] = useState([])
 
     useEffect(() => {
         async function askPermissions() {
@@ -54,111 +65,149 @@ export default function MapScreen(props) {
                     (location) => {
                         setCurrentLatitude(location.coords.latitude)
                         setCurrentLongitude(location.coords.longitude)
+                        setUserPosition([...userPosition, { lat: location.coords.latitude, lon: location.coords.longitude }])
                     }
                 );
-            }
+            };
+            var request = await fetch(`http://192.168.1.63:3000/places`);
+            var response = await request.json();
+            setListPoint(response.PinsData)
         };
         askPermissions();
     }, []);
 
-    /* List of sports facilities  */
-
-    const [listPoint, setListPoint] = useState([{ latitude: 45.77110395105471, longitude: 4.885508828899401, title: 'Football' },
-    { latitude: 45.75894183984044, longitude: 4.84632232892967, title: 'Basket-Ball' },
-    { latitude: 45.74338143926319, longitude: 4.856411368842694, title: 'Volley-Ball' },
-    { latitude: 45.746525053057326, longitude: 4.8359916278657185, title: 'Ping-Pong' },
-    { latitude: 45.77795794280737, longitude: 4.8530653036769715, title: 'Running' },
-    { latitude: 45.76162177729573, longitude: 4.840675222803018, title: 'Yoga' },
-    { latitude: 45.7857921497694, longitude: 4.887434281473106, title: 'Work-Out' }
-    ])
-
+    /* console.log(listPoint) */
+    
     if (footballFilter) {
-        var footballPoint = listPoint.filter(item => item.title === 'Football')
-        var footballFacilities = footballPoint.map(function (info, i) {
-            return (
-                <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    image={require('../assets/Markers/footballPin.png')}
-                    centerOffset={{ x: 10, y: 10 }}
-                    calloutOffset={{ x: 10, y: 10 }}
-                    />)
-        }
-        )
+    var filterResultFootball = listPoint.filter(item => item.sport === 'Football')
+    var footballFacilities = filterResultFootball.map(function (info, i) {
+        return (
+            <Marker
+                key={info._id}
+                coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                image={require('../assets/Markers/footballPin.png')}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
-
+    )
+}
     if (basketballFilter) {
-        var basketballPoint = listPoint.filter(item => item.title === 'Basket-Ball')
-        var basketballFacilities = basketballPoint.map(function (info, i) {
-            return (
-                <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    image={require('../assets/Markers/basketBallPin.png')} />)
-        }
-        )
+    var filterResultBasketBall = listPoint.filter(item => item.sport === 'Basket-Ball')
+    var basketballFacilities = filterResultBasketBall.map(function (info, i) {
+        return (
+            <Marker
+                key={info._id}
+                coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                image={require('../assets/Markers/basketBallPin.png')}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
-
-    if (volleyballFilter) {
-        var volleyballPoint = listPoint.filter(item => item.title === 'Volley-Ball')
-        var volleyballFacilities = volleyballPoint.map(function (info, i) {
-            return (
-                <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
-        }
-        )
+    )
+}
+if (volleyballFilter) {
+    var filterResultVolleyBall = listPoint.filter(item => item.sport === 'Volley-Ball')
+    var volleyballFacilities = filterResultVolleyBall.map(function (info, i) {
+        return (
+            <Marker
+                key={info._id}
+                coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                image={require('../assets/Markers/volleyballPin.png')}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
+    )
+}
 
-    if (PingPongFilter) {
-        var pingPongPoint = listPoint.filter(item => item.title === 'Ping-Pong')
-        var pingPongFacilities = pingPongPoint.map(function (info, i) {
-            return (
-                <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
-        }
-        )
+if (PingPongFilter) {
+    var filterResultPingPong = listPoint.filter(item => item.sport === 'Ping-Pong')
+    var pingPongFacilities = filterResultPingPong.map(function (info, i) {
+        return (
+            <Marker
+                key={info._id}
+                coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                image={require('../assets/Markers/pingPongPin.png')}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+                />)
     }
-
-    if (runningFilter) {
-        var runningPoint = listPoint.filter(item => item.title === 'Running')
-        var runningFacilities = runningPoint.map(function (info, i) {
-            return (
-                <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    image={require('../assets/Markers/runningPin.png')} />)
-        }
-        )
+    )
+}
+if (runningFilter) {
+    var filterResultRunning = listPoint.filter(item => item.sport === 'Running')
+    var runningFacilities = filterResultRunning.map(function (info, i) {
+        return (
+            <Marker
+                key={info._id}
+                coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                image={require('../assets/Markers/runningPin.png')}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
-
-    if (yogaFilter) {
-        var yogaPoint = listPoint.filter(item => item.title === 'Yoga')
-        var YogaFacilities = yogaPoint.map(function (info, i) {
-            return (
-                <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
-        }
-        )
+    )
+}
+if (yogaFilter) {
+    var filterResultYoga = listPoint.filter(item => item.sport === 'Yoga')
+    var YogaFacilities = filterResultYoga.map(function (info, i) {
+        return (
+            <Marker
+                key={info._id}
+                coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                image={require('../assets/Markers/yogaPin.png')}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
-
-    if (workoutFilter) {
-        var workoutPoint = listPoint.filter(item => item.title === 'Work-Out')
-        var workoutFacilities = workoutPoint.map(function (info, i) {
-            return (
-                <Marker
-                    coordinate={{ latitude: info.latitude, longitude: info.longitude }} 
-                    title={info.title} 
-                    pinColor={'yellow'} />)
-        }
-        )
+    )
+}
+if (workoutFilter) {
+    var filterResultWorkOut = listPoint.filter(item => item.sport === 'Work-out')
+    var workoutFacilities = filterResultWorkOut.map(function (info, i) {
+        return (
+            <Marker
+                key={info._id}
+                coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                image={require('../assets/Markers/workoutPin.png')}
+                anchor={{ x: 0.5, y: 1 }}
+                centerOffset={{ x: 0.5, y: 1 }}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
+    )
+}
 
+var overlayFocus = focusInfo.map(function (item, i) {
+       return (
+    <Card containerStyle={styles.focusPin}>
+                                <Card.Image source={{uri : item.image}} />
+                                <Text style={{ marginTop: 30, marginBottom: 15, textAlign: 'center', fontFamily: 'Nunito_400Regular', fontSize: 30 }}>
+                                    {item.title}
+                            </Text>
+                            <Card.Divider style={{marginBottom: 20}}/>
+                                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 30 }}>
+                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 30 }}>
+                                    <Ionicons name="location-sharp" size={20} color="#838383" />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
+                                        {item.address}</Text>
+                                </View>
+
+                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 18 }}>
+                                    {item.description}</Text>
+                            </Card>
+       )
+       }
+)
     /* Render Front-end  */
 
     if (!fontsLoaded) {
@@ -166,93 +215,132 @@ export default function MapScreen(props) {
     } else {
         return (
             <View style={styles.container}>
+
+                {/*         Focus Pin overlay */}
+
+                <Overlay
+                    isVisible={visibleFocusPinOverlay}
+                    fullScreen={true}
+                    onBackdropPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }}
+                >
+                    <ScrollView>
+                        <View>
+                            <Icon
+                                iconStyle={styles.iconCloseOverlay}
+                                name='close'
+                                size={30}
+                                type='Ionicons'
+                                color='#FF4757'
+                                onPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }} />
+                        </View>
+                        <View style={styles.overlay}>
+                            {overlayFocus}
+                            <View style={styles.button}>
+                                <Button
+                                    title="Fermer"
+                                    buttonStyle={styles.overlayButton}
+                                    onPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }}
+                                />
+                            </View>
+                        </View>
+                    </ScrollView>
+                </Overlay>
+
+
+                {/*         Filter sports overlay */}
+
                 <Overlay
                     isVisible={visibleFilterOverlay}
                     fullScreen={true}
                     onBackdropPress={() => { setVisibleFilterOverlay(false) }}
                 >
-                    <View>
-                        <Icon
-                            iconStyle={styles.iconCloseOverlay}
-                            name='close'
-                            size={30}
-                            type='Ionicons'
-                            color='#FF4757'
-                            onPress={() => { setVisibleFilterOverlay(false) }} />
-                    </View>
-                    <Text style={{
-                        fontFamily: 'Montserrat_300Light', fontSize: 30, textAlign: 'center', paddingTop: 30
-                    }}>Les terrains de jeu
-            autour de moi</Text>
-                    <View style={styles.overlay}>
+                    <ScrollView>
                         <View>
-                            <CheckBox containerStyle={styles.checkbox}
-                                onPress={() => { setFootballFilter(!footballFilter) }}
-                                title='Football'
-                                checkedIcon='check-square' textStyle={styles.checkboxText}
-                                checkedColor='#7C4DFF'
-                                uncheckedIcon='square-o'
-                                checked={footballFilter}
-                            />
-                            <CheckBox containerStyle={styles.checkbox}
-                                onPress={() => { setBasketballFilter(!basketballFilter) }}
-                                title='Basket-Ball' textStyle={styles.checkboxText}
-                                checkedIcon='check-square'
-                                checkedColor='#7C4DFF'
-                                uncheckedIcon='square-o'
-                                checked={basketballFilter}
-                            />
-                            <CheckBox containerStyle={styles.checkbox}
-                                onPress={() => { setVolleyballFilter(!volleyballFilter) }}
-                                title='Volley-Ball' textStyle={styles.checkboxText}
-                                checkedIcon='check-square'
-                                checkedColor='#7C4DFF'
-                                uncheckedIcon='square-o'
-                                checked={volleyballFilter}
-                            />
-                            <CheckBox containerStyle={styles.checkbox}
-                                onPress={() => { setPingPong(!PingPong) }}
-                                title='Ping-Pong' textStyle={styles.checkboxText}
-                                checkedIcon='check-square'
-                                checkedColor='#7C4DFF'
-                                uncheckedIcon='square-o'
-                                checked={PingPongFilter}
-                            />
-                            <CheckBox containerStyle={styles.checkbox}
-                                onPress={() => { setRunningFilter(!runningFilter) }}
-                                title='Running' textStyle={styles.checkboxText}
-                                checkedIcon='check-square'
-                                checkedColor='#7C4DFF'
-                                uncheckedIcon='square-o'
-                                checked={runningFilter}
-                            />
-                            <CheckBox containerStyle={styles.checkbox}
-                                onPress={() => { setYogaFilter(!yogaFilter) }}
-                                title='Yoga' textStyle={styles.checkboxText}
-                                checkedIcon='check-square'
-                                checkedColor='#7C4DFF'
-                                uncheckedIcon='square-o'
-                                checked={yogaFilter}
-                            />
+                            <Icon
+                                iconStyle={styles.iconCloseOverlay}
+                                name='close'
+                                size={30}
+                                type='Ionicons'
+                                color='#FF4757'
+                                onPress={() => { setVisibleFilterOverlay(false) }} />
+                        </View>
+                        <Text style={{
+                            fontFamily: 'Montserrat_300Light', fontSize: 30, textAlign: 'center', paddingTop: 30
+                        }}>Les terrains de jeu
+            autour de moi</Text>
+                        <View style={styles.overlay}>
+                            <View>
+                                <CheckBox containerStyle={styles.checkbox}
+                                   onPress={() => { setFootballFilter(!footballFilter) }}
+                                    title='Football'
+                                    checkedIcon='check-square' textStyle={styles.checkboxText}
+                                    checkedColor='#7C4DFF'
+                                    uncheckedIcon='square-o'
+                                    checked={footballFilter}
+                                />
+                                <CheckBox containerStyle={styles.checkbox}
+                                    onPress={() => { setBasketballFilter(!basketballFilter) }}
+                                    title='Basket-Ball' textStyle={styles.checkboxText}
+                                    checkedIcon='check-square'
+                                    checkedColor='#7C4DFF'
+                                    uncheckedIcon='square-o'
+                                    checked={basketballFilter}
+                                />
+                                <CheckBox containerStyle={styles.checkbox}
+                                    onPress={() => { setVolleyballFilter(!volleyballFilter) }}
+                                    title='Volley-Ball' textStyle={styles.checkboxText}
+                                    checkedIcon='check-square'
+                                    checkedColor='#7C4DFF'
+                                    uncheckedIcon='square-o'
+                                    checked={volleyballFilter}
+                                />
+                                <CheckBox containerStyle={styles.checkbox}
+                                    onPress={() => { setPingPongFilter(!PingPongFilter) }}
+                                    title='Ping-Pong' textStyle={styles.checkboxText}
+                                    checkedIcon='check-square'
+                                    checkedColor='#7C4DFF'
+                                    uncheckedIcon='square-o'
+                                    checked={PingPongFilter}
+                                />
+                                <CheckBox containerStyle={styles.checkbox}
+                                    onPress={() => { setRunningFilter(!runningFilter) }}
+                                    title='Running' textStyle={styles.checkboxText}
+                                    checkedIcon='check-square'
+                                    checkedColor='#7C4DFF'
+                                    uncheckedIcon='square-o'
+                                    checked={runningFilter}
+                                />
+                                <CheckBox containerStyle={styles.checkbox}
+                                    onPress={() => { setYogaFilter(!yogaFilter) }}
+                                    title='Yoga' textStyle={styles.checkboxText}
+                                    checkedIcon='check-square'
+                                    checkedColor='#7C4DFF'
+                                    uncheckedIcon='square-o'
+                                    checked={yogaFilter}
+                                />
 
-                            <CheckBox containerStyle={styles.checkbox}
-                                onPress={() => { setWorkoutFilter(!workoutFilter) }}
-                                title='Work-Out' textStyle={styles.checkboxText}
-                                checkedIcon='check-square'
-                                checkedColor='#7C4DFF'
-                                uncheckedIcon='square-o'
-                                checked={workoutFilter}
-                            />
+                                <CheckBox containerStyle={styles.checkbox}
+                                    onPress={() => { setWorkoutFilter(!workoutFilter) }}
+                                    title='Work-Out' textStyle={styles.checkboxText}
+                                    checkedIcon='check-square'
+                                    checkedColor='#7C4DFF'
+                                    uncheckedIcon='square-o'
+                                    checked={workoutFilter}
+                                />
+                            </View>
+                            <View style={styles.button}>
+                                <Button
+                                    title="Appliquer les filtres"
+                                    buttonStyle={styles.overlayButton}
+                                    onPress={() => { setVisibleFilterOverlay(false) }}
+                                />
+                            </View>
                         </View>
-                        <View style={styles.button}>
-                            <Button
-                                title="Appliquer les filtres"
-                                buttonStyle={styles.overlayButton}
-                                onPress={() => { setVisibleFilterOverlay(false) }}
-                            />
-                        </View>
-                    </View>
+                    </ScrollView>
                 </Overlay>
+
+                {/*         Render Map View with Markers */}
+
                 <MapView
                     style={styles.map}
                     region={{
@@ -265,20 +353,20 @@ export default function MapScreen(props) {
                     <Marker
                         coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} image={require('../assets/Markers/userMarker.png')}
                     />
-                {workoutFacilities}
-                {footballFacilities}
-                {basketballFacilities}
-                {volleyballFacilities}
-                {pingPongFacilities}
-                {YogaFacilities}
-                {runningFacilities}
+                    {workoutFacilities}
+                    {footballFacilities}
+                    {basketballFacilities}
+                    {volleyballFacilities}
+                    {pingPongFacilities}
+                    {YogaFacilities}
+                    {runningFacilities}
 
                 </MapView>
                 <View style={{ flexDirection: 'row' }}>
                     <FAB
                         style={styles.fabFilters}
                         small
-                        color='#FFFFFF'
+                        color='#FFFFFF80'
                         title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
@@ -292,7 +380,7 @@ export default function MapScreen(props) {
                     <FAB
                         style={styles.fabAddLocation}
                         small
-                        color='#FFFFFF'
+                        color='#FFFFFF80'
                         title="Ajouter" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
                         icon={
                             <Icon
@@ -307,7 +395,10 @@ export default function MapScreen(props) {
             </View>
         );
     }
+    console.log(filtersSelected)
 }
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -322,14 +413,14 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 40,
         bottom: 10,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF80',
     },
     fabAddLocation: {
         position: 'absolute',
         margin: 16,
         left: 40,
         bottom: 10,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF80',
     },
     iconCloseOverlay: {
         marginTop: 20,
@@ -364,9 +455,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 30
     },
-    MarkerStyle:{
+    focusPin: {
+        flex: 1,
+        borderWidth: 0,
+        shadowColor: 'rgba(0,0,0, 0.0)',
+        shadowOffset: { height: 0, width: 0 },
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        elevation: 0
+    },
+    ChipFocus: {
+        backgroundColor: 'white',
+        marginBottom: 5,
+        borderColor:'#7C4DFF',
+        borderWidth:2,
+        
+    }, 
+    ChipFocusTitle: {
 
+    color: '#7C4DFF', 
+    fontFamily: 'Nunito_400Regular'
+        
     }
 
+    
 
 });

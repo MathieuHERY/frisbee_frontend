@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
-import { Button, Input } from 'react-native-elements'
+import { StyleSheet ,View, Text, KeyboardAvoidingView} from 'react-native';
+import { Button, Input, Icon } from 'react-native-elements'
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Icon } from 'react-native-elements'
 import AppLoading from 'expo-app-loading';
 import {
   useFonts,
