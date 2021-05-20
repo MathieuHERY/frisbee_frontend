@@ -21,10 +21,10 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // redux
-import {createStore, combineReducers} from 'redux';
+/* import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import newUser from './reducers/newUser'
-const store = createStore(combineReducers({newUser}))
+const store = createStore(combineReducers({newUser})) */
 
 
 /* import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; */
@@ -35,10 +35,10 @@ import { Ionicons } from '@expo/vector-icons';
 export default function App() {
   return (
 
-    <Provider store={newUser}>
+/*     <Provider store={newUser}> */
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
           <Stack.Screen name="BottomBar" component={BottomBar} />
          <Stack.Screen name="ScreenInscription1" component={ScreenInscription1} />
           <Stack.Screen name="ScreenInscription2" component={ScreenInscription2} />
@@ -46,7 +46,7 @@ export default function App() {
           <Stack.Screen name="ScreenInscription4" component={ScreenInscription4} />
         </Stack.Navigator>
       </NavigationContainer>
-      </Provider>
+/*       </Provider> */
      
     
   );

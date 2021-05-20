@@ -21,7 +21,7 @@ function ScreenInscription4(props) {
     var saveUser = async newUser => {
       props.newUser(newUser)
 
-      const data = await fetch("http://192.168.1.67:3000/sign-up", {
+      const data = await fetch("http://172.16.188.160:3000/sign-up", {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `UserPicture=${newUser.setSignUpUserPicture}`
@@ -76,9 +76,15 @@ function ScreenInscription4(props) {
         </Button>
 
 
-        <Text style={{ color: "#7C4DFF" }}
-          onPress={() => { props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }), { saveUser(newUser) } }}>Non, ça ira, je ne veux pas me montrer ... </Text>
+       {/*  <Text style={{ color: "#7C4DFF" }}
+          onPress={() => { props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }), {saveUser(newUser)} }}>Non, ça ira, je ne veux pas me montrer ... </Text> */}
 
+{/* <Button
+          title="Non, ça ira"
+          buttonStyle={{ marginBottom: 25, backgroundColor: "#00CEC9" }}
+          onPress={() => {props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }); { saveUser(newUser) } }}
+        >
+        </Button> */}
 
       </View>
 
