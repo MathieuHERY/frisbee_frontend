@@ -5,7 +5,7 @@ export default function(newUser = [], action) {
         var findUser = false;
 
         for (let i = 0 ; i < newUserCopy.length ; i++) {
-            if (newUserCopy[i].FirstName == ... ) {
+            if (newUserCopy[i].FirstName == true ) {
                 findUser = true
             }
 

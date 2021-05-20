@@ -55,6 +55,7 @@ export default function MapScreen(props) {
 
     const [currentLatitude, setCurrentLatitude] = useState();
     const [currentLongitude, setCurrentLongitude] = useState();
+    const [listPoint, setListPoint] = useState([])
 
     useEffect(() => {
         async function askPermissions() {
@@ -67,263 +68,132 @@ export default function MapScreen(props) {
                         setUserPosition([...userPosition, { lat: location.coords.latitude, lon: location.coords.longitude }])
                     }
                 );
-            }
+            };
+            var request = await fetch(`http://192.168.1.63:3000/places`);
+            var response = await request.json();
+            setListPoint(response.PinsData)
         };
         askPermissions();
     }, []);
 
-    // SEND MY GEOLOC TO BACKEND
-    useEffect(() => {
-        const myLocation = async function () {
-            const myLocation = await fetch('http://172.16.190.11:3000/my-location', {
-                method: 'POST',
-                headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                body: `latitude=${currentLatitude}&longitude${currentLongitude}`,
-            })
-        };
-        myLocation();
-    })
-
-    console.log(userPosition)
-
-    /* List of sports facilities  */
-
-    const [listPoint, setListPoint] = useState([{ id: "1", title: 'Stade 1 Football', latitude: 45.77110395105471, longitude: 4.885508828899401, sport: ['Football'], description:'', image:'' },
-    { id: "2", latitude: 45.75894183984044, longitude: 4.84632232892967, sport: ['Basket-Ball'] },
-    { id: "3", latitude: 45.76531511693534, longitude: 4.850302872420629, sport: ['Basket-Ball'] },
-    { id: "4", latitude: 45.74338143926319, longitude: 4.856411368842694, sport: ['Volley-Ball'] },
-    { id: "5", latitude: 45.746525053057326, longitude: 4.8359916278657185, sport: ['Ping-Pong'] },
-    { id: "6", latitude: 45.77795794280737, longitude: 4.8530653036769715, sport: ['Running'] },
-    { id: "7", latitude: 45.76162177729573, longitude: 4.840675222803018, sport: ['Yoga'] },
-    { id: "8", latitude: 45.7857921497694, longitude: 4.887434281473106, sport: ['Work-Out'] }
-    ])
-
-    const [filterResultFootball, setFilterResultFootball] = useState([])
-    const [filterResultBasketBall, setFilterResultBasketBall] = useState([])
-    const [filterResultVolleyBall, setFilterResultVolleyBall] = useState([])
-    const [filterResultPingPong, setfilterResultPingPong] = useState([])
-    const [filterResultRunning, setFilterResultRunning] = useState([])
-    const [filterResultYoga, setFilterResultYoga] = useState([])
-    const [filterResultWorkOut, setFilterResultWorkOut] = useState([])
-
-
-    useEffect(() => {
-        if (footballFilter) {
-            let footballFiltered = [];
-            for (let i = 0; i < listPoint.length; i++) {
-                for (let y = 0; y < listPoint[i].sport.length; y++) {
-                    if (listPoint[i].sport[y] === 'Football') {
-                        footballFiltered.push(listPoint[i])
-                    }
-                }
-            }
-            setFilterResultFootball(footballFiltered)
-        } else {
-            setFilterResultFootball([])
-        };
-        ;
-    }, [footballFilter])
-
-    useEffect(() => {
-        if (basketballFilter) {
-            let basketFiltered = [];
-            for (let i = 0; i < listPoint.length; i++) {
-                for (let y = 0; y < listPoint[i].sport.length; y++) {
-                    if (listPoint[i].sport[y] === 'Basket-Ball') {
-                        basketFiltered.push(listPoint[i])
-                    }
-                };
-            }
-            setFilterResultBasketBall(basketFiltered)
-        } else {
-            setFilterResultBasketBall([])
-        }
-        ;
-    }, [basketballFilter])
-
-    useEffect(() => {
-        if (volleyballFilter) {
-            let volleyballFiltered = [];
-            for (let i = 0; i < listPoint.length; i++) {
-                for (let y = 0; y < listPoint[i].sport.length; y++) {
-                    if (listPoint[i].sport[y] === 'Volley-Ball') {
-                        volleyballFiltered.push(listPoint[i])
-                    }
-                };
-            }
-            setFilterResultVolleyBall(volleyballFiltered)
-        } else {
-            setFilterResultVolleyBall([])
-        }
-        ;
-    }, [volleyballFilter])
-
-    useEffect(() => {
-        if (PingPongFilter) {
-            let pingPongFiltered = [];
-            for (let i = 0; i < listPoint.length; i++) {
-                for (let y = 0; y < listPoint[i].sport.length; y++) {
-                    if (listPoint[i].sport[y] === 'Ping-Pong') {
-                        pingPongFiltered.push(listPoint[i])
-                    }
-                };
-            }
-            setfilterResultPingPong(pingPongFiltered)
-        } else {
-            setfilterResultPingPong([])
-        }
-        ;
-    }, [PingPongFilter])
-
-    useEffect(() => {
-        if (runningFilter) {
-            let runningFiltered = [];
-            for (let i = 0; i < listPoint.length; i++) {
-                for (let y = 0; y < listPoint[i].sport.length; y++) {
-                    if (listPoint[i].sport[y] === 'Running') {
-                        runningFiltered.push(listPoint[i])
-                    }
-                };
-            }
-            setFilterResultRunning(runningFiltered)
-        } else {
-            setFilterResultRunning([])
-        }
-        ;
-    }, [runningFilter])
-
-    useEffect(() => {
-        if (yogaFilter) {
-            let yogaFiltered = [];
-            for (let i = 0; i < listPoint.length; i++) {
-                for (let y = 0; y < listPoint[i].sport.length; y++) {
-                    if (listPoint[i].sport[y] === 'Yoga') {
-                        yogaFiltered.push(listPoint[i])
-                    }
-                };
-            }
-            setFilterResultYoga(yogaFiltered)
-        } else {
-            setFilterResultYoga([])
-        }
-        ;
-    }, [yogaFilter])
-
-    useEffect(() => {
-        if (workoutFilter) {
-            let workoutFiltered = [];
-            for (let i = 0; i < listPoint.length; i++) {
-                for (let y = 0; y < listPoint[i].sport.length; y++) {
-                    if (listPoint[i].sport[y] === 'Work-Out') {
-                        workoutFiltered.push(listPoint[i])
-                    }
-                };
-            }
-            setFilterResultWorkOut(workoutFiltered)
-        } else {
-            setFilterResultWorkOut([])
-        }
-        ;
-    }, [workoutFilter])
-
-
+    /* console.log(listPoint) */
+    
+    if (footballFilter) {
+    var filterResultFootball = listPoint.filter(item => item.sport === 'Football')
     var footballFacilities = filterResultFootball.map(function (info, i) {
         return (
             <Marker
-                key={info.id}
+                key={info._id}
                 coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                 image={require('../assets/Markers/footballPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id, {id:info.id, title:info.title, address: info.address, sport:info.sport, description:info.drescription, image:info.image})}
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
             />)
     }
     )
-
+}
+    if (basketballFilter) {
+    var filterResultBasketBall = listPoint.filter(item => item.sport === 'Basket-Ball')
     var basketballFacilities = filterResultBasketBall.map(function (info, i) {
         return (
             <Marker
-                key={info.id}
+                key={info._id}
                 coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                 image={require('../assets/Markers/basketBallPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id)} />)
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
     )
-
+}
+if (volleyballFilter) {
+    var filterResultVolleyBall = listPoint.filter(item => item.sport === 'Volley-Ball')
     var volleyballFacilities = filterResultVolleyBall.map(function (info, i) {
         return (
             <Marker
-                key={info.id}
+                key={info._id}
                 coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                 image={require('../assets/Markers/volleyballPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id)} />)
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
     )
+}
 
+if (PingPongFilter) {
+    var filterResultPingPong = listPoint.filter(item => item.sport === 'Ping-Pong')
     var pingPongFacilities = filterResultPingPong.map(function (info, i) {
         return (
             <Marker
-                key={info.id}
+                key={info._id}
                 coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                 image={require('../assets/Markers/pingPongPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id)}
-            />)
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+                />)
     }
     )
-
-    var runningFacilities = filterResultPingPong.map(function (info, i) {
+}
+if (runningFilter) {
+    var filterResultRunning = listPoint.filter(item => item.sport === 'Running')
+    var runningFacilities = filterResultRunning.map(function (info, i) {
         return (
             <Marker
-                key={info.id}
+                key={info._id}
                 coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                 image={require('../assets/Markers/runningPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id)} />)
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
     )
-
+}
+if (yogaFilter) {
+    var filterResultYoga = listPoint.filter(item => item.sport === 'Yoga')
     var YogaFacilities = filterResultYoga.map(function (info, i) {
         return (
             <Marker
-                key={info.id}
+                key={info._id}
                 coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                 image={require('../assets/Markers/yogaPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id)} />)
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
     )
-
+}
+if (workoutFilter) {
+    var filterResultWorkOut = listPoint.filter(item => item.sport === 'Work-out')
     var workoutFacilities = filterResultWorkOut.map(function (info, i) {
         return (
             <Marker
-                key={info.id}
+                key={info._id}
                 coordinate={{ latitude: info.latitude, longitude: info.longitude }}
                 image={require('../assets/Markers/workoutPin.png')}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
-                onPress={e => onPressMarker(e, info.id )} />)
+                onPress={e => onPressMarker(e, info.id, {id:info._id, title:info.name, address: info.address, sport:info.sport, description:info.description, image:info.picture})}
+            />)
     }
     )
+}
 
 var overlayFocus = focusInfo.map(function (item, i) {
        return (
     <Card containerStyle={styles.focusPin}>
-                                <Card.Image source={require('../assets/image_stade_Football.jpg')} />
+                                <Card.Image source={{uri : item.image}} />
                                 <Text style={{ marginTop: 30, marginBottom: 15, textAlign: 'center', fontFamily: 'Nunito_400Regular', fontSize: 30 }}>
                                     {item.title}
                             </Text>
                             <Card.Divider style={{marginBottom: 20}}/>
                                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 30 }}>
-                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
-                                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
                                     <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
                                 </View>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 30 }}>
@@ -338,7 +208,6 @@ var overlayFocus = focusInfo.map(function (item, i) {
        )
        }
 )
-
     /* Render Front-end  */
 
     if (!fontsLoaded) {
@@ -352,7 +221,7 @@ var overlayFocus = focusInfo.map(function (item, i) {
                 <Overlay
                     isVisible={visibleFocusPinOverlay}
                     fullScreen={true}
-                    onBackdropPress={() => { setvisibleFocusPinOverlay(false) }}
+                    onBackdropPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }}
                 >
                     <ScrollView>
                         <View>
@@ -362,7 +231,7 @@ var overlayFocus = focusInfo.map(function (item, i) {
                                 size={30}
                                 type='Ionicons'
                                 color='#FF4757'
-                                onPress={() => { setvisibleFocusPinOverlay(false) }} />
+                                onPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }} />
                         </View>
                         <View style={styles.overlay}>
                             {overlayFocus}
@@ -370,7 +239,7 @@ var overlayFocus = focusInfo.map(function (item, i) {
                                 <Button
                                     title="Fermer"
                                     buttonStyle={styles.overlayButton}
-                                    onPress={() => { setvisibleFocusPinOverlay(false) }}
+                                    onPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }}
                                 />
                             </View>
                         </View>
@@ -402,7 +271,7 @@ var overlayFocus = focusInfo.map(function (item, i) {
                         <View style={styles.overlay}>
                             <View>
                                 <CheckBox containerStyle={styles.checkbox}
-                                    onPress={() => { setFootballFilter(!footballFilter) }}
+                                   onPress={() => { setFootballFilter(!footballFilter) }}
                                     title='Football'
                                     checkedIcon='check-square' textStyle={styles.checkboxText}
                                     checkedColor='#7C4DFF'
@@ -426,7 +295,7 @@ var overlayFocus = focusInfo.map(function (item, i) {
                                     checked={volleyballFilter}
                                 />
                                 <CheckBox containerStyle={styles.checkbox}
-                                    onPress={() => { setPingPongFilter(!pingPongFiltered) }}
+                                    onPress={() => { setPingPongFilter(!PingPongFilter) }}
                                     title='Ping-Pong' textStyle={styles.checkboxText}
                                     checkedIcon='check-square'
                                     checkedColor='#7C4DFF'
@@ -526,7 +395,10 @@ var overlayFocus = focusInfo.map(function (item, i) {
             </View>
         );
     }
+    console.log(filtersSelected)
 }
+
+
 
 const styles = StyleSheet.create({
     container: {
