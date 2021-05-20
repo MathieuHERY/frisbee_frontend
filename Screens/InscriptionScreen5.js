@@ -2,15 +2,23 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
 import { Button, Input, Avatar } from 'react-native-elements'
-import DropDownPicker from 'react-native-dropdown-picker';
 import { Icon } from 'react-native-elements';
 import { BottomBar } from './BottomBar';
+import AppLoading from 'expo-app-loading';
+import {
+    useFonts,
+    Nunito_400Regular,
+} from '@expo-google-fonts/nunito';
+import {
+    Montserrat_300Light,
+} from '@expo-google-fonts/montserrat';
 
+export default function InscriptionScreen5(props) {
 
-
-
-function ScreenInscription4(props) {
-
+  let [fontsLoaded] = useFonts({
+    Montserrat_300Light,
+    Nunito_400Regular,
+});
 
   const [signUpUserPicture, setSignUpUserPicture] = useState('')
 
@@ -30,13 +38,15 @@ function ScreenInscription4(props) {
       const body = await data.json()
 
     }
+  }
 
     /* 
       var HandleClickchangeStep = () => {
         props.HandleClickParentchangeStep()
       } */
-
-
+      if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
     return (
       <View style={styles.container}>
 
@@ -71,7 +81,7 @@ function ScreenInscription4(props) {
         <Button
           title="Finito"
           buttonStyle={{ marginBottom: 25, backgroundColor: "#00CEC9" }}
-          onPress={() => { handleSubmitSignup(); props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }); { saveUser(newUser) } }}
+          onPress={() => { handleSubmitSignup(); props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }); }}
         >
         </Button>
 
@@ -79,12 +89,12 @@ function ScreenInscription4(props) {
        {/*  <Text style={{ color: "#7C4DFF" }}
           onPress={() => { props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }), {saveUser(newUser)} }}>Non, ça ira, je ne veux pas me montrer ... </Text> */}
 
-{/* <Button
+<Button
           title="Non, ça ira"
           buttonStyle={{ marginBottom: 25, backgroundColor: "#00CEC9" }}
           onPress={() => {props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }); { saveUser(newUser) } }}
         >
-        </Button> */}
+        </Button>
 
       </View>
 
@@ -103,7 +113,7 @@ const styles = StyleSheet.create({
   },
 });
 
-//dispatch
+/* //dispatch
 function mapDispatchToProps(dispatch) {
   return {
     newUser: function (newUser) {
@@ -126,4 +136,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ScreenInscription4)
+)(ScreenInscription4) */
