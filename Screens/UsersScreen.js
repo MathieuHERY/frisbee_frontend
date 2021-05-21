@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { FAB, Card, Badge, ListItem, Icon, Input, Button, Avatar, Chip } from 'react-native-elements';
+import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
 // import {connect} from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
+import AppLoading from 'expo-app-loading';
 import {
     useFonts,
     Nunito_400Regular,
@@ -113,6 +114,9 @@ function UsersScreen() {
     });
 
     const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
+    const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
+
+
 
     var clickOnFilterSport = () => {
         setVisibleFilterOverlay(true)
@@ -121,17 +125,17 @@ function UsersScreen() {
     // USERS FILTERED
     useEffect(() => {
 
-        const usersAroundMe = async function() {
+        const usersAroundMe = async function () {
 
             const usersRawResponse = await fetch('http://172.16.190.10:3000/users'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
 
-            if (usersResponse.usersData){
+            if (usersResponse.usersData) {
                 let userToFind = usersResponse.usersData.find(user => user._id === idFromBack);
-            console.log(userToFind);
+                console.log(userToFind);
             }
-            
+
             // for (let user of usersResponse.usersData){
             //     if (user._id === idFromBack){
             //         console.log(user);
@@ -176,6 +180,12 @@ function UsersScreen() {
                 Fais du sport avec...
             </Text>
 
+            {/* <Overlay
+                isVisible={visibleFilterOverlay}
+                onBackdropPress={() => { setvisibleFocusPinOverlay(false)} }>
+                    <Text>Hello from Overlay!</Text>
+            </Overlay> */}
+
 
             {/* LOOP ON CARD TO BE DYNAMISED */}
             {
@@ -187,7 +197,6 @@ function UsersScreen() {
                                 <Avatar
                                     rounded
                                     size="xlarge"
-                                    // style={{marginLeft: 10}}
                                     source={users[i].UserPicture}
                                     onPress={() => console.log('Appui sur photo profil')}
                                 />
@@ -261,7 +270,7 @@ function UsersScreen() {
                         />
                     }
                     onPress={() => { setVisibleFilterOverlay(true) }}
-                    // onPress={() => console.log('Appui sur filtrer')}
+                // onPress={() => console.log('Appui sur filtrer')}
                 />
             </View>
 
