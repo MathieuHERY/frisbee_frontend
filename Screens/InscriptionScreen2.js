@@ -17,7 +17,7 @@ import {
 
 function InscriptionScreen2(props) {
 
-  console.log(props.newUser.value)
+  console.log(props.newUser)
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -42,6 +42,7 @@ if (signUpDescription && signUpAge) {
     };
     console.log(user);
 
+    props.UserSecondInfo(user)
 
     HandleClickchangeStep(); 
     
@@ -68,7 +69,7 @@ if (signUpDescription && signUpAge) {
       />
 </View>
 <View style={styles.content}>
-    <Text h3 style={{marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center' }}>Allez, parlez nous un peu de toi ... </Text>
+    <Text h3 style={{marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center' }}>Allez, parles-nous un peu de toi ... </Text>
 
       <Text style={{marginBottom: 20, fontSize: 16, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center'}}>Toujours aussi jeune, hein : </Text>
 
@@ -126,13 +127,22 @@ if (signUpDescription && signUpAge) {
   );
 }}
 
+function mapDispatchToProps(dispatch) {
+  return {
+    UserSecondInfo: function (user) {
+      console.log(user);
+      dispatch({ type: 'addInfoSecondStep', newUser : user })
+    }
+  }
+}
+
 function mapStateToProps(state) {
   return { newUser : state.newUser}
  }
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(InscriptionScreen2);
 
 

@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs" ;
 
 // screens
-/* import HomeScreen from './Screens/HomeScreen'; */
+import HomeScreen from './Screens/HomeScreen';
 import BottomBar from './Screens/BottomBar';
 
 // navigation
@@ -33,7 +33,7 @@ export default function App() {
 <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-       {/*  <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="BottomBar" component={BottomBar} />
           <Stack.Screen name="SendFrisbee" component={SendFrisbee} />
           <Stack.Screen name="UsersScreen" component={UsersScreen} />

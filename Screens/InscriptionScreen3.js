@@ -14,8 +14,9 @@ import {
 } from '@expo-google-fonts/montserrat';
 
 
-export default function InscriptionScreen3(props) {
+function InscriptionScreen3(props) {
 
+    console.log(props.newUser)
 
     //fonts
     let [fontsLoaded] = useFonts({
@@ -114,8 +115,8 @@ export default function InscriptionScreen3(props) {
         props.HandleClickParentchangeStep()
     }
 
-    var GoToNextStepSignUp = (signUpAge, signUpDescription) => {
-        console.log(signUpAge, signUpDescription)
+  var GoToNextStepSignUp = (signUpFavoritesSports) => {
+    console.log(signUpFavoritesSports)
 
         if (signUpFavoritesSports) {
 
@@ -126,6 +127,7 @@ export default function InscriptionScreen3(props) {
             };
             console.log(user);
 
+    props.UserThirdInfo(user)
 
             HandleClickchangeStep();
 
@@ -262,3 +264,22 @@ const styles = StyleSheet.create({
     },
 
 });
+
+function mapDispatchToProps(dispatch) {
+    return {
+      UserThirdInfo: function (user) {
+        console.log(user);
+        dispatch({ type: 'addInfoThirdStep', newUser : user })
+      }
+    }
+  }
+
+function mapStateToProps(state) {
+    return { newUser : state.newUser}
+   } 
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(InscriptionScreen3);
+  
