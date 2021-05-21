@@ -9,6 +9,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
+import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
 import AppLoading from 'expo-app-loading';
 import {
     useFonts,
@@ -56,19 +57,15 @@ export default function MapScreen(props) {
     const [isVisibleAddPOI, setIsVisibleAddPOI] = useState(false); //overlay
     const [tempPOI, setTempPOI] = useState([]);
 
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    const [signUpSportsHabits, setSignUpSportsHabits] = useState("")
 
-    const [items, setItems] = useState([
-        { label: 'FootBall', value: 'FootBall' },
-        { label: 'BasketBall', value: 'BasketBall' },
-        { label: 'VolleyBall', value: 'VolleyBall' },
-        { label: 'PingPong', value: 'PingPong' },
-        { label: 'Course', value: 'Course' },
-        { label: 'Yoga', value: 'Yoga' },
-        { label: 'Workout', value: 'Workout' },
-    ]);
-
+    const [placeName, setPlaceName] = useState("")
+    const [placeAdress, setPlaceAdress] = useState("")
+    const [placeSport, setPlaceSport] = useState("")
+    const [placeDescription, setPlaceDescription] = useState("")
+    const [placeLatitude, setPlaceLatitude] = useState("")
+    const [placeLongitude, setPlaceLongitude] = useState("")
+    const [placePicture, setPlacePicture] = useState("")
 
 
     var selectPOI = (e) => {
@@ -80,7 +77,7 @@ export default function MapScreen(props) {
     }
 
     //Mettez en place une mécanique permettant de récupérer les coordonnées du clic sur la map afin de sauvegarder les coordonnés dans un nouvel état nommé listPOI. 
-    var handleSubmit = () => {
+  /*   var handleSubmit = () => {
         var copyListPOI = [...listPOI, { longitude: tempPOI.longitude, latitude: tempPOI.latitude, titre: titrePOI, adresse: adressPOI, description: descPOI, sportItem: sportItemPOI }];
 
         AsyncStorage.setItem("POI", JSON.stringify(copyListPOI));
@@ -90,16 +87,30 @@ export default function MapScreen(props) {
         setTempPOI();
         setDescPOI();
         setTitrePOI();
-    }
+    } */
+
+    var addPinMap = async () => {
+    
+          const data = await fetch("http://172.16.190.5:3000/newplace", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `name=${placeName}&adress=${placeAdress}&sport=${placeSport}&description=${placeDescription}&latitude=${placeLatitude}
+                    &longitude=${placeLongitude}&picture=${placePicture}`
+          })
+    
+          const body = await data.json()
+    
+        }
+      
 
     //Exploitez les valeurs contenues dans l’état listPOI pour générer des marqueurs de couleur bleu sur la map.
     var markerPOI = listPOI.map((POI, i) => {
         //showsUserLocation(true);
-        return <Marker key={i} pinColor="blue" coordinate={{ latitude: POI.latitude, longitude: POI.longitude }}
-            title={POI.titre}
-            adressPOI={POI.address}
-            description={POI.description}
-            sportItem={POI.sportItem}
+        return <Marker key={i} pinColor="blue" coordinate={{ latitude: POI.placeLatitude, longitude: POI.placeLongitude }}
+            name={POI.setPlaceName}
+            adress={POI.setPlaceAdress}
+            description={POI.setPlaceDescription}
+            sport={POI.setPlaceSport}
         />
     });
 
@@ -119,7 +130,7 @@ export default function MapScreen(props) {
         setvisibleFocusPinOverlay(true)
         setfocusInfo([...focusInfo, Pins])
     }
-    console.log(focusInfo)
+    console.log(focusInfo, "Log sur MapScreen focusinfo")
 
     /* Get user Location  */
 
@@ -141,10 +152,24 @@ export default function MapScreen(props) {
             };
             var request = await fetch(`http://172.16.188.145:3000/places`);
             var response = await request.json();
+            console.log(response);
             setListPoint(response.PinsData)
         };
         askPermissions();
-    }, []);
+    }, [listPOI]);
+
+    const list = listPoint.map((info, i) => {
+        return(
+            <Marker
+                    key={info._id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/footballPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
+                />
+        )
+    })
 
     /* console.log(listPoint) */
 
@@ -437,31 +462,30 @@ export default function MapScreen(props) {
                         <Input
                             containerStyle={{ marginBottom: 15, marginTop: 25, width: '90%' }}
                             placeholder='Nom du lieu'
-                            onChangeText={(val) => setTitrePOI(val)}
+                            onChangeText={(val) => setPlaceName(val)}
                             textInput={{ color: "#eb4d4b" }}
                             style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
 
                         />
 
-                        <DropDownPicker
-                            style={{ margin: 50, marginTop: 20, width: '70%' }}
-                            textStyle={{ fontFamily: 'Nunito_400Regular', fontSize: 15, }}
-
-                            open={open}
-                            value={value}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setValue}
-                            setItems={setItems}
-                            placeholder="Sport"
-                            onChangeText={(e) => setSportItemPOI(e)}
-
+                        <RNPickerSelect style={pickerStyle}
+                            placeholder={{ label: "Quel sport peut-on pratiquer", value: null }}
+                            onValueChange={(value) => setPlaceSport(value)}
+                            items={[
+                                { label: 'Football', value: 'Football' },
+                                { label: 'Basket-Ball', value: 'Basket-Ball' },
+                                { label: 'Volley-Ball', value: 'Volley-Ball' },
+                                { label: 'Ping-Pong', value: 'Ping-Pong' },
+                                { label: 'Yoga', value: 'Yoga' },
+                                { label: 'Running', value: 'Running' },
+                                { label: 'Work-Out', value: 'Work-Out' },
+                            ]}
                         />
 
                         <Input
                             containerStyle={{ marginBottom: 25, width: '90%' }}
                             placeholder='Adresse complète du lieu'
-                            onChangeText={(val) => setAdressPOI(val)}
+                            onChangeText={(val) => setPlaceAdress(val)}
                             textInput={{ color: "#eb4d4b" }}
                             style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
 
@@ -470,7 +494,7 @@ export default function MapScreen(props) {
                         <Input
                             containerStyle={{ marginBottom: 25, width: '90%' }}
                             placeholder='Décrivez nous ce lieu'
-                            onChangeText={(val) => setDescPOI(val)}
+                            onChangeText={(val) => setPlaceDescription(val)}
                             textInput={{ color: "#eb4d4b" }}
                             style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
 
@@ -479,7 +503,7 @@ export default function MapScreen(props) {
                         <Button
                             title="Ajouter ce lieu sur la carte"
                             buttonStyle={{ backgroundColor: "#7C4DFF", titleStyle: 'Nunito_400Regular', borderRadius: 5 }}
-                            onPress={() => handleSubmit()}
+                            onPress={() => addPinMap()}
                             type="solid"
                             titleStyle={{
                                 fontFamily: 'Nunito_400Regular',
@@ -508,6 +532,7 @@ export default function MapScreen(props) {
                     <Marker
                         coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} image={require('../assets/Markers/userMarker.png')}
                     />
+                    {list}
                     {workoutFacilities}
                     {footballFacilities}
                     {basketballFacilities}
@@ -515,7 +540,6 @@ export default function MapScreen(props) {
                     {pingPongFacilities}
                     {YogaFacilities}
                     {runningFacilities}
-
                 </MapView>
 
 
@@ -647,8 +671,31 @@ const styles = StyleSheet.create({
         color: '#7C4DFF',
         fontFamily: 'Nunito_400Regular'
 
-    }
-
-
+    },
 
 });
+
+const pickerStyle = {
+    inputIOS: {
+      fontSize:15,
+        color: '#7C4DFF',
+        paddingHorizontal: 40,
+        paddingVertical: 15,
+        backgroundColor: '#white',
+        borderRadius: 17,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    placeholder: {
+        color: '#7C4DFF',
+      },
+    inputAndroid: {
+      fontSize:15,
+        color: 'white',
+        paddingHorizontal: 10,
+        backgroundColor: 'red',
+        borderRadius: 5,
+    },
+  };
+
+
