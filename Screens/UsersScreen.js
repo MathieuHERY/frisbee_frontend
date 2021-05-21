@@ -123,7 +123,6 @@ function UsersScreen() {
         setFocusUser([...focusUser])
     }
     console.log(focusUser, "Log sur MapScreen focusUser")
-
     
 
     // OVERLAY
@@ -140,8 +139,7 @@ function UsersScreen() {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route
-           /*  const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route */
+            const usersRawResponse = await fetch('http://172.16.190.5.:3000/users'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse, 'log usersResponse');
             console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau
