@@ -97,7 +97,6 @@ const users = [
         UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
         UserLongitude: 2.337396640165934,
     },
-
 ];
 
 // Adresse de la Capsule
@@ -141,7 +140,7 @@ function UsersScreen() {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://192.168.1.67:3000/users'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route
            /*  const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route */
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse, 'log usersResponse');

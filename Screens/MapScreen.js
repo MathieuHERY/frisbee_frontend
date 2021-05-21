@@ -20,7 +20,7 @@ import {
 } from '@expo-google-fonts/montserrat';
 
 //local storage
-import AsyncStorage from '@react-native-async-storage/async-storage';
+/* import AsyncStorage from '@react-native-async-storage/async-storage'; */
 
 export default function MapScreen(props) {
 
@@ -71,8 +71,6 @@ export default function MapScreen(props) {
         { label: 'Workout', value: 'Workout' },
     ]);
 
-    
-
 
 
     var selectPOI = (e) => {
@@ -87,8 +85,8 @@ export default function MapScreen(props) {
     var handleSubmit = () => {
         var copyListPOI = [...listPOI, { longitude: tempPOI.longitude, latitude: tempPOI.latitude, titre: titrePOI, adresse: adressPOI, description: descPOI, sportItem: sportItemPOI }];
 
-        AsyncStorage.setItem("POI", JSON.stringify(copyListPOI));
-        setListPOI(copyListPOI)
+        /* AsyncStorage.setItem("POI", JSON.stringify(copyListPOI));
+        setListPOI(copyListPOI) */
 
         setIsVisibleAddPOI(false);
         setTempPOI();

@@ -1,4 +1,4 @@
-/* import React, {useState} from 'react';
+import React, {useState} from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -46,4 +46,3 @@ const [signupStep, setSignupStep] = useState(1)
     );
     };
 };
- */
