@@ -35,7 +35,7 @@ if (signUpEmail && signUpFirstname && signUpPassword) {
     let user = {email:signUpEmail, password:signUpPassword, firstname:signUpFirstname};
     console.log(signUpEmail);
 
-    props.UserFirstInfo(signUpEmail)
+    props.UserFirstInfo(user)
 
     HandleClickchangeStep(); 
   }
@@ -100,9 +100,9 @@ if (signUpEmail && signUpFirstname && signUpPassword) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    UserFirstInfo: function (email) {
-      console.log();
-      dispatch({ type: 'addInfoFirstStep', newUser : email})
+    UserFirstInfo: function (user) {
+      console.log(user);
+      dispatch({ type: 'addInfoFirstStep', newUser : user })
     }
   }
 }

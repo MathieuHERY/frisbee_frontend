@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -45,6 +46,7 @@ export default function MapScreen(props) {
 
     const [userPosition, setUserPosition] = useState([])
     const [focusInfo, setfocusInfo] = useState([])
+    const [listPoint, setListPoint] = useState([])
 
     //--------------------------------------------------------------------------------------------------
 
@@ -68,6 +70,8 @@ export default function MapScreen(props) {
         { label: 'Yoga', value: 'Yoga' },
         { label: 'Workout', value: 'Workout' },
     ]);
+
+    
 
 
 
@@ -119,16 +123,16 @@ export default function MapScreen(props) {
         setvisibleFocusPinOverlay(true)
         setfocusInfo([...focusInfo, Pins])
     }
-    console.log(focusInfo)
 
     /* Get user Location  */
 
     const [currentLatitude, setCurrentLatitude] = useState();
     const [currentLongitude, setCurrentLongitude] = useState();
-    const [listPoint, setListPoint] = useState([])
+    
+console.log(props.mapPoint)
 
     useEffect(() => {
-        async function askPermissions() {
+       async function askPermissions() {
             let { status } = await Permissions.askAsync(Permissions.LOCATION);
             if (status === 'granted') {
                 Location.watchPositionAsync({ distanceInterval: 10 },
@@ -139,16 +143,17 @@ export default function MapScreen(props) {
                     }
                 );
             };
-            var request = await fetch(`http://192.168.1.63:3000/places`);
-            var response = await request.json();
-            setListPoint(response.PinsData)
+            var request = await fetch(`http://172.16.188.145:3000/places`);
+                var response = await request.json();
+                console.log(response)
+                setListPoint(response.PinsData)
+ 
         };
-        askPermissions();
+      askPermissions();
     }, []);
 
-    /* console.log(listPoint) */
 
-    if (footballFilter) {
+if (footballFilter) {
         var filterResultFootball = listPoint.filter(item => item.sport === 'Football')
         var footballFacilities = filterResultFootball.map(function (info, i) {
             return (
@@ -276,8 +281,9 @@ export default function MapScreen(props) {
                     {item.description}</Text>
             </Card>
         )
-    }
+    } 
     )
+
     /* Render Front-end  */
 
     if (!fontsLoaded) {
@@ -304,7 +310,7 @@ export default function MapScreen(props) {
                                 onPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }} />
                         </View>
                         <View style={styles.overlay}>
-                            {overlayFocus}
+                           {overlayFocus}
                             <View style={styles.button}>
                                 <Button
                                     title="Fermer"
@@ -409,7 +415,7 @@ export default function MapScreen(props) {
                 </Overlay>
 
 
-                {/* overlay new POI  */}
+           {/*      {/* overlay new POI  */}
 
                 <Overlay
                     isVisible={isVisibleAddPOI}
@@ -488,7 +494,7 @@ export default function MapScreen(props) {
                             }}
                         />
                     </View>
-                </Overlay>
+                </Overlay> 
 
                 {/*         Render Map View with Markers */}
 
@@ -503,8 +509,8 @@ export default function MapScreen(props) {
                     }}
                 >
 
-                    {markerPOI}
-
+                    {/* {markerPOI}
+ */}
                     <Marker
                         coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} image={require('../assets/Markers/userMarker.png')}
                     />
@@ -515,6 +521,7 @@ export default function MapScreen(props) {
                     {pingPongFacilities}
                     {YogaFacilities}
                     {runningFacilities}
+                {/*     {point} */}
 
                 </MapView>
 
@@ -561,7 +568,14 @@ export default function MapScreen(props) {
     console.log(filtersSelected)
 }
 
-
+/* function mapStateToProps(state) {
+    return { mapPoint : state.mapPoint}
+   }
+  
+  export default connect(
+    mapStateToProps,
+    null
+  )(MapScreen); */
 
 const styles = StyleSheet.create({
     containerAddPOI: {

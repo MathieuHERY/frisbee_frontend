@@ -15,7 +15,9 @@ import {
 
 
 
-export default function InscriptionScreen4(props) {
+function InscriptionScreen4(props) {
+
+  console.log(props.newUser)
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -42,6 +44,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
     };
     console.log(user);
 
+    props.UserFourInfo(user)
 
     HandleClickchangeStep(); 
     
@@ -90,7 +93,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
           borderRadius:1,
         }}>
           
-          <RNPickerSelect style={pickerStyleDate}
+          <RNPickerSelect style={{pickerStyleDate}}
           placeholder={{ label: "Heure", value: null }}
             onValueChange={(value) => setSignUpSportsHoursStart(value)}
             items={[
@@ -129,7 +132,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
           borderRadius:1,
         }}>
 
-<RNPickerSelect style={pickerStyleDate}
+<RNPickerSelect style={{pickerStyleDate}}
 placeholder={{ label: "Heure", value: null }}
             onValueChange={(value) => setSignUpSportsHoursEnd(value)}
             items={[
@@ -177,6 +180,24 @@ placeholder={{ label: "Heure", value: null }}
     </View>
   );
 }}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    UserFourInfo: function (user) {
+      console.log(user);
+      dispatch({ type: 'addInfoFourStep', newUser : user })
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  return { newUser : state.newUser}
+ }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InscriptionScreen4);
 
 
 
