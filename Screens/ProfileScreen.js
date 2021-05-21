@@ -33,10 +33,7 @@ function ProfileScreen() {
                 <Avatar
                     rounded
                     size="xlarge"
-                    source={{
-                        uri:
-                            '../assets/marilene_circle.png',
-                    }}
+                    source={require('../assets/marilene_circle.png')}
                     onPress={() => console.log('Appui sur photo profil')}
                 />
 
