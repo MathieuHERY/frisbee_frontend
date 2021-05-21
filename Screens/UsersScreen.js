@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
 // import {connect} from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons'; 
+import { Feather } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import {
@@ -13,12 +13,22 @@ import {
 import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
-/* import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units'; */
+import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 
 const users = [
     {
-        FirstName: 'Mathieu',
+        Firstname: 'Axelle',
+        Age: '20-35 ans',
+        FavoritesSports: 'Ping-pong',
+        SportsHabits: 'Week-end',
+        SportsHours: '9h à 20h',
+        UserPicture: require('../assets/axelle_circle.png'),
+        UserLatitude: 45.75892606750682,  // Place Belcour, Lyon 2
+        UserLongitude: 4.832001892099143,
+    },
+    {
+        Firstname: 'Mathieu',
         Age: '20-35 ans',
         FavoritesSports: ['Running', 'Football'],
         SportsHabits: 'Soir & week-end',
@@ -28,7 +38,7 @@ const users = [
         UserLongitude: 4.856242322951902,
     },
     {
-        FirstName: 'Marilène',
+        Firstname: 'Marilène',
         Age: '20-35 ans',
         FavoritesSports: 'Running',
         SportsHabits: 'Tous les jours',
@@ -38,17 +48,7 @@ const users = [
         UserLongitude: 4.81562665542188,
     },
     {
-        FirstName: 'Axelle',
-        Age: '20-35 ans',
-        FavoritesSports: 'Football',
-        SportsHabits: 'Week-end',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/axelle_circle.png'),
-        UserLatitude: 45.75892606750682,  // Place Belcour, Lyon 2
-        UserLongitude: 4.832001892099143,
-    },
-    {
-        FirstName: 'Sandara',
+        Firstname: 'Sandara',
         Age: '20-35 ans',
         FavoritesSports: 'Yoga',
         SportsHabits: 'Tous les jours',
@@ -58,7 +58,7 @@ const users = [
         UserLongitude: 4.85408305845722,
     },
     {
-        FirstName: 'Olivier',
+        Firstname: 'Olivier',
         Age: '20-35 ans',
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
@@ -68,7 +68,7 @@ const users = [
         UserLongitude: 4.85408305845722,
     },
     {
-        FirstName: 'Ophélia',
+        Firstname: 'Ophélia',
         Age: '20-35 ans',
         FavoritesSports: ['Volleyball', 'Football'],
         SportsHabits: 'Tous les jours',
@@ -78,7 +78,7 @@ const users = [
         UserLongitude: 2.295082113019037,
     },
     {
-        FirstName: 'Cantin',
+        Firstname: 'Cantin',
         Age: '20-35 ans',
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
@@ -88,7 +88,7 @@ const users = [
         UserLongitude: 2.294136285652365,
     },
     {
-        FirstName: 'Hermann',
+        Firstname: 'Hermann',
         Age: '20-35 ans',
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
@@ -115,6 +115,18 @@ function UsersScreen() {
         Nunito_400Regular,
     });
 
+    const [usersList, setUsersList] = useState([]);
+    const [visibleOverlay, setVisibleOverlay] = useState(false);
+    const [focusUser, setFocusUser] = useState([]);
+
+    var onPressAvatar = (e, id) => {
+        setVisibleOverlay(true)
+        setFocusUser([...focusUser])
+    }
+    console.log(focusUser, "Log sur MapScreen focusUser")
+
+    
+
     // OVERLAY
     // const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
     // const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
@@ -124,23 +136,25 @@ function UsersScreen() {
     // }
 
 
-    // USERS FILTERED
+    // USERS FILTERED 
     useEffect(() => {
 
         const usersAroundMe = async function () {
 
             const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
-            console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
+            // console.log(usersResponse, 'log usersResponse');
+            console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau
+            setUsersList(usersResponse.usersData);
 
-            var user = await UserModel.findById(idFromReduceur);
-            console.log(user, 'log de user')
+            // var user = await UserModel.findById(idFromReduceur);
+            // console.log(user, 'log de user')
+
             // console.log(myUserId, "Mon ID stocké dans réduceur");
 
             // À DÉCOMMENTER QUAND JE POURRAIS RÉCUPÉRER MON ID DU RÉDUCEUR //
             // ------------------------------------------------ //
-            // Je compare l'ID du réduceur avec mon ID
-            // S'il y a correspondance = je recupère ma latitude et ma longitude
+            // Je récupère l'ID de l'utilisateur stocké dans le réduceur
             // Et je compare ma latitude + la longitude avec celle des users
             // Je mappe le tableau de tous les users
             // ------------------------------------------------ //
@@ -163,6 +177,8 @@ function UsersScreen() {
         };
         usersAroundMe()
 
+
+
     }, []);
 
     return (
@@ -173,16 +189,11 @@ function UsersScreen() {
                 Fais du sport avec...
             </Text>
 
-            {/* <Overlay
-                isVisible={visibleFilterOverlay}
-                onBackdropPress={() => { setvisibleFocusPinOverlay(false)} }>
-                    <Text>Hello from Overlay!</Text>
-            </Overlay> */}
 
-
-            {/* LOOP ON CARD TO BE DYNAMISED */}
+            {/* LOOP ON EACH USER FROM DB */}
             {
-                users.map((user, i) => (
+                usersList.map((user, i) => (
+                    // users.map((user, i) => (
                     <View key={i}>
                         <View style={{ flexDirection: 'row', marginBottom: 30 }}>
 
@@ -191,14 +202,105 @@ function UsersScreen() {
                                     rounded
                                     size="xlarge"
                                     source={users[i].UserPicture}
-                                    onPress={() => console.log('Appui sur photo profil')}
+                                    // onPress={() => console.log('Appui sur photo profil')}
+                                    // onPress={() => { setVisibleOverlay(true) }}
+                                    onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours })}
+
                                 />
                             </View>
 
+
+                            {/* OVERLAY: VIEW ON A SPECIFIC USER */}
+                            <Overlay
+                                isVisible={visibleOverlay}
+                                fullScreen={true}
+                                onBackdropPress={() => { setVisibleOverlay(false) }}
+                            >
+
+                                <View>
+
+                                    <Icon
+                                        iconStyle={styles.iconCloseOverlay}
+                                        name='close'
+                                        size={30}
+                                        type='Ionicons'
+                                        color='#FF4757'
+                                        onPress={() => { setVisibleOverlay(false) }}
+                                    />
+
+                                    <View>
+                                        <Avatar
+                                            rounded
+                                            size="xlarge"
+                                            source={users[i].UserPicture}
+                                        />
+
+                                        <Text h1 style={styles.h1StyleOverlay}>
+                                            {user.Firstname}
+                                        </Text>
+
+                                        <Text style={styles.ageDescriptionOverlay}>
+                                            {user.Age}
+                                        </Text>
+
+                                        <Chip
+                                            buttonStyle={styles.ChipFocus}
+                                            title={user.FavoritesSports}
+                                            titleStyle={styles.ChipFocusTitle}
+                                            type="outline"
+                                        />
+
+                                        <Text style={styles.description}>
+                                            {user.Description}
+                                        </Text>
+
+                                        <View>
+                                            <Text style={styles.description}>
+                                                {user.Firstname} est disponible :
+                                            </Text>
+
+                                            <Text style={styles.description}>
+                                                <EvilIcons
+                                                    name="calendar"
+                                                    size={24}
+                                                    color="#838383"
+                                                />
+                                                {user.SportsHabits}
+                                            </Text>
+
+                                            <Text style={styles.description}>
+                                                <EvilIcons name="clock"
+                                                    size={24}
+                                                    color="#838383"
+                                                />
+                                                {user.SportsHours}
+                                            </Text>
+
+                                            <Button
+                                                title='Lance un FRISBEE'
+                                                buttonStyle={styles.buttonFrisbeeOverlay}
+                                                titleStyle={styles.buttonTextStyleFrisbee}
+                                                icon={
+                                                    <Feather name="disc"
+                                                        size={18}
+                                                        color="#ffffff"
+                                                    />
+                                                }
+                                                onPress={() => console.log('Appui sur FRISBEE')}
+                                            />
+                                        </View>
+
+                                    </View>
+                                </View>
+
+                            </Overlay>
+
+
+                            {/* DISPLAY EACH USER */}
                             <View style={{ flexDirection: 'column' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text h1 style={styles.h1Style}>
-                                        {user.FirstName}
+                                        {user.Firstname}
                                     </Text>
 
                                     <Text style={styles.ageDescription}>
@@ -215,19 +317,19 @@ function UsersScreen() {
                                     />
 
                                     <Text style={styles.description}>
-                                    <EvilIcons
-                                    name="calendar"
-                                    size={24}
-                                    color="#838383"
-                                    />
+                                        <EvilIcons
+                                            name="calendar"
+                                            size={24}
+                                            color="#838383"
+                                        />
                                         {user.SportsHabits}
                                     </Text>
 
                                     <Text style={styles.description}>
-                                    <EvilIcons name="clock"
-                                    size={24}
-                                    color="#838383"
-                                    />
+                                        <EvilIcons name="clock"
+                                            size={24}
+                                            color="#838383"
+                                        />
                                         {user.SportsHours}
                                     </Text>
 
@@ -238,10 +340,10 @@ function UsersScreen() {
                                     buttonStyle={styles.buttonFrisbee}
                                     titleStyle={styles.buttonTextStyleFrisbee}
                                     icon={
-                                <Feather name="disc"
-                                size={18}
-                                color="#ffffff"
-                                />
+                                        <Feather name="disc"
+                                            size={18}
+                                            color="#ffffff"
+                                        />
                                     }
                                     onPress={() => console.log('Appui sur FRISBEE')}
                                 />
@@ -252,6 +354,7 @@ function UsersScreen() {
                 ))
             }
 
+            {/* FILTRES BUTTON */}
             {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <FAB
                     style={styles.fabFilters}
@@ -288,7 +391,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        /* width: vw(25), */
+        width: vw(25),
     },
     ChipFocusTitle: {
         color: '#7C4DFF',
@@ -311,6 +414,7 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 14,
         fontFamily: 'Montserrat_300Light',
+        textAlign: 'justify',
     },
     ageDescription: {
         fontSize: 14,
@@ -320,7 +424,7 @@ const styles = StyleSheet.create({
     buttonFrisbee: {
         backgroundColor: "#00CEC9",
         borderRadius: 17,
-       /*  width: vw(47), */
+        width: vw(47),
         marginTop: 10,
     },
     buttonTextStyleFrisbee: {
@@ -334,6 +438,26 @@ const styles = StyleSheet.create({
         // right: 100,
         bottom: 10,
         backgroundColor: '#FFFFFF80',
+    },
+    iconCloseOverlay: {
+        marginTop: 20,
+        marginLeft: 300,
+    },
+    buttonFrisbeeOverlay: {
+        backgroundColor: "#00CEC9",
+        borderRadius: 17,
+        width: vw(47),
+        marginTop: 20,
+    },
+    h1StyleOverlay: {
+        fontSize: 20,
+        fontFamily: 'Montserrat_300Light',
+        // marginRight: 10,
+        // marginBottom: 5
+    },
+    ageDescriptionOverlay: {
+        fontSize: 14,
+        fontFamily: 'Montserrat_300Light',
     },
 });
 
