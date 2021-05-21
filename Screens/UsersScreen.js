@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
 // import {connect} from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'; 
+import { EvilIcons } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import {
     useFonts,
@@ -11,14 +13,14 @@ import {
 import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
-import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+/* import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units'; */
 
 
 const users = [
     {
         FirstName: 'Mathieu',
         Age: '20-35 ans',
-        FavoritesSports: 'Running',
+        FavoritesSports: ['Running', 'Football'],
         SportsHabits: 'Soir & week-end',
         SportsHours: '17h à 19h',
         UserPicture: require('../assets/mathieu_circle.png'),
@@ -39,7 +41,7 @@ const users = [
         FirstName: 'Axelle',
         Age: '20-35 ans',
         FavoritesSports: 'Football',
-        SportsHabits: 'Weekend',
+        SportsHabits: 'Week-end',
         SportsHours: '9h à 20h',
         UserPicture: require('../assets/axelle_circle.png'),
         UserLatitude: 45.75892606750682,  // Place Belcour, Lyon 2
@@ -68,7 +70,7 @@ const users = [
     {
         FirstName: 'Ophélia',
         Age: '20-35 ans',
-        FavoritesSports: 'Volleyball',
+        FavoritesSports: ['Volleyball', 'Football'],
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
         UserPicture: require('../assets/ophelia.jpeg'),
@@ -103,7 +105,7 @@ const myLatitude = 45.7594378131077;
 const myLongitude = 4.855718686456417;
 
 // Un ID existant dans MongoDB
-const idFromBack = '60a508e824195637381ab662';
+const idFromReduceur = '60a77616e8f40f1e2389f682';
 
 
 function UsersScreen() {
@@ -113,27 +115,27 @@ function UsersScreen() {
         Nunito_400Regular,
     });
 
-    const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
-    const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
+    // OVERLAY
+    // const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
+    // const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
 
+    // var clickOnFilterSport = () => {
+    //     setVisibleFilterOverlay(true)
+    // }
 
-
-    var clickOnFilterSport = () => {
-        setVisibleFilterOverlay(true)
-    }
 
     // USERS FILTERED
     useEffect(() => {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.190.10:3000/users'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
-            // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
+            console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
 
             if (usersResponse.usersData) {
-                let userToFind = usersResponse.usersData.find(user => user._id === idFromBack);
-                console.log(userToFind);
+                let userToFind = usersResponse.usersData.find(user => user._id === idFromReduceur);
+                console.log(userToFind, 'user to find');
             }
 
             // for (let user of usersResponse.usersData){
@@ -214,23 +216,27 @@ function UsersScreen() {
                                 </View>
 
                                 <View>
-                                    <Chip buttonStyle={styles.ChipFocus} title={user.FavoritesSports} titleStyle={styles.ChipFocusTitle} type="outline" />
+                                    <Chip
+                                        buttonStyle={styles.ChipFocus}
+                                        title={user.FavoritesSports}
+                                        titleStyle={styles.ChipFocusTitle}
+                                        type="outline"
+                                    />
 
                                     <Text style={styles.description}>
-                                        <Icon
-                                            FontAwesome name='calendar'
-                                            size={24}
-                                            color='#838383'
-                                        />
+                                    <EvilIcons
+                                    name="calendar"
+                                    size={24}
+                                    color="#838383"
+                                    />
                                         {user.SportsHabits}
                                     </Text>
 
                                     <Text style={styles.description}>
-                                        <Icon
-                                            FontAwesome name='calendar'
-                                            size={24}
-                                            color='#838383'
-                                        />
+                                    <EvilIcons name="clock"
+                                    size={24}
+                                    color="#838383"
+                                    />
                                         {user.SportsHours}
                                     </Text>
 
@@ -241,11 +247,10 @@ function UsersScreen() {
                                     buttonStyle={styles.buttonFrisbee}
                                     titleStyle={styles.buttonTextStyleFrisbee}
                                     icon={
-                                        <Icon
-                                            FontAwesome name="user"
-                                            size={20}
-                                            color="#FFFFFF"
-                                        />
+                                <Feather name="disc"
+                                size={24}
+                                color="#ffffff"
+                                />
                                     }
                                     onPress={() => console.log('Appui sur FRISBEE')}
                                 />
@@ -292,7 +297,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        width: vw(25),
+        /* width: vw(25), */
     },
     ChipFocusTitle: {
         color: '#7C4DFF',
@@ -324,7 +329,7 @@ const styles = StyleSheet.create({
     buttonFrisbee: {
         backgroundColor: "#00CEC9",
         borderRadius: 17,
-        width: vw(47),
+       /*  width: vw(47), */
         marginTop: 10,
     },
     buttonTextStyleFrisbee: {
