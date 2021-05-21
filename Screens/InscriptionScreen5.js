@@ -31,6 +31,7 @@ export default function InscriptionScreen5(props) {
       props.newUser(newUser)
 
       const data = await fetch("http://192.168.1.67:3000/sign-up", {
+      /* const data = await fetch("http://172.16.190.5:3000/sign-up", { */
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `UserPicture=${newUser.setSignUpUserPicture}`

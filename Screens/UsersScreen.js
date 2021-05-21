@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { FAB, Card, Badge, ListItem, Icon, Input, Button, Avatar, Chip } from 'react-native-elements';
+import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
 // import {connect} from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons'; 
+import { EvilIcons } from '@expo/vector-icons';
+import AppLoading from 'expo-app-loading';
 import {
     useFonts,
     Nunito_400Regular,
@@ -17,7 +20,7 @@ const users = [
     {
         FirstName: 'Mathieu',
         Age: '20-35 ans',
-        FavoritesSports: 'Running',
+        FavoritesSports: ['Running', 'Football'],
         SportsHabits: 'Soir & week-end',
         SportsHours: '17h à 19h',
         UserPicture: require('../assets/mathieu_circle.png'),
@@ -38,7 +41,7 @@ const users = [
         FirstName: 'Axelle',
         Age: '20-35 ans',
         FavoritesSports: 'Football',
-        SportsHabits: 'Weekend',
+        SportsHabits: 'Week-end',
         SportsHours: '9h à 20h',
         UserPicture: require('../assets/axelle_circle.png'),
         UserLatitude: 45.75892606750682,  // Place Belcour, Lyon 2
@@ -60,14 +63,14 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        /* UserPicture: require(/* '../assets/olivier.jpeg' )*/
+        UserPicture: require('../assets/olivier.jpeg'),
         UserLatitude: 45.77585598433732, // Parc de la Tête d'Or, Lyon
         UserLongitude: 4.85408305845722,
     },
     {
         FirstName: 'Ophélia',
         Age: '20-35 ans',
-        FavoritesSports: 'Volleyball',
+        FavoritesSports: ['Volleyball', 'Football'],
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
         UserPicture: require('../assets/ophelia.jpeg'),
@@ -80,7 +83,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-       /*  UserPicture: require('../assets/cantin.jpeg'), */
+        UserPicture: require('../assets/cantin.jpeg'),
         UserLatitude: 48.85955520827693, // Tour Eiffel, Paris
         UserLongitude: 2.294136285652365,
     },
@@ -90,7 +93,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        /* UserPicture: require('../assets/hermann.jpeg'), */
+        UserPicture: require('../assets/hermann.jpeg'),
         UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
         UserLongitude: 2.337396640165934,
     },
@@ -101,6 +104,9 @@ const users = [
 const myLatitude = 45.7594378131077;
 const myLongitude = 4.855718686456417;
 
+// Un ID existant dans MongoDB
+const idFromReduceur = '60a77616e8f40f1e2389f682';
+
 
 function UsersScreen() {
 
@@ -109,33 +115,64 @@ function UsersScreen() {
         Nunito_400Regular,
     });
 
+    // OVERLAY
+    // const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
+    // const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
+
+    // var clickOnFilterSport = () => {
+    //     setVisibleFilterOverlay(true)
+    // }
+
+
     // USERS FILTERED
     useEffect(() => {
 
-        async function usersAroundMe(props) {
+        const usersAroundMe = async function () {
 
+<<<<<<< HEAD
             const usersRawResponse = await fetch('http://192.168.1.67:3000/users'); // Appel à la route
+=======
+            const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route
+>>>>>>> 22ac25e5f8490ee69baafb9380a87604dfd44da7
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
-            console.log(usersResponse, 'Tous les users du Back'); // Je suis censée récupérer un tableau
+            console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
 
-            console.log(myUserId, "Mon ID lors de l'inscription");
+            if (usersResponse.usersData) {
+                let userToFind = usersResponse.usersData.find(user => user._id === idFromReduceur);
+                console.log(userToFind, 'user to find');
+            }
 
+            // for (let user of usersResponse.usersData){
+            //     if (user._id === idFromBack){
+            //         console.log(user);
+            //     }
+            // }
+
+            // console.log(myUserId, "Mon ID stocké dans réduceur");
+
+            // À DÉCOMMENTER QUAND JE POURRAIS RÉCUPÉRER MON ID DU RÉDUCEUR //
+            // ------------------------------------------------ //
             // Je compare l'ID du réduceur avec mon ID
             // S'il y a correspondance = je recupère ma latitude et ma longitude
             // Et je compare ma latitude + la longitude avec celle des users
             // Je mappe le tableau de tous les users
-            const myIdFromBack = usersResponse.map(function (id, i) {
-                if (myUserId == usersResponse.id) {
-                    console.log(usersResponse.latitude, 'ma latitude');
-                    console.log(usersReponse.longitude, 'ma longitude');
-                    return (usersResponse.latitude, usersReponse.longitude)
-                }
-            })
+            // ------------------------------------------------ //
+            // const myIdFromBack = usersResponse.map(function (id, i) {
+            //     if (myUserId == usersResponse.id) {
+            //         console.log(usersResponse.latitude, 'ma latitude');
+            //         console.log(usersReponse.longitude, 'ma longitude');
+            //         return (usersResponse.latitude, usersReponse.longitude)
+            //     }
+            // })
+            // ------------------------------------------------ /
+            // const myIdFromBack = usersResponse.map(function (id, i) {
+            //     if (idFromBack == id._id) {
+            //         console.log(id.email, 'ma latitude');
+            //         console.log(id.FirstName, 'ma longitude');
+            //         return (id.email, id.FirstName)
+            //     }
+            // })
 
-            // const usersFromDB = response.usersData.map((userFiltered, i) {
-            //     return (name: usersData.FirstName, age: usersData.Age) // Je dois indiquer les informations que je veux afficher à l'écran
-            // }
-            // )
         };
         usersAroundMe()
 
@@ -149,18 +186,23 @@ function UsersScreen() {
                 Fais du sport avec...
             </Text>
 
+            {/* <Overlay
+                isVisible={visibleFilterOverlay}
+                onBackdropPress={() => { setvisibleFocusPinOverlay(false)} }>
+                    <Text>Hello from Overlay!</Text>
+            </Overlay> */}
+
 
             {/* LOOP ON CARD TO BE DYNAMISED */}
             {
                 users.map((user, i) => (
-                    <View>
+                    <View key={i}>
                         <View style={{ flexDirection: 'row', marginBottom: 30 }}>
 
                             <View style={{ marginLeft: 20, marginRight: 20 }}>
                                 <Avatar
                                     rounded
                                     size="xlarge"
-                                    // style={{marginLeft: 10}}
                                     source={users[i].UserPicture}
                                     onPress={() => console.log('Appui sur photo profil')}
                                 />
@@ -178,23 +220,27 @@ function UsersScreen() {
                                 </View>
 
                                 <View>
-                                    <Chip buttonStyle={styles.ChipFocus} title={user.FavoritesSports} titleStyle={styles.ChipFocusTitle} type="outline" />
+                                    <Chip
+                                        buttonStyle={styles.ChipFocus}
+                                        title={user.FavoritesSports}
+                                        titleStyle={styles.ChipFocusTitle}
+                                        type="outline"
+                                    />
 
                                     <Text style={styles.description}>
-                                        <Icon
-                                            FontAwesome name='calendar'
-                                            size={24}
-                                            color='#838383'
-                                        />
+                                    <EvilIcons
+                                    name="calendar"
+                                    size={24}
+                                    color="#838383"
+                                    />
                                         {user.SportsHabits}
                                     </Text>
 
                                     <Text style={styles.description}>
-                                        <Icon
-                                            FontAwesome name='calendar'
-                                            size={24}
-                                            color='#838383'
-                                        />
+                                    <EvilIcons name="clock"
+                                    size={24}
+                                    color="#838383"
+                                    />
                                         {user.SportsHours}
                                     </Text>
 
@@ -205,11 +251,10 @@ function UsersScreen() {
                                     buttonStyle={styles.buttonFrisbee}
                                     titleStyle={styles.buttonTextStyleFrisbee}
                                     icon={
-                                        <Icon
-                                            FontAwesome name="user"
-                                            size={20}
-                                            color="#FFFFFF"
-                                        />
+                                <Feather name="disc"
+                                size={24}
+                                color="#ffffff"
+                                />
                                     }
                                     onPress={() => console.log('Appui sur FRISBEE')}
                                 />
@@ -220,21 +265,23 @@ function UsersScreen() {
                 ))
             }
 
-            <FAB
-                style={styles.fabFilters}
-                small
-                color='#FFFFFF80'
-                title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
-                icon={
-                    <Icon
-                        Ionicons name="filter-list"
-                        size={20}
-                        color="black"
-                    />
-                }
-                // onPress={() => { setVisibleFilterOverlay(true) }}
-                onPress={() => console.log('Appui sur filtrer')}
-            />
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <FAB
+                    style={styles.fabFilters}
+                    small
+                    color='#FFFFFF80'
+                    title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
+                    icon={
+                        <Icon
+                            Ionicons name="filter-list"
+                            size={20}
+                            color="black"
+                        />
+                    }
+                    onPress={() => { setVisibleFilterOverlay(true) }}
+                // onPress={() => console.log('Appui sur filtrer')}
+                />
+            </View>
 
         </ScrollView>
     )
@@ -297,7 +344,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         fontSize: 10,
         margin: 16,
-        right: 40,
+        // right: 100,
         bottom: 10,
         backgroundColor: '#FFFFFF80',
     },

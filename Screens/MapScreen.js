@@ -130,7 +130,7 @@ export default function MapScreen(props) {
         setvisibleFocusPinOverlay(true)
         setfocusInfo([...focusInfo, Pins])
     }
-    console.log(focusInfo)
+    console.log(focusInfo, "Log sur MapScreen focusinfo")
 
     /* Get user Location  */
 
@@ -151,6 +151,7 @@ export default function MapScreen(props) {
                 );
             };
             var request = await fetch(`http://192.168.1.67:3000/places`);
+            /* var request = await fetch(`http://172.16.190.5:3000/places`); */
             var response = await request.json();
             setListPoint(response.PinsData)
         };
