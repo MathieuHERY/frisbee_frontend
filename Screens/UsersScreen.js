@@ -133,17 +133,8 @@ function UsersScreen() {
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
 
-            if (usersResponse.usersData) {
-                let userToFind = usersResponse.usersData.find(user => user._id === idFromReduceur);
-                console.log(userToFind, 'user to find');
-            }
-
-            // for (let user of usersResponse.usersData){
-            //     if (user._id === idFromBack){
-            //         console.log(user);
-            //     }
-            // }
-
+            var user = await UserModel.findById(idFromReduceur);
+            console.log(user, 'log de user')
             // console.log(myUserId, "Mon ID stocké dans réduceur");
 
             // À DÉCOMMENTER QUAND JE POURRAIS RÉCUPÉRER MON ID DU RÉDUCEUR //
@@ -248,7 +239,7 @@ function UsersScreen() {
                                     titleStyle={styles.buttonTextStyleFrisbee}
                                     icon={
                                 <Feather name="disc"
-                                size={24}
+                                size={18}
                                 color="#ffffff"
                                 />
                                     }
@@ -261,7 +252,7 @@ function UsersScreen() {
                 ))
             }
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <FAB
                     style={styles.fabFilters}
                     small
@@ -277,7 +268,7 @@ function UsersScreen() {
                     onPress={() => { setVisibleFilterOverlay(true) }}
                 // onPress={() => console.log('Appui sur filtrer')}
                 />
-            </View>
+            </View> */}
 
         </ScrollView>
     )

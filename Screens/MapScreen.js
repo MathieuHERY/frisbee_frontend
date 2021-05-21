@@ -141,10 +141,24 @@ export default function MapScreen(props) {
             };
             var request = await fetch(`http://172.16.190.5:3000/places`);
             var response = await request.json();
+            console.log(response);
             setListPoint(response.PinsData)
         };
         askPermissions();
     }, []);
+
+    const list = listPoint.map((info, i) => {
+        return(
+            <Marker
+                    key={info._id}
+                    coordinate={{ latitude: info.latitude, longitude: info.longitude }}
+                    image={require('../assets/Markers/footballPin.png')}
+                    anchor={{ x: 0.5, y: 1 }}
+                    centerOffset={{ x: 0.5, y: 1 }}
+                    onPress={e => onPressMarker(e, info.id, { id: info._id, title: info.name, address: info.address, sport: info.sport, description: info.description, image: info.picture })}
+                />
+        )
+    })
 
     /* console.log(listPoint) */
 
@@ -508,6 +522,7 @@ export default function MapScreen(props) {
                     <Marker
                         coordinate={{ latitude: currentLatitude, longitude: currentLongitude }} image={require('../assets/Markers/userMarker.png')}
                     />
+                    {list}
                     {workoutFacilities}
                     {footballFacilities}
                     {basketballFacilities}
@@ -515,7 +530,6 @@ export default function MapScreen(props) {
                     {pingPongFacilities}
                     {YogaFacilities}
                     {runningFacilities}
-
                 </MapView>
 
 
