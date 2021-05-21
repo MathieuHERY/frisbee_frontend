@@ -63,7 +63,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        UserPicture: require('../assets/olivier.jpeg'),
+        /* UserPicture: require('../assets/olivier.jpeg'), */
         UserLatitude: 45.77585598433732, // Parc de la Tête d'Or, Lyon
         UserLongitude: 4.85408305845722,
     },
@@ -83,7 +83,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        UserPicture: require('../assets/cantin.jpeg'),
+        /* UserPicture: require('../assets/cantin.jpeg'), */
         UserLatitude: 48.85955520827693, // Tour Eiffel, Paris
         UserLongitude: 2.294136285652365,
     },
@@ -93,7 +93,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        UserPicture: require('../assets/hermann.jpeg'),
+        /* UserPicture: require('../assets/hermann.jpeg'), */
         UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
         UserLongitude: 2.337396640165934,
     },
@@ -129,11 +129,8 @@ function UsersScreen() {
 
         const usersAroundMe = async function () {
 
-<<<<<<< HEAD
             const usersRawResponse = await fetch('http://192.168.1.67:3000/users'); // Appel à la route
-=======
-            const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route
->>>>>>> 22ac25e5f8490ee69baafb9380a87604dfd44da7
+           /*  const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route */
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             console.log(usersResponse.usersData, 'Tous les users du Back'); // Je suis censée récupérer un tableau
 
