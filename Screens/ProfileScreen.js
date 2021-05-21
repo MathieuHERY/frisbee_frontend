@@ -13,7 +13,7 @@ import {
 
 
 
-function ProfileScreen() {
+function ProfileScreen(props) {
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -33,10 +33,7 @@ function ProfileScreen() {
                 <Avatar
                     rounded
                     size="xlarge"
-                    source={{
-                        uri:
-                            '../assets/marilene_circle.png',
-                    }}
+                    source={require('../assets/marilene_circle.png')}
                     onPress={() => console.log('Appui sur photo profil')}
                 />
 
@@ -99,7 +96,6 @@ function ProfileScreen() {
     }
 }
 
-export default ProfileScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -159,3 +155,5 @@ const styles = StyleSheet.create({
         /* marginBottom: 10, */
     },
 });
+
+export default ProfileScreen;
