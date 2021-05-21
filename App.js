@@ -15,6 +15,8 @@ import BottomBar from './Screens/BottomBar';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+import SendFrisbee from "./Screens/SendFrisbee"
+import UsersScreen from "./Screens/UsersScreen"
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import newUser from './reducers/newUser'
@@ -33,6 +35,8 @@ export default function App() {
         <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="BottomBar" component={BottomBar} />
+          <Stack.Screen name="SendFrisbee" component={SendFrisbee} />
+          <Stack.Screen name="UsersScreen" component={UsersScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>
