@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
 import { Button, Input, Avatar } from 'react-native-elements'
@@ -14,7 +14,9 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 
-export default function InscriptionScreen5(props) {
+function InscriptionScreen5(props) {
+
+  console.log(props.newUser)
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -22,30 +24,32 @@ export default function InscriptionScreen5(props) {
 });
 
   const [signUpUserPicture, setSignUpUserPicture] = useState('')
+  const [isLogin, setIsLogin] = useState(false)
+  const [errorSignUp, setErrorSignUp] = useState('')
+  const [userConnected, setUserConnected] = useState([])
+  const [userToken, setUserToken] = useState('')
 
+/*   Save user without picture */
 
-
-  var handleSubmitSignup = async () => {
-
-    var saveUser = async newUser => {
-      props.newUser(newUser)
-
-      const data = await fetch("http://172.16.190.5:3000/sign-up", {
-      /* const data = await fetch("http://172.16.190.5:3000/sign-up", { */
+   var saveUserWithoutPic = async function () {
+      var SignupWithoutPic = await fetch("http://172.16.188.145:3000/sign-up", {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `UserPicture=${newUser.setSignUpUserPicture}`
+        body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}`
       })
+      var response = await SignupWithoutPic.json()
+      if (response.result) {
+        setIsLogin(true)
+        setUserConnected(response.saveUser)
+        setUserToken(response.token)
+        props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
 
-      const body = await data.json()
-
-    }
-  }
-
-    /* 
-      var HandleClickchangeStep = () => {
-        props.HandleClickParentchangeStep()
-      } */
+      } else {
+        setIsLogin(false);
+        SetErrorSignUp(response.error)
+      }
+    } 
+  
       if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -73,7 +77,7 @@ export default function InscriptionScreen5(props) {
         <Button
           title="Finito"
           buttonStyle={{ marginBottom: 25, backgroundColor: "#00CEC9", borderRadius: 17, }}
-          onPress={() => { handleSubmitSignup(); props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }); }}
+          onPress={() => { /* handleSubmitSignup();  */props.navigation.navigate('BottomBar', { screen: "ACCUEIL" }); }}
           titleStyle={{
             fontFamily: 'Nunito_400Regular',
             marginLeft: 15,
@@ -89,7 +93,7 @@ export default function InscriptionScreen5(props) {
 <Button
           title="Non ça ira, pas de photo"
           buttonStyle={{ marginBottom: 25, backgroundColor: "#00CEC9", borderRadius: 17, }}
-          onPress={() => {props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })}}
+          onPress={() => saveUserWithoutPic()}
           titleStyle={{
             fontFamily: 'Nunito_400Regular',
             marginLeft: 15,
@@ -104,6 +108,15 @@ export default function InscriptionScreen5(props) {
   }
 }
 
+function mapStateToProps(state) {
+  return { newUser : state.newUser}
+ }
+
+export default connect(
+  mapStateToProps,
+  null
+)(InscriptionScreen5);
+
 
 // css 
 const styles = StyleSheet.create({
@@ -117,28 +130,3 @@ const styles = StyleSheet.create({
     marginRight: 300,
   },
 });
-
-/* //dispatch
-function mapDispatchToProps(dispatch) {
-  return {
-    newUser: function (newUser) {
-      dispatch({
-        type: 'newUser',
-        newUser: newUser
-      })
-    }
-  }
-}
-
-//state
-function mapStateToProps(state) {
-  return { Email: state.signUpEmail, Password: state.signUpPassword, Firstname: state.signUpFirstname, Age: state.signUpAge, Description: state.signUpDescription, token: state.token, 
-    FavoritesSports: state.FavoritesSports, SportsHabits: state.SportsHabits, SportsHours: state.SportsHours }
-}
-
-
-//exportation
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ScreenInscription4) */
