@@ -13,12 +13,22 @@ import BottomBar from './BottomBar';
 
 export default function HomeScreen(props) {
 
-const [signupStep, setSignupStep] = useState(1)
+const [signupStep, setSignupStep] = useState(1);
+const [isLogin, setIsLogin] = useState(false);
 
  var HandleClickchangeStep = () => {
       setSignupStep(signupStep+1)
-
  }
+ 
+ var HandleClickGoToMapScreen = () => {
+    setIsLogin(true)
+}
+
+    if (isLogin) {
+        return (
+        <SignInUpScreen HandleClickParentGoToMapScreen = {HandleClickGoToMapScreen} navigation={props.navigation}/>
+        )
+    }
 
     if (signupStep===1) {
         return (

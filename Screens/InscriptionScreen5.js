@@ -17,7 +17,6 @@ import * as ImagePicker from 'expo-image-picker';
 
 function InscriptionScreen5(props) {
 
-  console.log(props.newUser)
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -35,7 +34,7 @@ function InscriptionScreen5(props) {
 
   /*   Save user without picture */
   var saveUserWithoutPic = async function () {
-    var SignupWithoutPic = await fetch("http://192.168.1.63:3000/sign-up", {
+    var SignupWithoutPic = await fetch("http://172.16.188.133:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=null&UserLatitude=0&UserLongitude=0`
@@ -44,7 +43,9 @@ function InscriptionScreen5(props) {
     if (response.result) {
       setIsLogin(true)
       setUserConnected(response.saveUser)
-      setUserToken(response.token)
+      setUserToken(response.saveUser.token)
+      let user = {token : response.saveUser.token}
+      props.UserInfo(user)
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
 
     } else {
@@ -87,7 +88,7 @@ function InscriptionScreen5(props) {
       name: 'user_photo.jpeg',
     });
 
-    var request = await fetch("http://192.168.1.63:3000/upload-user-picture", {
+    var request = await fetch("http://192.16.188.133:3000/upload-user-picture", {
       method: 'post',
       body: data
     });
@@ -96,7 +97,7 @@ function InscriptionScreen5(props) {
 
     if (response.imageSaved) {
 
-      var SignupWithPic = await fetch("http://192.168.1.63:3000/sign-up", {
+      var SignupWithPic = await fetch("http://192.16.188.133:3000/sign-up", {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=${response.url}&UserLatitude=0&UserLongitude=0`
@@ -104,9 +105,12 @@ function InscriptionScreen5(props) {
 
       var responseSignUp = await SignupWithPic.json()
       if (responseSignUp.result) {
+        console.log(responseSignUp.result)
         setIsLogin(true)
         setUserConnected(responseSignUp.saveUser)
-        setUserToken(responseSignUp.token)
+        setUserToken(responseSignUp.saveUser.token)
+        let user = {token : responseSignUp.saveUser.token}
+        props.UserInfo(user)
         props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
         
 
@@ -115,7 +119,7 @@ function InscriptionScreen5(props) {
         SetErrorSignUp(responseSignUp.error)
       }
     }
-    console.log(responseSignUp)
+  
 
   }
 
@@ -182,13 +186,22 @@ function InscriptionScreen5(props) {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    UserInfo: function (user) {
+      console.log(user);
+      dispatch({ type: 'GetUserInfoConnected', newUser : user })
+    }
+  }
+};
+
 function mapStateToProps(state) {
   return { newUser: state.newUser }
 }
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(InscriptionScreen5);
 
 

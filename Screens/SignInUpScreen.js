@@ -30,17 +30,20 @@ export default function SignInUpScreen(props) {
 
   var handleSubmitSignin = async () => {
 
-    const data = await fetch("http://192.168.1.67:3000/sign-up", {
+    const data = await fetch("http://192.16.188.133:3000/sign-in", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${signUpEmail}&Password=${signUpPassword}`
     })
 
     const body = await data.json()
+    console.log(body.result)
 
     if (body.result == true) {
       setUserExists(true)
       props.addToken(body.token)
+      props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
+      
     } else {
       setErrorsSignup(body.error)
     }
@@ -48,6 +51,14 @@ export default function SignInUpScreen(props) {
 
   var HandleClickchangeStep = () => {
     props.HandleClickParentchangeStep()
+  }
+  
+  var HandleClickGoToMapScreen = () => {
+    props.HandleClickParentGoToMapScreen()
+  }
+
+  if (userExists) {
+    HandleClickGoToMapScreen()
   }
   
 
