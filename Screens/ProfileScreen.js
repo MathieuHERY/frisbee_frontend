@@ -13,7 +13,7 @@ import {
 
 
 
-function ProfileScreen() {
+function ProfileScreen(props) {
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -96,7 +96,6 @@ function ProfileScreen() {
     }
 }
 
-export default ProfileScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -156,3 +155,5 @@ const styles = StyleSheet.create({
         /* marginBottom: 10, */
     },
 });
+
+export default ProfileScreen;

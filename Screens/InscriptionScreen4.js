@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet ,View, Text, KeyboardAvoidingView} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { Button, Input } from 'react-native-elements'
 import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
 import { Icon } from 'react-native-elements'
@@ -12,7 +13,6 @@ import {
 import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
-
 
 
 function InscriptionScreen4(props) {
@@ -28,6 +28,7 @@ const [signUpSportsHabits, setSignUpSportsHabits] = useState("")
 const [signUpSportsHoursStart, setSignUpSportsHoursStart] = useState("")
 const [signUpSportsHoursEnd, setSignUpSportsHoursEnd] = useState("")
 const [listErrorsSignup, setErrorsSignup] = useState([])
+const [image, setImage] = useState(null);
 
   var HandleClickchangeStep = () => {
     props.HandleClickParentchangeStep()
@@ -93,7 +94,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
           borderRadius:1,
         }}>
           
-          <RNPickerSelect style={{pickerStyleDate}}
+          <RNPickerSelect style={DatePicker}
           placeholder={{ label: "Heure", value: null }}
             onValueChange={(value) => setSignUpSportsHoursStart(value)}
             items={[
@@ -132,7 +133,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
           borderRadius:1,
         }}>
 
-<RNPickerSelect style={{pickerStyleDate}}
+<RNPickerSelect style={DatePicker}
 placeholder={{ label: "Heure", value: null }}
             onValueChange={(value) => setSignUpSportsHoursEnd(value)}
             items={[
@@ -188,11 +189,11 @@ function mapDispatchToProps(dispatch) {
       dispatch({ type: 'addInfoFourStep', newUser : user })
     }
   }
-}
+};
 
 function mapStateToProps(state) {
   return { newUser : state.newUser}
- }
+ };
 
 export default connect(
   mapStateToProps,
@@ -228,6 +229,7 @@ const pickerStyle = {
   },
   placeholder: {
       color: '#7C4DFF',
+      fontSize:15,
     },
   inputAndroid: {
     fontSize:15,
@@ -238,7 +240,7 @@ const pickerStyle = {
   },
 };
 
-const pickerStyleDate = {
+const DatePicker = {
   inputIOS: {
     fontSize:17,
       color: '#7C4DFF',

@@ -63,7 +63,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        /* UserPicture: require('../assets/olivier.jpeg'), */
+        UserPicture: require('../assets/olivier.jpeg'),
         UserLatitude: 45.77585598433732, // Parc de la Tête d'Or, Lyon
         UserLongitude: 4.85408305845722,
     },
@@ -83,7 +83,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        /* UserPicture: require('../assets/cantin.jpeg'), */
+        UserPicture: require('../assets/cantin.jpeg'),
         UserLatitude: 48.85955520827693, // Tour Eiffel, Paris
         UserLongitude: 2.294136285652365,
     },
@@ -93,7 +93,7 @@ const users = [
         FavoritesSports: 'Basketball',
         SportsHabits: 'Tous les jours',
         SportsHours: '9h à 20h',
-        /* UserPicture: require('../assets/hermann.jpeg'), */
+        UserPicture: require('../assets/hermann.jpeg'),
         UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
         UserLongitude: 2.337396640165934,
     },
@@ -107,7 +107,7 @@ const myLongitude = 4.855718686456417;
 const idFromReduceur = '60a77616e8f40f1e2389f682';
 
 
-function UsersScreen() {
+function UsersScreen(props) {
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -343,7 +343,7 @@ function UsersScreen() {
                                             color="#ffffff"
                                         />
                                     }
-                                    onPress={() => console.log('Appui sur FRISBEE')}
+                                    onPress={() => props.navigation.navigate('SendFrisbee')}
                                 />
 
                             </View>
