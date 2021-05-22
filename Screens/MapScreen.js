@@ -22,7 +22,7 @@ import {
 //local storage
 /* import AsyncStorage from '@react-native-async-storage/async-storage'; */
 
-export default function MapScreen(props) {
+function MapScreen(props) {
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -71,7 +71,7 @@ export default function MapScreen(props) {
         { label: 'Workout', value: 'Workout' },
     ]);
 
-
+console.log(props.userToken, 'token dans MapScreen')
 
     var selectPOI = (e) => {
         if (addPOI) {
@@ -141,9 +141,9 @@ console.log(props.mapPoint)
                     }
                 );
             };
-            var request = await fetch(`http://192.168.1.63:3000/places`);
+            var request = await fetch(`http://172.16.190.2:3000/places`);
                 var response = await request.json();
-                console.log(response)
+                // console.log(response)
                 setListPoint(response.PinsData)
  
         };
@@ -566,14 +566,15 @@ if (footballFilter) {
     console.log(filtersSelected)
 }
 
-/* function mapStateToProps(state) {
-    return { mapPoint : state.mapPoint}
-   }
+function mapStateToProps(state) {
+    return { userToken : state.userToken}
+}  
   
   export default connect(
     mapStateToProps,
     null
-  )(MapScreen); */
+  )(MapScreen); 
+
 
 const styles = StyleSheet.create({
     containerAddPOI: {

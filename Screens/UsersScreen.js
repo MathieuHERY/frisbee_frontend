@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
-// import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
@@ -123,15 +123,7 @@ function UsersScreen(props) {
         setFocusUser([...focusUser])
     }
     console.log(focusUser, "Log sur MapScreen focusUser")
-    
-
-    // OVERLAY
-    // const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
-    // const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
-
-    // var clickOnFilterSport = () => {
-    //     setVisibleFilterOverlay(true)
-    // }
+    console.log(props.userToken, 'token sur UserScreen')
 
 
     // USERS FILTERED 
@@ -139,43 +131,12 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.190.5.:3000/users'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.2:3000/users'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
-            // console.log(usersResponse, 'log usersResponse');
-            console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau
+            // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             setUsersList(usersResponse.usersData);
-
-            // var user = await UserModel.findById(idFromReduceur);
-            // console.log(user, 'log de user')
-
-            // console.log(myUserId, "Mon ID stocké dans réduceur");
-
-            // À DÉCOMMENTER QUAND JE POURRAIS RÉCUPÉRER MON ID DU RÉDUCEUR //
-            // ------------------------------------------------ //
-            // Je récupère l'ID de l'utilisateur stocké dans le réduceur
-            // Et je compare ma latitude + la longitude avec celle des users
-            // Je mappe le tableau de tous les users
-            // ------------------------------------------------ //
-            // const myIdFromBack = usersResponse.map(function (id, i) {
-            //     if (myUserId == usersResponse.id) {
-            //         console.log(usersResponse.latitude, 'ma latitude');
-            //         console.log(usersReponse.longitude, 'ma longitude');
-            //         return (usersResponse.latitude, usersReponse.longitude)
-            //     }
-            // })
-            // ------------------------------------------------ /
-            // const myIdFromBack = usersResponse.map(function (id, i) {
-            //     if (idFromBack == id._id) {
-            //         console.log(id.email, 'ma latitude');
-            //         console.log(id.FirstName, 'ma longitude');
-            //         return (id.email, id.FirstName)
-            //     }
-            // })
-
         };
         usersAroundMe()
-
-
 
     }, []);
 
@@ -199,11 +160,9 @@ function UsersScreen(props) {
                                 <Avatar
                                     rounded
                                     size="xlarge"
-                                    source={users[i].UserPicture}
+                                    source={{ uri: user.UserPicture }}
                                     // onPress={() => console.log('Appui sur photo profil')}
-                                    // onPress={() => { setVisibleOverlay(true) }}
-                                    onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours })}
-
+                                    onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours, picture: user.UserPicture })}
                                 />
                             </View>
 
@@ -212,85 +171,86 @@ function UsersScreen(props) {
                             <Overlay
                                 isVisible={visibleOverlay}
                                 fullScreen={true}
-                                onBackdropPress={() => { setVisibleOverlay(false) }}
+                                onBackdropPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
                             >
-
-                                <View>
-
-                                    <Icon
-                                        iconStyle={styles.iconCloseOverlay}
-                                        name='close'
-                                        size={30}
-                                        type='Ionicons'
-                                        color='#FF4757'
-                                        onPress={() => { setVisibleOverlay(false) }}
-                                    />
-
+                                <ScrollView>
                                     <View>
-                                        <Avatar
-                                            rounded
-                                            size="xlarge"
-                                            source={users[i].UserPicture}
+                                        <Icon
+                                            iconStyle={styles.iconCloseOverlay}
+                                            name='close'
+                                            size={30}
+                                            type='Ionicons'
+                                            color='#FF4757'
+                                            onPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
                                         />
-
-                                        <Text h1 style={styles.h1StyleOverlay}>
-                                            {user.Firstname}
-                                        </Text>
-
-                                        <Text style={styles.ageDescriptionOverlay}>
-                                            {user.Age}
-                                        </Text>
-
-                                        <Chip
-                                            buttonStyle={styles.ChipFocus}
-                                            title={user.FavoritesSports}
-                                            titleStyle={styles.ChipFocusTitle}
-                                            type="outline"
-                                        />
-
-                                        <Text style={styles.description}>
-                                            {user.Description}
-                                        </Text>
-
-                                        <View>
-                                            <Text style={styles.description}>
-                                                {user.Firstname} est disponible :
-                                            </Text>
-
-                                            <Text style={styles.description}>
-                                                <EvilIcons
-                                                    name="calendar"
-                                                    size={24}
-                                                    color="#838383"
-                                                />
-                                                {user.SportsHabits}
-                                            </Text>
-
-                                            <Text style={styles.description}>
-                                                <EvilIcons name="clock"
-                                                    size={24}
-                                                    color="#838383"
-                                                />
-                                                {user.SportsHours}
-                                            </Text>
-
-                                            <Button
-                                                title='Lance un FRISBEE'
-                                                buttonStyle={styles.buttonFrisbeeOverlay}
-                                                titleStyle={styles.buttonTextStyleFrisbee}
-                                                icon={
-                                                    <Feather name="disc"
-                                                        size={18}
-                                                        color="#ffffff"
-                                                    />
-                                                }
-                                                onPress={() => console.log('Appui sur FRISBEE')}
-                                            />
-                                        </View>
-
                                     </View>
-                                </View>
 
+                                        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center'}}>
+                                            <Avatar
+                                                rounded
+                                                size="xlarge"
+                                                source={{ uri: user.UserPicture }}
+                                            />
+
+                                            <Text h1 style={styles.h1StyleOverlay}>
+                                                {user.Firstname}
+                                            </Text>
+
+                                            <Text style={styles.ageDescriptionOverlay}>
+                                                {user.Age}
+                                            </Text>
+
+                                            <Chip
+                                                buttonStyle={styles.ChipFocus}
+                                                title={user.FavoritesSports}
+                                                titleStyle={styles.ChipFocusTitle}
+                                                type="outline"
+                                            />
+
+                                            <Text style={styles.description}>
+                                                {user.Description}
+                                            </Text>
+
+                                            <View>
+                                                <Text style={styles.description}>
+                                                    {user.Firstname} est disponible :
+                                            </Text>
+
+                                                <Text style={styles.description}>
+                                                    <EvilIcons
+                                                        name="calendar"
+                                                        size={24}
+                                                        color="#838383"
+                                                    />
+                                                    {user.SportsHabits}
+                                                </Text>
+
+                                                <Text style={styles.description}>
+                                                    <EvilIcons name="clock"
+                                                        size={24}
+                                                        color="#838383"
+                                                    />
+                                                    {user.SportsHours}
+                                                </Text>
+
+                                                <Button
+                                                    title='Lance un FRISBEE'
+                                                    buttonStyle={styles.buttonFrisbeeOverlay}
+                                                    titleStyle={styles.buttonTextStyleFrisbee}
+                                                    icon={
+                                                        <Feather name="disc"
+                                                            size={18}
+                                                            color="#ffffff"
+                                                        />
+                                                    }
+                                                    // onPress={() => console.log('Appui sur FRISBEE')}
+                                                    onPress={() => props.navigation.navigate('SendFrisbee')}
+                                                />
+                                            
+
+                                        </View>
+                                    </View>
+                                </ScrollView>
                             </Overlay>
 
 
@@ -459,14 +419,11 @@ const styles = StyleSheet.create({
     },
 });
 
-// REDUX À METTRE EN PLACE
-// function mapStateToProps(state) {
-//     return { myUserId: state.userId }
-//    }
+function mapStateToProps(state) {
+    return { userToken: state.userToken }
+}
 
-// export default connect(
-// mapStateToProps,
-// null
-// )(UsersScreen);
-
-export default UsersScreen;
+export default connect(
+    mapStateToProps,
+    null
+)(UsersScreen);
