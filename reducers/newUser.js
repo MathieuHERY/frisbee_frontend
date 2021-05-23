@@ -28,6 +28,13 @@ export default function(newUser = {}, action) {
             sport:action.newUser.sport
         }
     
+    } if(action.type === "GetUserInfoConnected") {
+        console.log(action.newUser)
+        return {
+            ...newUser,
+            token:action.newUser.token
+        }
+    
     } else {
         return newUser;
     }

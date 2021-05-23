@@ -14,12 +14,21 @@ import { connect } from 'react-redux';
 
 function HomeScreen(props) {
 
-    console.log(props.userToken, 'token dans HomeScreen')
-    const [signupStep, setSignupStep] = useState(1)
+const [signupStep, setSignupStep] = useState(1);
+const [isLogin, setIsLogin] = useState(false);
 
-    var HandleClickchangeStep = () => {
-        setSignupStep(signupStep + 1)
+ var HandleClickchangeStep = () => {
+      setSignupStep(signupStep+1)
+ }
+ 
+ var HandleClickGoToMapScreen = () => {
+    setIsLogin(true)
+}
 
+    if (isLogin) {
+        return (
+        <SignInUpScreen HandleClickParentGoToMapScreen = {HandleClickGoToMapScreen} navigation={props.navigation}/>
+        )
     }
 
     if (signupStep === 1) {

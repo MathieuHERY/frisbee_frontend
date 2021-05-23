@@ -17,7 +17,6 @@ import * as ImagePicker from 'expo-image-picker';
 
 function InscriptionScreen5(props) {
 
-  console.log(props.newUser)
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -45,7 +44,9 @@ function InscriptionScreen5(props) {
     if (response.result) {
       setIsLogin(true)
       setUserConnected(response.saveUser)
-      setUserToken(response.token)
+      setUserToken(response.saveUser.token)
+      let user = {token : response.saveUser.token}
+      props.UserInfo(user)
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
       console.log('token utilisateur sans photo', response.token)
       props.getTokenFromUser(userToken) // Dispatch the token into the reducer
@@ -106,9 +107,12 @@ function InscriptionScreen5(props) {
 
       var responseSignUp = await SignupWithPic.json()
       if (responseSignUp.result) {
+        console.log(responseSignUp.result)
         setIsLogin(true)
         setUserConnected(responseSignUp.saveUser)
-        setUserToken(responseSignUp.token)
+        setUserToken(responseSignUp.saveUser.token)
+        let user = {token : responseSignUp.saveUser.token}
+        props.UserInfo(user)
         props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
         props.getTokenFromUser(userToken) // Dispatch the token into the reducer
         // console.log('log user token', response.token)
@@ -118,7 +122,7 @@ function InscriptionScreen5(props) {
         SetErrorSignUp(responseSignUp.error)
       }
     }
-    console.log(responseSignUp)
+  
 
   }
 
@@ -185,15 +189,14 @@ function InscriptionScreen5(props) {
   }
 }
 
-// GET TOKEN FROM USER CONNECTED //
 function mapDispatchToProps(dispatch) {
   return {
-    getTokenFromUser: function(saveToken) {
-      console.log(saveToken, 'token récupéré');
-      dispatch({type: 'getUserToken', userToken: saveToken })
+    UserInfo: function (user) {
+      console.log(user);
+      dispatch({ type: 'GetUserInfoConnected', newUser : user })
     }
   }
-}
+};
 
 function mapStateToProps(state) {
   return { newUser: state.newUser }

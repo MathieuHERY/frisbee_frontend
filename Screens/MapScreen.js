@@ -9,8 +9,9 @@ import { FAB, Icon, Overlay, CheckBox, Text, Button, Image, Card, Chip, Input } 
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import DropDownPicker from 'react-native-dropdown-picker';
+import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
 import AppLoading from 'expo-app-loading';
+import * as ImagePicker from 'expo-image-picker';
 import {
     useFonts,
     Nunito_400Regular,
@@ -24,13 +25,12 @@ import {
 
 function MapScreen(props) {
 
+    console.log('info user from reducer', props.newUser)
+
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
     });
-
-    const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
-    const [visibleFocusPinOverlay, setvisibleFocusPinOverlay] = useState(false);
 
     /* Filter checkbox sports overlay  */
 
@@ -44,34 +44,35 @@ function MapScreen(props) {
     const [workoutFilter, setWorkoutFilter] = useState(true);
     const [sportItemPOI, setSportItemPOI] = useState("");
 
+    /* MapScreen Initial State  */
+
     const [userPosition, setUserPosition] = useState([])
-    const [focusInfo, setfocusInfo] = useState([])
     const [listPoint, setListPoint] = useState([])
+
+    /* Focus Overlay State  */
+
+    const [visibleFocusPinOverlay, setvisibleFocusPinOverlay] = useState(false);
+    const [focusInfo, setfocusInfo] = useState([])
+
 
     //--------------------------------------------------------------------------------------------------
 
+    const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
     const [addPOI, setAddPOI] = useState(false); //ajouter un lieu sur la map 
     const [listPOI, setListPOI] = useState([]); //sauvegarder les coordonnées des nouveaux POI
     const [titrePOI, setTitrePOI] = useState(""); //overlay
     const [adressPOI, setAdressPOI] = useState(""); //overlay
     const [descPOI, setDescPOI] = useState(""); //overlay
+    const [imagePOI, setImagePOI] = useState(null);
     const [isVisibleAddPOI, setIsVisibleAddPOI] = useState(false); //overlay
     const [tempPOI, setTempPOI] = useState([]);
+    const [newPinAdded, setnewPinAdded] = useState(false)
+    
+    const [StatusGranted, setStatusGranted] = useState(false);
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
 
-    const [items, setItems] = useState([
-        { label: 'FootBall', value: 'FootBall' },
-        { label: 'BasketBall', value: 'BasketBall' },
-        { label: 'VolleyBall', value: 'VolleyBall' },
-        { label: 'PingPong', value: 'PingPong' },
-        { label: 'Course', value: 'Course' },
-        { label: 'Yoga', value: 'Yoga' },
-        { label: 'Workout', value: 'Workout' },
-    ]);
-
-console.log(props.userToken, 'token dans MapScreen')
 
     var selectPOI = (e) => {
         if (addPOI) {
@@ -81,35 +82,96 @@ console.log(props.userToken, 'token dans MapScreen')
         }
     }
 
-    //Mettez en place une mécanique permettant de récupérer les coordonnées du clic sur la map afin de sauvegarder les coordonnés dans un nouvel état nommé listPOI. 
-    var handleSubmit = () => {
-        var copyListPOI = [...listPOI, { longitude: tempPOI.longitude, latitude: tempPOI.latitude, titre: titrePOI, adresse: adressPOI, description: descPOI, sportItem: sportItemPOI }];
 
-        /* AsyncStorage.setItem("POI", JSON.stringify(copyListPOI));
-        setListPOI(copyListPOI) */
+
+    //Save New Point In To DB
+
+    var handleSubmit = async () => {
+
+        console.log(adressPOI)
+
+        if (tempPOI.longitude && tempPOI.latitude &&  titrePOI && adressPOI && descPOI && sportItemPOI && imagePOI) {
+        
+            var copyListPOI = [...listPOI, { longitude: tempPOI.longitude, latitude: tempPOI.latitude, titre: titrePOI, adresse: adressPOI, description: descPOI, sportItem: sportItemPOI, image: imagePOI}];
+
+    /* Send Picture to back-end to upload to Cloudinary */
+
+    var data = new FormData();
+    data.append('picture', {
+      uri: imagePOI,
+      type: 'image/jpeg',
+      name: 'place_photo.jpeg',
+    });
+
+    var UploadPlaceImageToCloudinary = await fetch("http://172.16.190.2:3000/upload-user-picture", {
+      method: 'post',
+      body: data
+    });
+
+    var responseFromCloudinary = await UploadPlaceImageToCloudinary.json()
+
+    if (responseFromCloudinary.imageSaved) {
+
+        var addPinToDB = await fetch ('http://172.16.190.2:3000/newplace', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `name=${titrePOI}&address=${adressPOI}&description=${descPOI}&sport=${sportItemPOI}&latitude=${tempPOI.latitude}&longitude=${tempPOI.longitude}&picture=${responseFromCloudinary.url}`
+          })
+          
+        var responseFromDB = await addPinToDB.json();
+        console.log(responseFromDB)
+        
+        if (responseFromDB.result) {
 
         setIsVisibleAddPOI(false);
         setTempPOI();
         setDescPOI();
         setTitrePOI();
+        setAdressPOI()
+        setSportItemPOI();
+        setImagePOI('');
+        setAddPOI();
+        setnewPinAdded(true)
+        
     }
 
-    //Exploitez les valeurs contenues dans l’état listPOI pour générer des marqueurs de couleur bleu sur la map.
-    var markerPOI = listPOI.map((POI, i) => {
-        //showsUserLocation(true);
-        return <Marker key={i} pinColor="blue" coordinate={{ latitude: POI.latitude, longitude: POI.longitude }}
-            title={POI.titre}
-            adressPOI={POI.address}
-            description={POI.description}
-            sportItem={POI.sportItem}
-        />
-    });
+    }
+
+    }
+}
+
+
 
     //Exploitez l’état addPOI pour ajouter le marqueur uniquement si l’utilisateur a cliqué sur le bouton “Add POI”.
     var isDisabled = false;
     if (addPOI) {
         isDisabled = true;
     }
+
+
+    /* SelectPicture AddPOI */
+
+    let openImagePickerAsync = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("Désolé, nous devons avoir accès à tes photos si tu souhaites ajouter une photo du lieu");
+            return;
+        }
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.5,
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+            setImagePOI(result.uri);
+        }
+    }
+
 
     //-----------------------------------------------------------------------------
 
@@ -126,11 +188,11 @@ console.log(props.userToken, 'token dans MapScreen')
 
     const [currentLatitude, setCurrentLatitude] = useState();
     const [currentLongitude, setCurrentLongitude] = useState();
-    
-console.log(props.mapPoint)
+
+    console.log(props.mapPoint)
 
     useEffect(() => {
-       async function askPermissions() {
+        async function askPermissions() {
             let { status } = await Permissions.askAsync(Permissions.LOCATION);
             if (status === 'granted') {
                 Location.watchPositionAsync({ distanceInterval: 10 },
@@ -140,6 +202,7 @@ console.log(props.mapPoint)
                         setUserPosition([...userPosition, { lat: location.coords.latitude, lon: location.coords.longitude }])
                     }
                 );
+                console.log(userPosition)
             };
             var request = await fetch(`http://172.16.190.2:3000/places`);
                 var response = await request.json();
@@ -147,11 +210,12 @@ console.log(props.mapPoint)
                 setListPoint(response.PinsData)
  
         };
-      askPermissions();
+        askPermissions();
     }, []);
 
+    /*   Filter pin on map */
 
-if (footballFilter) {
+    if (footballFilter) {
         var filterResultFootball = listPoint.filter(item => item.sport === 'Football')
         var footballFacilities = filterResultFootball.map(function (info, i) {
             return (
@@ -258,6 +322,8 @@ if (footballFilter) {
         )
     }
 
+    /*   Render Focus Overlay */
+
     var overlayFocus = focusInfo.map(function (item, i) {
         return (
             <Card containerStyle={styles.focusPin}>
@@ -279,7 +345,7 @@ if (footballFilter) {
                     {item.description}</Text>
             </Card>
         )
-    } 
+    }
     )
 
     /* Render Front-end  */
@@ -308,7 +374,7 @@ if (footballFilter) {
                                 onPress={() => { setvisibleFocusPinOverlay(false), setfocusInfo([]) }} />
                         </View>
                         <View style={styles.overlay}>
-                           {overlayFocus}
+                            {overlayFocus}
                             <View style={styles.button}>
                                 <Button
                                     title="Fermer"
@@ -413,7 +479,7 @@ if (footballFilter) {
                 </Overlay>
 
 
-           {/*      {/* overlay new POI  */}
+                {/*      {/* overlay new POI  */}
 
                 <Overlay
                     isVisible={isVisibleAddPOI}
@@ -422,77 +488,85 @@ if (footballFilter) {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <View style={styles.containerAddPOI}>
-                        <Icon
-                            iconStyle={styles.iconCloseOverlay}
-                            name='close'
-                            size={30}
-                            type='Ionicons'
-                            color='#FF4757'
-                            onPress={() => { setIsVisibleAddPOI(false) }}
-                        />
+                    <ScrollView>
+                        <View style={styles.containerAddPOI}>
+                            <Icon
+                                iconStyle={styles.iconCloseOverlay}
+                                name='close'
+                                size={30}
+                                type='Ionicons'
+                                color='#FF4757'
+                                onPress={() => { setIsVisibleAddPOI(false) }}
+                            />
 
-                        <Image
-                            //  source={{ uri: image }}
-                            style={{ width: 250, height: 150, marginTop: 20 }}
-                        />
-                        <Text style={{ fontFamily: 'Nunito_400Regular', color: "#7C4DFF", textDecorationLine: 'underline', marginTop: 10 }}>Importez une photo</Text>
+                            {imagePOI ? (<Image source={{ uri: imagePOI }}
+                                style={{ width: 250, height: 150, marginTop: 20 }}
+                            />) : (<Image style={{ width: 250, height: 150, marginTop: 20 }}
+                            />)}
 
-                        <Input
-                            containerStyle={{ marginBottom: 15, marginTop: 25, width: '90%' }}
-                            placeholder='Nom du lieu'
-                            onChangeText={(val) => setTitrePOI(val)}
-                            textInput={{ color: "#eb4d4b" }}
-                            style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
+                            {imagePOI ? (<Text style={{ fontFamily: 'Nunito_400Regular', color: "#7C4DFF", textDecorationLine: 'underline', marginTop: 10 }} onPress={() => openImagePickerAsync()}>Pas satisfait ? Changes donc de photo !</Text>) : (<Text style={{ fontFamily: 'Nunito_400Regular', color: "#7C4DFF", textDecorationLine: 'underline', marginTop: 10 }} onPress={() => openImagePickerAsync()}>Importez une photo</Text>)}
 
-                        />
+                            <Input
+                                containerStyle={{ marginBottom: 15, marginTop: 25, width: '90%' }}
+                                placeholder='Nom du lieu'
+                                onChangeText={(val) => setTitrePOI(val)}
+                                textInput={{ color: "#eb4d4b" }}
+                                style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
 
-                        <DropDownPicker
-                            style={{ margin: 50, marginTop: 20, width: '70%' }}
-                            textStyle={{ fontFamily: 'Nunito_400Regular', fontSize: 15, }}
+                            />
 
-                            open={open}
-                            value={value}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setValue}
-                            setItems={setItems}
-                            placeholder="Sport"
-                            onChangeText={(e) => setSportItemPOI(e)}
+                            <View style={{
+                                borderColor: '#7C4DFF',
+                                borderWidth: 2,
+                                borderRadius: 17,
+                            }}>
+                                <RNPickerSelect style={pickerStyle}
+                                    placeholder={{ label: "Type d'activité", value: null }}
+                                    onValueChange={(value) => setSportItemPOI(value)}
+                                    items={[
+                                        { label: 'Football', value: 'Football' },
+                                        { label: 'Basket-Ball', value: 'Basket-Ball' },
+                                        { label: 'Volley-Ball', value: 'Volley-Ball' },
+                                        { label: 'Ping-Pong', value: 'Ping-Pong' },
+                                        { label: 'Running', value: 'Running' },
+                                        { label: 'Yoga', value: 'Yoga' },
+                                        { label: 'Work-out', value: 'Work-out' },
+                                    ]}
+                                />
+                            </View>
 
-                        />
+                            <Input
+                                containerStyle={{ marginBottom: 25, marginTop:25, width: '90%' }}
+                                placeholder='Adresse complète du lieu'
+                                onChangeText={(val) => setAdressPOI(val)}
+                                textInput={{ color: "#eb4d4b" }}
+                                style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
 
-                        <Input
-                            containerStyle={{ marginBottom: 25, width: '90%' }}
-                            placeholder='Adresse complète du lieu'
-                            onChangeText={(val) => setAdressPOI(val)}
-                            textInput={{ color: "#eb4d4b" }}
-                            style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
+                            />
 
-                        />
+                            <Input
+                                containerStyle={{ marginBottom: 25, width: '90%' }}
+                                placeholder='Décris-nous ce lieu'
+                                onChangeText={(val) => setDescPOI(val)}
+                                textInput={{ color: "#eb4d4b" }}
+                                style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
 
-                        <Input
-                            containerStyle={{ marginBottom: 25, width: '90%' }}
-                            placeholder='Décrivez nous ce lieu'
-                            onChangeText={(val) => setDescPOI(val)}
-                            textInput={{ color: "#eb4d4b" }}
-                            style={{ fontFamily: 'Nunito_400Regular', fontSize: 17 }}
+                            />
 
-                        />
-
-                        <Button
-                            title="Ajouter ce lieu sur la carte"
-                            buttonStyle={{ backgroundColor: "#7C4DFF", titleStyle: 'Nunito_400Regular', borderRadius: 5 }}
-                            onPress={() => handleSubmit()}
-                            type="solid"
-                            titleStyle={{
-                                fontFamily: 'Nunito_400Regular',
-                                marginLeft: 15,
-                                marginRight: 15
-                            }}
-                        />
-                    </View>
-                </Overlay> 
+                            <Button
+                                title="Ajouter ce lieu sur la carte"
+                                buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Nunito_400Regular', borderRadius: 5 }}
+                                onPress={() => handleSubmit()}
+                                type="solid"
+                                titleStyle={{
+                                    fontFamily: 'Nunito_400Regular',
+                                    marginLeft: 15,
+                                    marginRight: 15
+                                }}
+                            />
+                        </View>
+                    </ScrollView>
+                </Overlay>
 
                 {/*         Render Map View with Markers */}
 
@@ -519,7 +593,6 @@ if (footballFilter) {
                     {pingPongFacilities}
                     {YogaFacilities}
                     {runningFacilities}
-                {/*     {point} */}
 
                 </MapView>
 
@@ -567,14 +640,13 @@ if (footballFilter) {
 }
 
 function mapStateToProps(state) {
-    return { userToken : state.userToken}
-}  
+    return {newUser: state.newUser}
+   }
   
   export default connect(
     mapStateToProps,
     null
   )(MapScreen); 
-
 
 const styles = StyleSheet.create({
     containerAddPOI: {
@@ -628,7 +700,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito_400Regular'
     },
     overlayButton: {
-        backgroundColor: '#7C4DFF',
+        backgroundColor: "#00CEC9",
         width: 250,
         borderRadius: 5,
         fontFamily: 'Nunito_400Regular',
@@ -661,7 +733,26 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito_400Regular'
 
     }
-
-
-
 });
+
+const pickerStyle = {
+    inputIOS: {
+      fontSize:15,
+        color: '#7C4DFF',
+        paddingHorizontal: 40,
+        paddingVertical: 15,
+        backgroundColor: '#white',
+        borderRadius: 17,
+    },
+    placeholder: {
+        color: '#7C4DFF',
+        fontSize:15,
+      },
+    inputAndroid: {
+      fontSize:15,
+        color: 'white',
+        paddingHorizontal: 10,
+        backgroundColor: 'red',
+        borderRadius: 5,
+    },
+  };
