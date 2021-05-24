@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
@@ -34,11 +34,12 @@ function SendFrisbee(props) {
         return <AppLoading />;
     } else {
         return (
-            <View
+            <ScrollView style={{ marginTop: 40 }}>
+                <View
 
-                style={styles.container}>
+                    style={styles.container}>
 
-                {/* <KeyboardAvoidingView
+                    {/* <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}> */}
 
 
@@ -60,7 +61,8 @@ function SendFrisbee(props) {
                         onPress={() => console.log('Appui sur photo profil')}
                     />
 
-                    <Text h1 style={styles.h1Style}>Envoyer un Frisbee à Axelle</Text>
+                    <Text h1 style={styles.h1Style}>Lance un FRISBEE</Text>
+                    <Text h1 style={styles.h1Style}>à Axelle</Text>
 
                     <Text style={styles.ageDescription}>Votre message</Text>
 
@@ -209,21 +211,23 @@ function SendFrisbee(props) {
                         />
                     </View>
 
-               {/*  </KeyboardAvoidingView> */}
+                    {/*  </KeyboardAvoidingView> */}
 
-                <Button
-                    buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17, marginTop: 20 }}
-                    title="Envoyer un FRISBEE"
-                    /* onPress={() => { GoToNextStepSignUp(signUpFavoritesSports) }} */
-                    titleStyle={{
-                        fontFamily: 'Nunito_400Regular',
-                        marginLeft: 15,
-                        marginRight: 15
-                    }}
-                >
-                </Button>
+                    <Button
+                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17, marginTop: 20 }}
+                        title="Envoyer un FRISBEE"
+                        /* onPress={() => { GoToNextStepSignUp(signUpFavoritesSports) }} */
+                        titleStyle={{
+                            fontFamily: 'Nunito_400Regular',
+                            marginLeft: 15,
+                            marginRight: 15
+                        }}
+                        onPress={() => props.navigation.navigate('FrisbeeScreen')}
+                    >
+                    </Button>
 
-            </View>
+                </View>
+            </ScrollView>
         )
     }
 }
