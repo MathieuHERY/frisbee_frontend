@@ -117,13 +117,15 @@ function UsersScreen(props) {
     const [usersList, setUsersList] = useState([]);
     const [visibleOverlay, setVisibleOverlay] = useState(false);
     const [focusUser, setFocusUser] = useState([]);
+    const [allUsersWithoutMe, setAllUsersWithoutMe] = useState([]);
 
     var onPressAvatar = (e, id) => {
         setVisibleOverlay(true)
         setFocusUser([...focusUser])
     }
-    console.log(focusUser, "Log sur MapScreen focusUser")
-    console.log(props.userToken, 'token sur UserScreen')
+    // console.log(focusUser, "Log sur MapScreen focusUser");
+    // console.log(props.newUser, "tout l'objet avec token sur UserScreen");
+    // console.log(props.newUser.token, 'token sur UserScreen');
 
 
     // USERS FILTERED 
@@ -131,14 +133,21 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.190.7:3000/users'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.7:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
+            console.log('log de usersResponse', usersResponse);
             setUsersList(usersResponse.usersData);
+
         };
         usersAroundMe()
 
     }, []);
+
+
+    console.log('log usersList', usersList)
+    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token);
+    console.log(props.newUser.token, 'token sur UserScreen');
 
     return (
 
@@ -151,7 +160,8 @@ function UsersScreen(props) {
 
             {/* LOOP ON EACH USER FROM DB */}
             {
-                usersList.map((user, i) => (
+                usersListFiltered.map((user, i) => (
+                    // usersList.map((user, i) => (
                     // users.map((user, i) => (
                     <View key={i}>
                         <View style={{ flexDirection: 'row', marginBottom: 30 }}>
@@ -185,68 +195,68 @@ function UsersScreen(props) {
                                         />
                                     </View>
 
-                                        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center'}}>
-                                            <Avatar
-                                                rounded
-                                                size="xlarge"
-                                                source={{ uri: user.UserPicture }}
-                                            />
+                                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+                                        <Avatar
+                                            rounded
+                                            size="xlarge"
+                                            source={{ uri: user.UserPicture }}
+                                        />
 
-                                            <Text h1 style={styles.h1StyleOverlay}>
-                                                {user.Firstname}
+                                        <Text h1 style={styles.h1StyleOverlay}>
+                                            {user.Firstname}
+                                        </Text>
+
+                                        <Text style={styles.ageDescriptionOverlay}>
+                                            {user.Age}
+                                        </Text>
+
+                                        <Chip
+                                            buttonStyle={styles.ChipFocus}
+                                            title={user.FavoritesSports}
+                                            titleStyle={styles.ChipFocusTitle}
+                                            type="outline"
+                                        />
+
+                                        <Text style={styles.description}>
+                                            {user.Description}
+                                        </Text>
+
+                                        <View>
+                                            <Text style={styles.description}>
+                                                {user.Firstname} est disponible :
                                             </Text>
-
-                                            <Text style={styles.ageDescriptionOverlay}>
-                                                {user.Age}
-                                            </Text>
-
-                                            <Chip
-                                                buttonStyle={styles.ChipFocus}
-                                                title={user.FavoritesSports}
-                                                titleStyle={styles.ChipFocusTitle}
-                                                type="outline"
-                                            />
 
                                             <Text style={styles.description}>
-                                                {user.Description}
-                                            </Text>
-
-                                            <View>
-                                                <Text style={styles.description}>
-                                                    {user.Firstname} est disponible :
-                                            </Text>
-
-                                                <Text style={styles.description}>
-                                                    <EvilIcons
-                                                        name="calendar"
-                                                        size={24}
-                                                        color="#838383"
-                                                    />
-                                                    {user.SportsHabits}
-                                                </Text>
-
-                                                <Text style={styles.description}>
-                                                    <EvilIcons name="clock"
-                                                        size={24}
-                                                        color="#838383"
-                                                    />
-                                                    {user.SportsHours}
-                                                </Text>
-
-                                                <Button
-                                                    title='Lance un FRISBEE'
-                                                    buttonStyle={styles.buttonFrisbeeOverlay}
-                                                    titleStyle={styles.buttonTextStyleFrisbee}
-                                                    icon={
-                                                        <Feather name="disc"
-                                                            size={18}
-                                                            color="#ffffff"
-                                                        />
-                                                    }
-                                                    // onPress={() => console.log('Appui sur FRISBEE')}
-                                                    onPress={() => props.navigation.navigate('SendFrisbee')}
+                                                <EvilIcons
+                                                    name="calendar"
+                                                    size={24}
+                                                    color="#838383"
                                                 />
-                                            
+                                                {user.SportsHabits}
+                                            </Text>
+
+                                            <Text style={styles.description}>
+                                                <EvilIcons name="clock"
+                                                    size={24}
+                                                    color="#838383"
+                                                />
+                                                {user.SportsHours}
+                                            </Text>
+
+                                            <Button
+                                                title='Lance un FRISBEE'
+                                                buttonStyle={styles.buttonFrisbeeOverlay}
+                                                titleStyle={styles.buttonTextStyleFrisbee}
+                                                icon={
+                                                    <Feather name="disc"
+                                                        size={18}
+                                                        color="#ffffff"
+                                                    />
+                                                }
+                                                // onPress={() => console.log('Appui sur FRISBEE')}
+                                                onPress={() => props.navigation.navigate('SendFrisbee')}
+                                            />
+
 
                                         </View>
                                     </View>
@@ -420,7 +430,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    return { userToken: state.userToken }
+    return { newUser: state.newUser }
 }
 
 export default connect(
