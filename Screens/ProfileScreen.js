@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
@@ -14,6 +15,7 @@ import {
 
 
 function ProfileScreen(props) {
+    console.log(props.newUser, 'token sur ProfileScreen')
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -96,6 +98,15 @@ function ProfileScreen(props) {
     }
 }
 
+function mapStateToProps(state) {
+    return { newUser: state.newUser }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(ProfileScreen);
+
 
 const styles = StyleSheet.create({
     container: {
@@ -155,5 +166,3 @@ const styles = StyleSheet.create({
         /* marginBottom: 10, */
     },
 });
-
-export default ProfileScreen;
