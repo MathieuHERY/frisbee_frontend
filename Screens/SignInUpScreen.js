@@ -30,7 +30,7 @@ export default function SignInUpScreen(props) {
 
   var handleSubmitSignin = async () => {
 
-    const data = await fetch("http://172.16.190.2/sign-up", {
+    const data = await fetch("http://172.16.190.7/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${signUpEmail}&Password=${signUpPassword}`
