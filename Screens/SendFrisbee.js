@@ -49,7 +49,7 @@ function SendFrisbee(props) {
                             name='ios-arrow-back'
                             type='ionicon'
                             color='#7C4DFF'
-                            onPress={() => props.navigation.navigate('UsersScreen')}
+                            onPress={() => props.navigation.navigate('BottomBar', { screen: "SPORTIFS" })}
                             size={30}
                         />
                     </View>
@@ -62,9 +62,9 @@ function SendFrisbee(props) {
                     />
 
                     <Text h1 style={styles.h1Style}>Lance un FRISBEE</Text>
-                    <Text h1 style={styles.h1Style}>à Axelle</Text>
+                    <Text h1 style={styles.h1StyleBis}>à Axelle</Text>
 
-                    <Text style={styles.ageDescription}>Votre message</Text>
+                    <Text style={styles.ageDescription}>Votre message :</Text>
 
                     <View>
                         <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 300, marginTop: 15, padding: 10 }}
@@ -244,8 +244,12 @@ const styles = StyleSheet.create({
     h1Style: {
         fontSize: 30,
         fontFamily: 'Montserrat_300Light',
-        marginBottom: 10,
         marginTop: 15,
+    },
+    h1StyleBis: {
+        fontSize: 30,
+        fontFamily: 'Montserrat_300Light',
+        marginBottom: 10,
     },
     ageDescription: {
         fontSize: 17,

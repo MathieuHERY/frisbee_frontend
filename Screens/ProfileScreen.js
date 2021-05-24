@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
@@ -27,76 +27,78 @@ function ProfileScreen(props) {
         return <AppLoading />;
     } else {
         return (
-            <View
+            <ScrollView>
+                <View
 
-                style={styles.container}>
+                    style={styles.container}>
 
-                <Avatar
-                    rounded
-                    size="xlarge"
-                    source={{ uri: props.newUser.UserPicture }}
-                    onPress={() => console.log('Appui sur photo profil')}
-                />
-
-                <Text h1 style={styles.h1Style}>{props.newUser.firstname}</Text>
-
-                <Text style={styles.ageDescription}>{props.newUser.age}</Text>
-
-
-
-
-               {/*  ------------------------------ mauvaise présentation --------------------------------------------- */}
-
-
-                <View style={{ flexDirection: 'row' }}>
-                    <Chip
-                        buttonStyle={styles.ChipFocus}
-                        title={props.newUser.sport}
-                        titleStyle={styles.ChipFocusTitle}
-                        type="outline"
-                        Text={props.newUser.sport}
-                        titleProps={props.newUser.sport}
-                        key={props.newUser.sport}
-                        value={props.newUser.sport}
-                        items={props.newUser.sport}
+                    <Avatar
+                        rounded
+                        size="xlarge"
+                        source={{ uri: props.newUser.UserPicture }} // À Dynamiser
+                        onPress={() => console.log('Appui sur photo profil')}
                     />
-                </View>
 
-            <Text style={{borderColor: '#7C4DFF', borderWidth: 1, borderRadius: 10, height: 25, width: 250, justifyContent: "center", alignItems: "center", color:"#7C4DFF", /* backgroundColor: "#7C4DFF", */ }}>{props.newUser.sport}</Text>
+                    <Text h1 style={styles.h1Style}>{props.newUser.firstname}</Text>
 
-
-            {/* ------------------------------------------------------------------------------------------------------- */}
+                    <Text style={styles.ageDescription}>{props.newUser.age}</Text>
 
 
 
 
-                <Text style={styles.description}>{props.newUser.description}
-                </Text>
-
-                <Text style={styles.description}> Mes disponibilités : </Text>
+                    {/*  ------------------------------ mauvaise présentation --------------------------------------------- */}
 
 
-                <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
-
-                    <Text style={styles.disponibilités1}>
-                        <EvilIcons
-                            name="calendar"
-                            size={24}
-                            color="#838383"
+                    <View style={{ flexDirection: 'row' }}>
+                        <Chip
+                            buttonStyle={styles.ChipFocus}
+                            title={props.newUser.sport}
+                            titleStyle={styles.ChipFocusTitle}
+                            type="outline"
+                            Text={props.newUser.sport}
+                            titleProps={props.newUser.sport}
+                            key={props.newUser.sport}
+                            value={props.newUser.sport}
+                            items={props.newUser.sport}
                         />
-                        {props.newUser.habits}
+                    </View>
+
+                    <Text style={{ borderColor: '#7C4DFF', borderWidth: 1, borderRadius: 10, height: 25, width: 250, justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ }}>{props.newUser.sport}</Text>
+
+
+                    {/* ------------------------------------------------------------------------------------------------------- */}
+
+
+
+
+                    <Text style={styles.description}>{props.newUser.description}
                     </Text>
 
-                    <Text style={styles.disponibilités}>
-                        <EvilIcons name="clock"
-                            size={24}
-                            color="#838383"
-                        />
-                        {props.newUser.hoursStart} à {props.newUser.hoursEnd}
-                    </Text>
-                </View>
+                    <Text style={styles.description}> Mes disponibilités : </Text>
 
-            </View>
+
+                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
+
+                        <Text style={styles.disponibilités1}>
+                            <EvilIcons
+                                name="calendar"
+                                size={24}
+                                color="#838383"
+                            />
+                            {props.newUser.habits}
+                        </Text>
+
+                        <Text style={styles.disponibilités}>
+                            <EvilIcons name="clock"
+                                size={24}
+                                color="#838383"
+                            />
+                            {props.newUser.hoursStart} à {props.newUser.hoursEnd}
+                        </Text>
+                    </View>
+
+                </View>
+            </ScrollView>
         )
     }
 }
