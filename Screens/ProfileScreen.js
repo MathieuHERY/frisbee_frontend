@@ -15,7 +15,6 @@ import {
 
 
 function ProfileScreen(props) {
-    console.log(props.newUser, 'token sur ProfileScreen')
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -35,62 +34,66 @@ function ProfileScreen(props) {
                 <Avatar
                     rounded
                     size="xlarge"
-                    source={require('../assets/marilene_circle.png')}
+                    source={{ uri: props.newUser.UserPicture }}
                     onPress={() => console.log('Appui sur photo profil')}
                 />
 
-                <Text h1 style={styles.h1Style}>Marilène</Text>
+                <Text h1 style={styles.h1Style}>{props.newUser.firstname}</Text>
 
-                <Text style={styles.ageDescription}>20 - 35 ans</Text>
+                <Text style={styles.ageDescription}>{props.newUser.age}</Text>
 
 
-                <View style={{ flexDirection: 'row'}}>
-                <Chip
-                    buttonStyle={styles.ChipFocus}
-                    title="Basket-Ball"
-                    titleStyle={styles.ChipFocusTitle}
-                    type="outline"
-                />
-                <Chip
-                    buttonStyle={styles.ChipFocus}
-                    title="Yoga"
-                    titleStyle={styles.ChipFocusTitle}
-                    type="outline"
-                />
-                <Chip
-                    buttonStyle={styles.ChipFocus}
-                    title="Ping-Pong"
-                    titleStyle={styles.ChipFocusTitle}
-                    type="outline"
-                />
+
+
+               {/*  ------------------------------ mauvaise présentation --------------------------------------------- */}
+
+
+                <View style={{ flexDirection: 'row' }}>
+                    <Chip
+                        buttonStyle={styles.ChipFocus}
+                        title={props.newUser.sport}
+                        titleStyle={styles.ChipFocusTitle}
+                        type="outline"
+                        Text={props.newUser.sport}
+                        titleProps={props.newUser.sport}
+                        key={props.newUser.sport}
+                        value={props.newUser.sport}
+                        items={props.newUser.sport}
+                    />
                 </View>
 
+            <Text style={{borderColor: '#7C4DFF', borderWidth: 1, borderRadius: 10, height: 25, width: 250, justifyContent: "center", alignItems: "center", color:"#7C4DFF", /* backgroundColor: "#7C4DFF", */ }}>{props.newUser.sport}</Text>
 
-                <Text style={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Sed non purus sit amet nisl vulputate condimentum sit amet nec mi. In in ex augue.
+
+            {/* ------------------------------------------------------------------------------------------------------- */}
+
+
+
+
+                <Text style={styles.description}>{props.newUser.description}
                 </Text>
 
                 <Text style={styles.description}> Mes disponibilités : </Text>
 
 
-                <View style={{borderColor:'#dfe6e9', borderWidth:1, borderRadius:5, height:100, width:250, justifyContent: "center", alignItems: "center"}}>
-                    
-                <Text style={styles.disponibilités1}>
-                    <EvilIcons
-                        name="calendar"
-                        size={24}
-                        color="#838383"
-                    />
-                    Soir & Weekend
-                </Text>
+                <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
 
-                <Text style={styles.disponibilités}>
-                    <EvilIcons name="clock"
-                        size={24}
-                        color="#838383"
-                    />
-                    17h00 à 19h00
-                </Text>
+                    <Text style={styles.disponibilités1}>
+                        <EvilIcons
+                            name="calendar"
+                            size={24}
+                            color="#838383"
+                        />
+                        {props.newUser.habits}
+                    </Text>
+
+                    <Text style={styles.disponibilités}>
+                        <EvilIcons name="clock"
+                            size={24}
+                            color="#838383"
+                        />
+                        {props.newUser.hoursStart} à {props.newUser.hoursEnd}
+                    </Text>
                 </View>
 
             </View>
@@ -99,13 +102,14 @@ function ProfileScreen(props) {
 }
 
 function mapStateToProps(state) {
-    return { newUser: state.newUser }
+    return { newUser: state.newUser, userToken: state.userToken }
 }
 
 export default connect(
     mapStateToProps,
     null
 )(ProfileScreen);
+
 
 
 const styles = StyleSheet.create({
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        marginRight:15,
+        marginRight: 15,
     },
     ChipFocusTitle: {
         color: '#ffffff',
@@ -166,3 +170,4 @@ const styles = StyleSheet.create({
         /* marginBottom: 10, */
     },
 });
+

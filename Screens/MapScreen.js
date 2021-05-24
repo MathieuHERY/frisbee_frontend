@@ -103,7 +103,11 @@ function MapScreen(props) {
       name: 'place_photo.jpeg',
     });
 
+<<<<<<< HEAD
     var UploadPlaceImageToCloudinary = await fetch("http://192.168.1.67:3000/upload-user-picture", {
+=======
+    var UploadPlaceImageToCloudinary = await fetch("http://192.168.0.57:3000/upload-user-picture", {
+>>>>>>> dynamicprofile
       method: 'post',
       body: data
     });
@@ -112,7 +116,11 @@ function MapScreen(props) {
 
     if (responseFromCloudinary.imageSaved) {
 
+<<<<<<< HEAD
         var addPinToDB = await fetch ('http://192.168.1.67:3000/newplace', {
+=======
+        var addPinToDB = await fetch ('http://192.168.0.57:3000/newplace', {
+>>>>>>> dynamicprofile
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `name=${titrePOI}&address=${adressPOI}&description=${descPOI}&sport=${sportItemPOI}&latitude=${tempPOI.latitude}&longitude=${tempPOI.longitude}&picture=${responseFromCloudinary.url}`
@@ -204,11 +212,21 @@ function MapScreen(props) {
                 );
                 console.log(userPosition)
             };
+<<<<<<< HEAD
             var request = await fetch(`http://192.168.1.67:3000/places`);
                 var response = await request.json();
                 // console.log(response)
                 setListPoint(response.PinsData)
  
+=======
+            var request = await fetch(`http://192.168.0.57:3000/places`);
+            var response = await request.json();
+            console.log(response)
+            setListPoint(response.PinsData)
+
+
+
+>>>>>>> dynamicprofile
         };
         askPermissions();
     }, []);
