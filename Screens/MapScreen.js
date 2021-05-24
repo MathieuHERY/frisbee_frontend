@@ -211,7 +211,7 @@ function MapScreen(props) {
 
         };
         askPermissions();
-    }, [newPinAdded]);
+    }, []);
 
     /*   Filter pin on map */
 

@@ -40,6 +40,7 @@ function InscriptionScreen5(props) {
       body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=null&UserLatitude=0&UserLongitude=0`
     })
     var response = await SignupWithoutPic.json()
+    
     if (response.result) {
       setIsLogin(true)
       setUserConnected(response.saveUser)
@@ -47,10 +48,11 @@ function InscriptionScreen5(props) {
       let user = {token : response.saveUser.token}
       props.UserInfo(user)
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
-
+      // console.log('token utilisateur sans photo', response.token)
+      // props.getTokenFromUser(userToken) // Dispatch the token into the reducer
     } else {
       setIsLogin(false);
-      SetErrorSignUp(response.error)
+      setErrorSignUp(response.error)
     }
   }
 
@@ -112,8 +114,9 @@ function InscriptionScreen5(props) {
         let user = {token : responseSignUp.saveUser.token}
         props.UserInfo(user)
         props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
-        
-
+        // props.getTokenFromUser(userToken) // Dispatch the token into the reducer
+        // console.log('log user token', response.token)
+        // console.log(userToken, 'token utilisateur avec photo');
       } else {
         setIsLogin(false);
         SetErrorSignUp(responseSignUp.error)

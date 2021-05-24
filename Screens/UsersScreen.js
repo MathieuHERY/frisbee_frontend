@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
-// import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
@@ -117,22 +117,15 @@ function UsersScreen(props) {
     const [usersList, setUsersList] = useState([]);
     const [visibleOverlay, setVisibleOverlay] = useState(false);
     const [focusUser, setFocusUser] = useState([]);
+    const [allUsersWithoutMe, setAllUsersWithoutMe] = useState([]);
 
     var onPressAvatar = (e, id) => {
         setVisibleOverlay(true)
         setFocusUser([...focusUser])
     }
-    console.log(focusUser, "Log sur MapScreen focusUser")
-
-    
-
-    // OVERLAY
-    // const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
-    // const [visibleFilterOverlay, setVisibleFilterOverlay] = useState(false);
-
-    // var clickOnFilterSport = () => {
-    //     setVisibleFilterOverlay(true)
-    // }
+    // console.log(focusUser, "Log sur MapScreen focusUser");
+    // console.log(props.newUser, "tout l'objet avec token sur UserScreen");
+    // console.log(props.newUser.token, 'token sur UserScreen');
 
 
     // USERS FILTERED 
@@ -140,46 +133,21 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://192.168.1.63:3000/users'); // Appel à la route
-           /*  const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route */
+            const usersRawResponse = await fetch('http://172.16.188.137:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
-            // console.log(usersResponse, 'log usersResponse');
-            console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau
+            // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
+            console.log('log de usersResponse', usersResponse);
             setUsersList(usersResponse.usersData);
-
-            // var user = await UserModel.findById(idFromReduceur);
-            // console.log(user, 'log de user')
-
-            // console.log(myUserId, "Mon ID stocké dans réduceur");
-
-            // À DÉCOMMENTER QUAND JE POURRAIS RÉCUPÉRER MON ID DU RÉDUCEUR //
-            // ------------------------------------------------ //
-            // Je récupère l'ID de l'utilisateur stocké dans le réduceur
-            // Et je compare ma latitude + la longitude avec celle des users
-            // Je mappe le tableau de tous les users
-            // ------------------------------------------------ //
-            // const myIdFromBack = usersResponse.map(function (id, i) {
-            //     if (myUserId == usersResponse.id) {
-            //         console.log(usersResponse.latitude, 'ma latitude');
-            //         console.log(usersReponse.longitude, 'ma longitude');
-            //         return (usersResponse.latitude, usersReponse.longitude)
-            //     }
-            // })
-            // ------------------------------------------------ /
-            // const myIdFromBack = usersResponse.map(function (id, i) {
-            //     if (idFromBack == id._id) {
-            //         console.log(id.email, 'ma latitude');
-            //         console.log(id.FirstName, 'ma longitude');
-            //         return (id.email, id.FirstName)
-            //     }
-            // })
 
         };
         usersAroundMe()
 
-
-
     }, []);
+
+
+    console.log('log usersList', usersList)
+    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token);
+    console.log(props.newUser.token, 'token sur UserScreen');
 
     return (
 
@@ -192,7 +160,8 @@ function UsersScreen(props) {
 
             {/* LOOP ON EACH USER FROM DB */}
             {
-                usersList.map((user, i) => (
+                usersListFiltered.map((user, i) => (
+                    // usersList.map((user, i) => (
                     // users.map((user, i) => (
                     <View key={i}>
                         <View style={{ flexDirection: 'row', marginBottom: 30 }}>
@@ -201,10 +170,9 @@ function UsersScreen(props) {
                                 <Avatar
                                     rounded
                                     size="xlarge"
+                                    source={{ uri: user.UserPicture }}
                                     // onPress={() => console.log('Appui sur photo profil')}
-                                    // onPress={() => { setVisibleOverlay(true) }}
-                                    onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours })}
-
+                                    onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours, picture: user.UserPicture })}
                                 />
                             </View>
 
@@ -213,24 +181,25 @@ function UsersScreen(props) {
                             <Overlay
                                 isVisible={visibleOverlay}
                                 fullScreen={true}
-                                onBackdropPress={() => { setVisibleOverlay(false) }}
+                                onBackdropPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
                             >
-
-                                <View>
-
-                                    <Icon
-                                        iconStyle={styles.iconCloseOverlay}
-                                        name='close'
-                                        size={30}
-                                        type='Ionicons'
-                                        color='#FF4757'
-                                        onPress={() => { setVisibleOverlay(false) }}
-                                    />
-
+                                <ScrollView>
                                     <View>
+                                        <Icon
+                                            iconStyle={styles.iconCloseOverlay}
+                                            name='close'
+                                            size={30}
+                                            type='Ionicons'
+                                            color='#FF4757'
+                                            onPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
+                                        />
+                                    </View>
+
+                                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
                                         <Avatar
                                             rounded
                                             size="xlarge"
+                                            source={{ uri: user.UserPicture }}
                                         />
 
                                         <Text h1 style={styles.h1StyleOverlay}>
@@ -284,13 +253,14 @@ function UsersScreen(props) {
                                                         color="#ffffff"
                                                     />
                                                 }
-                                                onPress={() => console.log('Appui sur FRISBEE')}
+                                                // onPress={() => console.log('Appui sur FRISBEE')}
+                                                onPress={() => props.navigation.navigate('SendFrisbee')}
                                             />
+
+
                                         </View>
-
                                     </View>
-                                </View>
-
+                                </ScrollView>
                             </Overlay>
 
 
@@ -459,14 +429,11 @@ const styles = StyleSheet.create({
     },
 });
 
-// REDUX À METTRE EN PLACE
-// function mapStateToProps(state) {
-//     return { myUserId: state.userId }
-//    }
+function mapStateToProps(state) {
+    return { newUser: state.newUser }
+}
 
-// export default connect(
-// mapStateToProps,
-// null
-// )(UsersScreen);
-
-export default UsersScreen;
+export default connect(
+    mapStateToProps,
+    null
+)(UsersScreen);
