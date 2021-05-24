@@ -205,15 +205,13 @@ function MapScreen(props) {
                 console.log(userPosition)
             };
             var request = await fetch(`http://192.168.1.67:3000/places`);
-            var response = await request.json();
-            console.log(response)
-            setListPoint(response.PinsData)
-
-
-
+                var response = await request.json();
+                // console.log(response)
+                setListPoint(response.PinsData)
+ 
         };
         askPermissions();
-    }, [newPinAdded]);
+    }, []);
 
     /*   Filter pin on map */
 

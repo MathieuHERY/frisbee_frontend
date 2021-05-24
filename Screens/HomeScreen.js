@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -10,8 +10,9 @@ import InscriptionScreen3 from './InscriptionScreen3';
 import InscriptionScreen4 from './InscriptionScreen4';
 import InscriptionScreen5 from './InscriptionScreen5';
 import BottomBar from './BottomBar';
+import { connect } from 'react-redux';
 
-export default function HomeScreen(props) {
+function HomeScreen(props) {
 
 const [signupStep, setSignupStep] = useState(1);
 const [isLogin, setIsLogin] = useState(false);
@@ -30,29 +31,38 @@ const [isLogin, setIsLogin] = useState(false);
         )
     }
 
-    if (signupStep===1) {
+    if (signupStep === 1) {
         return (
-            <SignInUpScreen HandleClickParentchangeStep = {HandleClickchangeStep}/>
+            <SignInUpScreen HandleClickParentchangeStep={HandleClickchangeStep} />
         )
-    } else if (signupStep===2) {
-    return (
-        <InscriptionScreen1 HandleClickParentchangeStep = {HandleClickchangeStep}/>
-    )
-    } else if (signupStep===3) {
-    return (
-        <InscriptionScreen2 HandleClickParentchangeStep = {HandleClickchangeStep}/>
-    )
-    } else if (signupStep===4) {
+    } else if (signupStep === 2) {
         return (
-            <InscriptionScreen3 HandleClickParentchangeStep = {HandleClickchangeStep}/>
+            <InscriptionScreen1 HandleClickParentchangeStep={HandleClickchangeStep} />
         )
-    } else if (signupStep===5) {
-    return (
-        <InscriptionScreen4 HandleClickParentchangeStep = {HandleClickchangeStep}/>
-    )
-    } else if (signupStep===6) {
-    return (
-        <InscriptionScreen5 HandleClickParentchangeStep = {HandleClickchangeStep} navigation={props.navigation}/>
-    );
+    } else if (signupStep === 3) {
+        return (
+            <InscriptionScreen2 HandleClickParentchangeStep={HandleClickchangeStep} />
+        )
+    } else if (signupStep === 4) {
+        return (
+            <InscriptionScreen3 HandleClickParentchangeStep={HandleClickchangeStep} />
+        )
+    } else if (signupStep === 5) {
+        return (
+            <InscriptionScreen4 HandleClickParentchangeStep={HandleClickchangeStep} />
+        )
+    } else if (signupStep === 6) {
+        return (
+            <InscriptionScreen5 HandleClickParentchangeStep={HandleClickchangeStep} navigation={props.navigation} />
+        );
     };
 };
+
+function mapStateToProps(state) {
+    return { userToken: state.userToken }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(HomeScreen);

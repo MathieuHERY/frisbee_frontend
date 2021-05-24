@@ -19,8 +19,9 @@ import SendFrisbee from "./Screens/SendFrisbee"
 import UsersScreen from "./Screens/UsersScreen"
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
-import newUser from './reducers/newUser'
-const store = createStore(combineReducers({newUser}))
+import newUser from './reducers/newUser';
+import userToken from './reducers/token_reducer';
+const store = createStore(combineReducers({newUser, userToken})) // Added
 
 
 /* import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; */
