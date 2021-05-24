@@ -48,7 +48,7 @@ function SendFrisbee(props) {
                             name='ios-arrow-back'
                             type='ionicon'
                             color='#7C4DFF'
-                            onPress={() => props.navigation.navigate('UsersScreen')}
+                            onPress={() => props.navigation.navigate('BottomBar', { screen: "SPORTIFS" })}
                             size={30}
                         />
                     </View>

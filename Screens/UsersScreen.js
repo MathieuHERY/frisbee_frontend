@@ -140,7 +140,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route
+            const usersRawResponse = await fetch('http://192.168.1.63:3000/users'); // Appel à la route
            /*  const usersRawResponse = await fetch('http://172.16.190.5:3000/users'); // Appel à la route */
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse, 'log usersResponse');
@@ -201,7 +201,6 @@ function UsersScreen(props) {
                                 <Avatar
                                     rounded
                                     size="xlarge"
-                                    source={users[i].UserPicture}
                                     // onPress={() => console.log('Appui sur photo profil')}
                                     // onPress={() => { setVisibleOverlay(true) }}
                                     onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours })}
@@ -232,7 +231,6 @@ function UsersScreen(props) {
                                         <Avatar
                                             rounded
                                             size="xlarge"
-                                            source={users[i].UserPicture}
                                         />
 
                                         <Text h1 style={styles.h1StyleOverlay}>
