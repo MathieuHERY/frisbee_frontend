@@ -15,7 +15,8 @@ import {
 } from '@expo-google-fonts/montserrat';
 
 
-export default function SignInUpScreen(props) {
+function SignInUpScreen(props) {
+
 
   let [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -30,7 +31,7 @@ export default function SignInUpScreen(props) {
 
   var handleSubmitSignin = async () => {
 
-    const data = await fetch("http://172.16.190.7/sign-up", {
+    const data = await fetch("http://172.16.190.7:3000/sign-in", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${signUpEmail}&Password=${signUpPassword}`
@@ -42,6 +43,8 @@ export default function SignInUpScreen(props) {
     if (body.result == true) {
       setUserExists(true)
       props.addToken(body.token)
+      // props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
+      //HandleClickGoToMapScreen();
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
       
     } else {
@@ -57,9 +60,9 @@ export default function SignInUpScreen(props) {
     props.HandleClickParentGoToMapScreen()
   }
 
-  if (userExists) {
-    HandleClickGoToMapScreen()
-  }
+  // if (userExists) {
+  //   HandleClickGoToMapScreen()
+  // }
   
 
   var ErrorsSignup = listErrorsSignup.map((error, i) => {
@@ -130,6 +133,20 @@ export default function SignInUpScreen(props) {
     </View>
   );
 }}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addToken: function (token) {
+      console.log(token);
+      dispatch({ type: 'getUserToken', userToken : token })
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignInUpScreen);
 
 const styles = StyleSheet.create({
   container: {

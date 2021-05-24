@@ -33,7 +33,7 @@ const [isLogin, setIsLogin] = useState(false);
 
     if (signupStep === 1) {
         return (
-            <SignInUpScreen HandleClickParentchangeStep={HandleClickchangeStep} />
+            <SignInUpScreen HandleClickParentGoToMapScreen = {HandleClickGoToMapScreen}  HandleClickParentchangeStep={HandleClickchangeStep} navigation={props.navigation} />
         )
     } else if (signupStep === 2) {
         return (
