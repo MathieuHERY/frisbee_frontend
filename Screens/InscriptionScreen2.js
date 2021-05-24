@@ -168,14 +168,14 @@ const styles = StyleSheet.create({
         color: '#7C4DFF',
         paddingHorizontal: 40,
         paddingVertical: 15,
-        backgroundColor: '#white',
+        backgroundColor: '#ffffff',
         borderRadius: 17,
     },
     placeholder: {
         color: '#7C4DFF',
       },
     inputAndroid: {
-        color: 'white',
+        color: '#ffffff',
         paddingHorizontal: 10,
         backgroundColor: 'red',
         borderRadius: 5,
