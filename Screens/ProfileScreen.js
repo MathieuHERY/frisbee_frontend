@@ -44,8 +44,6 @@ function ProfileScreen(props) {
     console.log(props.userToken);
 
 
-
-
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -61,7 +59,7 @@ function ProfileScreen(props) {
 
                                     <Icon
                                         raised
-                                        name='logOff'
+                                        name='ios-arrow-back'
                                         type='ionicon'
                                         color='#7C4DFF'
                                         onPress={() => props.navigation.navigate('SignInUpScreen')}
