@@ -31,7 +31,7 @@ function ProfileScreen(props) {
 
             const data = await fetch('http://172.16.190.9:3000/user');
             const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
-            console.log(body.result);
+            // console.log(body.result);
             setUser(body.userData); //récupère tous les users
 
         };
@@ -41,7 +41,7 @@ function ProfileScreen(props) {
 
     console.log('log usersList', user)
     var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
-    console.log(props.userToken);
+    console.log('token dans ProfileScreen', props.userToken);
 
 
     if (!fontsLoaded) {

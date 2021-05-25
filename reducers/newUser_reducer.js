@@ -1,17 +1,7 @@
-export default function(newUser = [], action) {
-    if (action.type == 'addNewUser' ) {
-        var newUserCopy = [...newUser];
-
-        var findUser = false;
-
-        for (let i = 0 ; i < newUserCopy.length ; i++) {
-            if (newUserCopy[i].FirstName == true ) {
-                findUser = true
-            }
-
-        }
-        return action.userId;
+export default function(userInfo = [], action) {
+    if (action.type == 'focusOnUser' ) {
+        console.log(action.userInfo)
+        return action.userInfo
     } else {
-        return userId;
+        return userInfo;
     }
-}
