@@ -15,8 +15,9 @@ import BottomBar from './Screens/BottomBar';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-import SendFrisbee from "./Screens/SendFrisbee"
-import UsersScreen from "./Screens/UsersScreen"
+import SendFrisbee from "./Screens/SendFrisbee";
+import UsersScreen from "./Screens/UsersScreen";
+import ResponseFrisbee from "./Screens/ResponseFrisbee";
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import newUser from './reducers/newUser';
@@ -38,6 +39,7 @@ export default function App() {
           <Stack.Screen name="BottomBar" component={BottomBar} />
           <Stack.Screen name="SendFrisbee" component={SendFrisbee} />
           <Stack.Screen name="UsersScreen" component={UsersScreen} />
+          <Stack.Screen name="ResponseFrisbee" component={ResponseFrisbee} />
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>

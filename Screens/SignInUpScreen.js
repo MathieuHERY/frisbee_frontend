@@ -31,7 +31,7 @@ function SignInUpScreen(props) {
 
   var handleSubmitSignin = async () => {
 
-    const data = await fetch("http://172.16.190.7:3000/sign-in", {
+    const data = await fetch("http://172.16.190.9:3000/sign-in", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${signUpEmail}&Password=${signUpPassword}`

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
+import { Icon, Input, Button, Avatar, Chip, FAB, Overlay, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -133,7 +133,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.190.7:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.9:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             console.log('log de usersResponse', usersResponse);
@@ -163,6 +163,7 @@ function UsersScreen(props) {
                 usersListFiltered.map((user, i) => (
                     // usersList.map((user, i) => (
                     // users.map((user, i) => (
+                    
                     <View key={i}>
                         <View style={{ flexDirection: 'row', marginBottom: 30 }}>
 
@@ -176,6 +177,64 @@ function UsersScreen(props) {
                                 />
                             </View>
 
+
+
+
+                            {/* DISPLAY EACH USER */}
+                            <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF' }}>
+                            <View style={{ flexDirection: 'column' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text h1 style={styles.h1Style}>
+                                        {user.Firstname}
+                                    </Text>
+
+                                    <Text style={styles.ageDescription}>
+                                        {user.Age}
+                                    </Text>
+                                </View>
+
+                                <View>
+                                    <Chip
+                                        buttonStyle={styles.ChipFocus}
+                                        title={user.FavoritesSports}
+                                        titleStyle={styles.ChipFocusTitle}
+                                        type="outline"
+                                    />
+
+                                    <Text style={styles.description}>
+                                        <EvilIcons
+                                            name="calendar"
+                                            size={24}
+                                            color="#838383"
+                                        />
+                                        {user.SportsHabits}
+                                    </Text>
+
+                                    <Text style={styles.description}>
+                                        <EvilIcons name="clock"
+                                            size={24}
+                                            color="#838383"
+                                        />
+                                        {user.SportsHours}
+                                    </Text>
+
+                                </View>
+
+                                <Button
+                                    title='Lance un FRISBEE'
+                                    buttonStyle={styles.buttonFrisbee}
+                                    titleStyle={styles.buttonTextStyleFrisbee}
+                                    icon={
+                                        <Feather name="disc"
+                                            size={18}
+                                            color="#ffffff"
+                                        />
+                                    }
+                                    onPress={() => props.navigation.navigate('SendFrisbee')}
+                                />
+
+                            </View>
+                            </Card>
 
                             {/* OVERLAY: VIEW ON A SPECIFIC USER */}
                             <Overlay
@@ -264,59 +323,6 @@ function UsersScreen(props) {
                             </Overlay>
 
 
-                            {/* DISPLAY EACH USER */}
-                            <View style={{ flexDirection: 'column' }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text h1 style={styles.h1Style}>
-                                        {user.Firstname}
-                                    </Text>
-
-                                    <Text style={styles.ageDescription}>
-                                        {user.Age}
-                                    </Text>
-                                </View>
-
-                                <View>
-                                    <Chip
-                                        buttonStyle={styles.ChipFocus}
-                                        title={user.FavoritesSports}
-                                        titleStyle={styles.ChipFocusTitle}
-                                        type="outline"
-                                    />
-
-                                    <Text style={styles.description}>
-                                        <EvilIcons
-                                            name="calendar"
-                                            size={24}
-                                            color="#838383"
-                                        />
-                                        {user.SportsHabits}
-                                    </Text>
-
-                                    <Text style={styles.description}>
-                                        <EvilIcons name="clock"
-                                            size={24}
-                                            color="#838383"
-                                        />
-                                        {user.SportsHours}
-                                    </Text>
-
-                                </View>
-
-                                <Button
-                                    title='Lance un FRISBEE'
-                                    buttonStyle={styles.buttonFrisbee}
-                                    titleStyle={styles.buttonTextStyleFrisbee}
-                                    icon={
-                                        <Feather name="disc"
-                                            size={18}
-                                            color="#ffffff"
-                                        />
-                                    }
-                                    onPress={() => props.navigation.navigate('SendFrisbee')}
-                                />
-
-                            </View>
                         </View>
                     </View>
                 ))
