@@ -20,39 +20,39 @@ import {
 const Frisbee = [
     {
         Firstname: 'Olivier',
-        CreationDate : 'le 11/05/2020',
+        CreationDate: 'le 11/05/2020',
         Address: 'Stade Léo Lagrange, 69002 Lyon',
         Sport: 'Basketball',
-        isAccepted : null,
+        isAccepted: null,
         DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/olivier.jpeg'),
 
     },
     {
         Firstname: 'Ophélia',
-        CreationDate : 'le 11/05/2020',
+        CreationDate: 'le 11/05/2020',
         Address: 'Stade Léo Lagrange, 69002 Lyon',
         Sport: 'Basketball',
-        isAccepted : false,
+        isAccepted: false,
         DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/ophelia.jpeg'),
     },
     {
         Firstname: 'Cantin',
-        CreationDate : 'le 11/05/2020',
+        CreationDate: 'le 11/05/2020',
         Address: 'Stade Léo Lagrange, 69002 Lyon',
         Sport: 'Basketball',
-        isAccepted : null,
+        isAccepted: null,
         DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/cantin.jpeg'),
 
     },
     {
         Firstname: 'Hermann',
-        CreationDate : 'le 11/05/2020',
+        CreationDate: 'le 11/05/2020',
         Address: 'Stade Léo Lagrange, 69002 Lyon',
         Sport: 'Basketball',
-        isAccepted : true,
+        isAccepted: true,
         DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/hermann.jpeg'),
     },
@@ -170,24 +170,25 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                                 <View style={{alignItems:'center'}}>
                                 {(item.isAccepted === 'null') &&
                                 <Button
-                                        title="Réponds à l'invitation"
-                                        buttonStyle={styles.buttonFrisbee}
-                                        titleStyle={styles.buttonTextStyleFrisbee}
-                                        icon={
-                                            <Feather name="disc"
-                                                size={18}
-                                                color="#ffffff"
-                                            />
-                                        }
-                                        onPress={() => console.log('Appui sur FRISBEE')}
-                                    />
-}
-                                    </View>
-                            </View>
+                                    title="Réponds à l'invitation"
+                                    buttonStyle={styles.buttonFrisbee}
+                                    titleStyle={styles.buttonTextStyleFrisbee}
+                                    icon={
+                                        <Feather name="disc"
+                                            size={18}
+                                            color="#ffffff"
+                                        />
+                                    }
+                                    // onPress={() => console.log('Appui sur FRISBEE')}
+                                    onPress={() => props.navigation.navigate('ResponseFrisbee')}
+                                />
+                            }
                         </View>
-                    </Card>
-    )
-})
+                    </View>
+                </View>
+            </Card>
+        )
+    })
 
     return (
         <View style={styles.container}>
@@ -195,7 +196,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
 
                 <Text style={styles.title}>
                     Mes FRISBEE
-            </Text>
+                </Text>
 
                 <View style={styles.buttonGroup}>
                     <ButtonGroup
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
 
         fontFamily: 'Nunito_400Regular',
-        color:'#FF8933',
+        color: '#FF8933',
         marginBottom: 5,
         marginRight: 10,
         justifyContent: 'center',
@@ -276,7 +277,7 @@ const styles = StyleSheet.create({
     answerAccepted: {
         fontSize: 14,
         fontFamily: 'Nunito_400Regular',
-        color:'#00CE52',
+        color: '#00CE52',
         marginBottom: 5,
         marginRight: 10,
         justifyContent: 'center',
@@ -284,7 +285,7 @@ const styles = StyleSheet.create({
     answerRejected: {
         fontSize: 14,
         fontFamily: 'Nunito_400Regular',
-        color:'#FF4757',
+        color: '#FF4757',
         marginBottom: 5,
         marginRight: 10,
         justifyContent: 'center',
@@ -308,7 +309,7 @@ const styles = StyleSheet.create({
     buttonTextStyleFrisbee: {
         fontFamily: 'Nunito_400Regular',
         fontSize: 14,
-        marginLeft:5,
+        marginLeft: 5,
     },
     buttonGroup: {
         flex: 1,
