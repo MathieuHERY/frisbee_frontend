@@ -80,8 +80,6 @@ function MapScreen(props) {
         }
     }
 
-
-
     //Save New Point In To DB
 
     var handleSubmit = async () => {
@@ -93,8 +91,37 @@ function MapScreen(props) {
             var copyListPOI = [...listPOI, { longitude: tempPOI.longitude, latitude: tempPOI.latitude, titre: titrePOI, adresse: adressPOI, description: descPOI, sportItem: sportItemPOI, image: imagePOI }];
 
 
+    var UploadPlaceImageToCloudinary = await fetch("http://192.168.1.67:3000/upload-user-picture", {
+      method: 'post',
+      body: data
+    });
 
-            /* Send Picture to back-end to upload to Cloudinary */
+    var responseFromCloudinary = await UploadPlaceImageToCloudinary.json()
+
+    if (responseFromCloudinary.imageSaved) {
+
+        var addPinToDB = await fetch ('http://192.168.1.67:3000/newplace', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `name=${titrePOI}&address=${adressPOI}&description=${descPOI}&sport=${sportItemPOI}&latitude=${tempPOI.latitude}&longitude=${tempPOI.longitude}&picture=${responseFromCloudinary.url}`
+          })
+          
+        var responseFromDB = await addPinToDB.json();
+        console.log(responseFromDB)
+        
+        if (responseFromDB.result) {
+
+        setIsVisibleAddPOI(false);
+        setTempPOI();
+        setDescPOI();
+        setTitrePOI();
+        setAdressPOI()
+        setSportItemPOI();
+        setImagePOI('');
+        setAddPOI();
+        setnewPinAdded(true)
+        
+    }
 
             var data = new FormData();
             data.append('picture', {
@@ -757,4 +784,4 @@ const pickerStyle = {
         backgroundColor: 'red',
         borderRadius: 5,
     },
-};
+}};

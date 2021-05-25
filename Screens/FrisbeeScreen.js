@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
-// import {connect} from 'react-redux';
+import { Icon, Button, Avatar, Chip, Overlay, ButtonGroup, Card } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import {
     useFonts,
@@ -15,141 +16,175 @@ import {
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
-
-const users = [
+const Frisbee = [
     {
         Firstname: 'Olivier',
-        Age: '20-35 ans',
-        SportsHabits: 'Stade Léo Lagrange, 69002 Lyon',
-        FavoritesSports: 'Basketball',
-        SportsHours: 'Samedi 22 mai à 15 h',
+        CreationDate : 'le 11/05/2020',
+        Address: 'Stade Léo Lagrange, 69002 Lyon',
+        Sport: 'Basketball',
+        isAccepted : null,
+        DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/olivier.jpeg'),
 
     },
     {
         Firstname: 'Ophélia',
-        Age: '20-35 ans',
-        FavoritesSports: 'Volleyball',
-        SportsHabits: 'Stade Léo Lagrange, 69002 Lyon',
-        SportsHours: 'Samedi 22 mai à 15 h',
+        CreationDate : 'le 11/05/2020',
+        Address: 'Stade Léo Lagrange, 69002 Lyon',
+        Sport: 'Basketball',
+        isAccepted : false,
+        DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/ophelia.jpeg'),
-        UserLatitude: 48.87525174619298, // Arc de Triomphe, Paris
-        UserLongitude: 2.295082113019037,
     },
     {
         Firstname: 'Cantin',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'Stade Léo Lagrange, 69002 Lyon',
-        SportsHours: 'Samedi 22 mai à 15 h',
+        CreationDate : 'le 11/05/2020',
+        Address: 'Stade Léo Lagrange, 69002 Lyon',
+        Sport: 'Basketball',
+        isAccepted : null,
+        DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/cantin.jpeg'),
-        UserLatitude: 48.85955520827693, // Tour Eiffel, Paris
-        UserLongitude: 2.294136285652365,
+
     },
     {
         Firstname: 'Hermann',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'tade Léo Lagrange, 69002 Lyon',
-        SportsHours: 'Samedi 22 mai à 15 h',
+        CreationDate : 'le 11/05/2020',
+        Address: 'Stade Léo Lagrange, 69002 Lyon',
+        Sport: 'Basketball',
+        isAccepted : true,
+        DateMeeting: 'Samedi 22 mai à 15 h',
         UserPicture: require('../assets/hermann.jpeg'),
-        UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
-        UserLongitude: 2.337396640165934,
     },
 ];
 
+const buttons = ['Reçus', 'Envoyés']
+
 function FrisbeeScreen() {
+
+const [frisbeeList, setFrisbeeList] = useState([])
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
     });
 
+    useEffect(() => {
+        async function getAllFrisbee() {
+            var request = await fetch(`http://172.16.188.137:3000/frisbee`);
+            var response = await request.json();
+            setFrisbeeList(response.frisbeeData)
+        };
+        getAllFrisbee();
+    }, []);
+
+
+var ReceivedFrisbee = Frisbee.map (function(item, i)
+{
     return (
-
-        <ScrollView style={{ marginTop: 40 }}>
-
-            <Text style={styles.title}>
-                Mes FRISBEE
-            </Text>
-
-
-            {/* LOOP ON EACH USER FROM DB */}
-            {
-                // usersList.map((user, i) => (
-                    users.map((user, i) => (
-                    <View key={i}>
-                        <View style={{ flexDirection: 'row', marginBottom: 30 }}>
-
-                            <View style={{ marginLeft: 20, marginRight: 20 }}>
+        <Card containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF'}}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ marginRight: 30, marginLeft: 10, justifyContent:'center' }}>
                                 <Avatar
+                                    size="large"
                                     rounded
-                                    size="xlarge"
-                                    source={users[i].UserPicture}
-                                    onPress={() => console.log('Appui sur photo profil')}
-
-                                />
-                            </View>
-
-                            {/* DISPLAY EACH USER */}
-                            <View style={{ flexDirection: 'column' }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text h1 style={styles.h1Style}>
-                                        {user.Firstname}
-                                    </Text>
-
-                                    <Text style={styles.ageDescription}>
-                                        {user.Age}
-                                    </Text>
-                                </View>
-
-                                <View>
-                                    <Chip
-                                        buttonStyle={styles.ChipFocus}
-                                        title={user.FavoritesSports}
-                                        titleStyle={styles.ChipFocusTitle}
-                                        type="outline"
-                                    />
-
-                                    <Text style={styles.description}>
-                                        <EvilIcons
-                                            name="calendar"
-                                            size={24}
-                                            color="#838383"
-                                        />
-                                        {user.SportsHabits}
-                                    </Text>
-
-                                    <Text style={styles.description}>
-                                        <EvilIcons name="clock"
-                                            size={24}
-                                            color="#838383"
-                                        />
-                                        {user.SportsHours}
-                                    </Text>
-
-                                </View>
-
-                                <Button
-                                    title="Réponds à l'invit'"
-                                    buttonStyle={styles.buttonFrisbee}
-                                    titleStyle={styles.buttonTextStyleFrisbee}
-                                    icon={
-                                        <Feather name="disc"
-                                            size={18}
-                                            color="#ffffff"
-                                        />
+                                    source={{uri:item.UserPicture}
                                     }
-                                    onPress={() => console.log('Appui sur FRISBEE')}
                                 />
 
+                            </View>
+                            <View style={{ marginRight: 5, }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text h1 style={styles.h1Style}>
+                                        {item.Firstname}
+                                </Text>
+                                    <Text style={styles.date}>
+                                    {item.CreationDate}
+                                </Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text h1 style={styles.h1Style}>
+                                        <Chip
+                                            buttonStyle={styles.ChipFocus}
+                                            title={item.Sport}
+                                            titleStyle={styles.ChipFocusTitle}
+                                            type="outline"
+                                        />
+                                    </Text>
+                                    {(item.isAccepted === null) &&
+                                         <Text style={styles.answerPending}>
+                                            EN ATTENTE
+                                         </Text>
+                                    }
+                                    {(item.isAccepted === true) &&
+                                         <Text style={styles.answerAccepted}>
+                                            ACCEPTÉ
+                                         </Text>
+                                    }
+                                    {(item.isAccepted === false) &&
+                                         <Text style={styles.answerRejected}>
+                                            DECLINÉ
+                                         </Text>
+                                    }
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                <EvilIcons name="clock"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    {item.DateMeeting}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom:5, marginTop:5}}>
+                                <EvilIcons name="location"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
+                                    {item.Address}</Text>
+                                </View>
+                                <View style={{alignItems:'center'}}>
+                                {(item.isAccepted === null) &&
+                                <Button
+                                        title="Réponds à l'invitation"
+                                        buttonStyle={styles.buttonFrisbee}
+                                        titleStyle={styles.buttonTextStyleFrisbee}
+                                        icon={
+                                            <Feather name="disc"
+                                                size={18}
+                                                color="#ffffff"
+                                            />
+                                        }
+                                        onPress={() => console.log('Appui sur FRISBEE')}
+                                    />
+}
+                                    </View>
                             </View>
                         </View>
-                    </View>
-                ))
-            }
+                    </Card>
+    )
+})
 
-        </ScrollView>
+    return (
+        <View style={styles.container}>
+            <ScrollView style={{ marginTop: 40 }}>
+
+                <Text style={styles.title}>
+                    Mes FRISBEE
+            </Text>
+
+                <View style={styles.buttonGroup}>
+                    <ButtonGroup
+                        buttons={buttons}
+                        containerStyle={{ height: 40 }}
+                        buttonContainerStyle={{ backgroundColor: '#F1F1F1' }}
+                        textStyle={{ color: '#000' }}
+                    />
+                </View>
+                <View>
+                    {ReceivedFrisbee}
+                    </View>
+                    </ScrollView>
+                </View>
     )
 }
 
@@ -157,21 +192,22 @@ function FrisbeeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
+        backgroundColor: '#FFF'
+        /* flexDirection: 'row', */
     },
     ChipFocus: {
-        backgroundColor: '#F3F3F3',
+        backgroundColor: '#FFFFFF',
+        marginTop: 10,
         marginBottom: 5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        width: vw(25),
+        maxWidth: 80,
+        height: 35,
     },
     ChipFocusTitle: {
         color: '#7C4DFF',
-        fontFamily: 'Nunito_400Regular'
+        fontFamily: 'Nunito_400Regular',
+        fontSize: 12,
     },
     title: {
         textAlign: 'center',
@@ -184,8 +220,38 @@ const styles = StyleSheet.create({
     h1Style: {
         fontSize: 20,
         fontFamily: 'Montserrat_300Light',
-        marginRight: 10,
+        marginRight: 40,
         marginBottom: 5
+    },
+    date: {
+        fontSize: 10,
+        fontFamily: 'Montserrat_300Light',
+        marginBottom: 5,
+    },
+    answerPending: {
+        fontSize: 14,
+
+        fontFamily: 'Nunito_400Regular',
+        color:'#FF8933',
+        marginBottom: 5,
+        marginRight: 10,
+        justifyContent: 'center',
+    },
+    answerAccepted: {
+        fontSize: 14,
+        fontFamily: 'Nunito_400Regular',
+        color:'#00CE52',
+        marginBottom: 5,
+        marginRight: 10,
+        justifyContent: 'center',
+    },
+    answerRejected: {
+        fontSize: 14,
+        fontFamily: 'Nunito_400Regular',
+        color:'#FF4757',
+        marginBottom: 5,
+        marginRight: 10,
+        justifyContent: 'center',
     },
     description: {
         fontSize: 14,
@@ -200,20 +266,21 @@ const styles = StyleSheet.create({
     buttonFrisbee: {
         backgroundColor: "#00CEC9",
         borderRadius: 17,
-        width: vw(47),
+        width: 180,
         marginTop: 10,
     },
     buttonTextStyleFrisbee: {
         fontFamily: 'Nunito_400Regular',
-        fontSize: 15,
+        fontSize: 14,
+        marginLeft:5,
     },
-    fabFilters: {
-        position: 'absolute',
-        fontSize: 10,
-        margin: 16,
-        // right: 100,
-        bottom: 10,
-        backgroundColor: '#FFFFFF80',
+    buttonGroup: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 40,
+        marginRight: 40,
+        marginBottom: 20,
     },
 });
 
