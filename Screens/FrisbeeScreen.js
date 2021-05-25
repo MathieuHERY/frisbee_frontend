@@ -19,8 +19,10 @@ import {
 
 function FrisbeeScreen(props) {
 
-const [allFrisbees, setAllFrisbees] = useState([])
-const [radioButtonValue, setRadioButtonValue] = useState(0)
+const [allFrisbees, setAllFrisbees] = useState([]);
+const [frisbeeReceived,setFrisbeeReceived] = useState([]);
+const [frisbeeSent,setFrisbeeSent] = useState([]);
+const [radioButtonValue, setRadioButtonValue] = useState(0);
 
 var radio_props = [
     {label: 'Reçus', value: 0 },
@@ -32,7 +34,7 @@ var radio_props = [
         Nunito_400Regular,
     });
 
-    useEffect(() => {
+    /* useEffect(() => {
         async function getAllFrisbee() {
             var userInfoRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
             var userInfoResponse = await userInfoRequest.json();
@@ -46,7 +48,27 @@ var radio_props = [
             setAllFrisbees(FrisbeeFiltered)
         };
         getAllFrisbee();
-    }, [radioButtonValue]);
+    }, [radioButtonValue]); */
+
+
+    useEffect(() => {
+        async function loadFrisbeeReceived() {
+            var frisbeeRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
+            var frisbeeResponse = await frisbeeRequest.json();
+            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.userToken)
+            setFrisbeeReceived(FrisbeeFiltered)
+        };
+        async function loadFrisbeeSent() {
+            var frisbeeRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
+            var frisbeeResponse = await frisbeeRequest.json();
+            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.userToken)
+            setFrisbeeSent(FrisbeeFiltered)
+        };
+        loadFrisbeeReceived();
+        loadFrisbeeSent();
+    }, [radioButtonValue]); 
+
+
 
     var GotoFrisbeeResponseScreen = (item) => {
         var frisbee = item
@@ -54,87 +76,7 @@ var radio_props = [
         props.navigation.navigate('ResponseFrisbee')
     }
 
-
-var frisbeeListSent = allFrisbees.map (function(item, i)
-{
-var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
-    return (
-        <Card key={item._id} containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={{ marginRight: 30, marginLeft: 10, justifyContent:'center' }}>
-                                <Avatar
-                                    size="large"
-                                    rounded
-                                    source={{uri:item.userInvited.UserPicture}
-                                    }
-                                />
-
-                            </View>
-                            <View style={{ marginRight: 5, }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text h1 style={styles.h1Style}>
-                                        {item.userInvited.Firstname}
-                                </Text>
-                                    <Text style={styles.date}>
-                                    {new Date(item.CreatedDate).toLocaleDateString("fr-FR")}
-                                </Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text h1 style={styles.h1Style}>
-                                        <Chip
-                                            buttonStyle={styles.ChipFocus}
-                                            title={item.Sport}
-                                            titleStyle={styles.ChipFocusTitle}
-                                            type="outline"
-                                        />
-                                    </Text>
-                                    {(item.isAccepted === 'null') &&
-                                         <Text style={styles.answerPending}>
-                                            EN ATTENTE
-                                         </Text>
-                                    }
-                                    {(item.isAccepted === 'true') &&
-                                         <Text style={styles.answerAccepted}>
-                                            ACCEPTÉ
-                                         </Text>
-                                    }
-                                    {(item.isAccepted === 'false') &&
-                                         <Text style={styles.answerRejected}>
-                                            DECLINÉ
-                                         </Text>
-                                    }
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                <EvilIcons name="calendar"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
-                                    {new Date(item.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                <EvilIcons name="clock"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
-                                    {item.HoursMeeting}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', marginBottom:5, marginTop:5}}>
-                                <EvilIcons name="location"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                    <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 13, flex:1}}>
-                                    {item.AddressMeeting}</Text>
-                                </View>
-                    </View>
-                </View>
-            </Card>
-        )
-    })
-
-var frisbeeListReceived = allFrisbees.map (function(item, i)
+var frisbeeListReceived = frisbeeReceived.map (function(item, i)
 {
 var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
@@ -224,6 +166,85 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                                 />
                             }
                         </View>
+                    </View>
+                </View>
+            </Card>
+        )
+    })
+
+    var frisbeeListSent = frisbeeSent.map (function(item, i)
+{
+var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+    return (
+        <Card key={item._id} containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ marginRight: 30, marginLeft: 10, justifyContent:'center' }}>
+                                <Avatar
+                                    size="large"
+                                    rounded
+                                    source={{uri:item.userInvited.UserPicture}
+                                    }
+                                />
+
+                            </View>
+                            <View style={{ marginRight: 5, }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text h1 style={styles.h1Style}>
+                                        {item.userInvited.Firstname}
+                                </Text>
+                                    <Text style={styles.date}>
+                                    {new Date(item.CreatedDate).toLocaleDateString("fr-FR")}
+                                </Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text h1 style={styles.h1Style}>
+                                        <Chip
+                                            buttonStyle={styles.ChipFocus}
+                                            title={item.Sport}
+                                            titleStyle={styles.ChipFocusTitle}
+                                            type="outline"
+                                        />
+                                    </Text>
+                                    {(item.isAccepted === 'null') &&
+                                         <Text style={styles.answerPending}>
+                                            EN ATTENTE
+                                         </Text>
+                                    }
+                                    {(item.isAccepted === 'true') &&
+                                         <Text style={styles.answerAccepted}>
+                                            ACCEPTÉ
+                                         </Text>
+                                    }
+                                    {(item.isAccepted === 'false') &&
+                                         <Text style={styles.answerRejected}>
+                                            DECLINÉ
+                                         </Text>
+                                    }
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                <EvilIcons name="calendar"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    {new Date(item.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                <EvilIcons name="clock"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    {item.HoursMeeting}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', marginBottom:5, marginTop:5}}>
+                                <EvilIcons name="location"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 13, flex:1}}>
+                                    {item.AddressMeeting}</Text>
+                                </View>
                     </View>
                 </View>
             </Card>
