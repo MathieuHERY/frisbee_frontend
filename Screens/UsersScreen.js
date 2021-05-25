@@ -99,13 +99,6 @@ const users = [
     },
 ];
 
-// Adresse de la Capsule
-const myLatitude = 45.7594378131077;
-const myLongitude = 4.855718686456417;
-
-// Un ID existant dans MongoDB
-const idFromReduceur = '60a77616e8f40f1e2389f682';
-
 
 function UsersScreen(props) {
 

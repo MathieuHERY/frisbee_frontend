@@ -47,11 +47,11 @@ export default function App() {
           <Stack.Screen name="UsersScreen" component={UsersScreen} />
           <Stack.Screen name="ResponseFrisbee" component={ResponseFrisbee} />
           <Stack.Screen name="SignInUpScreen" component={SignInUpScreen} />
-          {/* <Stack.Screen name="InscriptionScreen1" component={InscriptionScreen1} />
+          <Stack.Screen name="InscriptionScreen1" component={InscriptionScreen1} />
           <Stack.Screen name="InscriptionScreen2" component={InscriptionScreen2} />
           <Stack.Screen name="InscriptionScreen3" component={InscriptionScreen3} />
           <Stack.Screen name="InscriptionScreen4" component={InscriptionScreen4} />
-          <Stack.Screen name="InscriptionScreen5" component={InscriptionScreen5} /> */}
+          <Stack.Screen name="InscriptionScreen5" component={InscriptionScreen5} />
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>

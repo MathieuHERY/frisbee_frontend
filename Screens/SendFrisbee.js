@@ -34,7 +34,7 @@ function SendFrisbee(props) {
         return <AppLoading />;
     } else {
         return (
-            <ScrollView style={{ marginTop: 40 }}>
+            <ScrollView>
                 <View
 
                     style={styles.container}>
@@ -67,7 +67,7 @@ function SendFrisbee(props) {
                     <Text style={styles.ageDescription}>Votre message :</Text>
 
                     <View>
-                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 300, marginTop: 15, padding: 10 }}
+                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 270, marginTop: 15, padding: 10 }}
                             editable
                             multiline
                             numberOfLines={6}
@@ -79,10 +79,12 @@ function SendFrisbee(props) {
 
 
                     <View style={{
-                        borderColor: '#7C4DFF',
-                        borderWidth: 2,
-                        borderRadius: 17,
+                        borderColor: '#dfe6e9',
+                        borderWidth: 1,
+                        borderRadius: 5,
                         marginTop: 20,
+                        width: 270,
+                        color: "#838383"
                     }}>
                         <RNPickerSelect style={pickerStyle}
                             placeholder={{ label: "Sélectionnez le sport", value: null }}
@@ -100,15 +102,15 @@ function SendFrisbee(props) {
                     </View>
 
                     <View style={{
-                        borderColor: '#7C4DFF',
-                        backgroundColor: "#7C4DFF",
-                        borderWidth: 2,
-                        borderRadius: 17,
+                        borderColor: '#dfe6e9',
+                        borderWidth: 1,
+                        borderRadius: 5,
                         marginTop: 20,
+                        width: 270
                     }}>
                         <View style={{ alignSelf: 'stretch' }}>
                             <ModalDatePicker
-                                button={<Text style={{ color: "#ffffff", fontFamily: "Nunito_400Regular", padding: 10 }}> Sélectionnez une date </Text>}
+                                button={<Text style={{ color: "#838383", fontFamily: "Nunito_400Regular", padding: 10 }}> Sélectionnez une date </Text>}
                                 locale="tr"
                                 onSelect={(date) => console.log(date)}
                                 isHideOnSelect={true}
@@ -124,10 +126,11 @@ function SendFrisbee(props) {
 
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{
-                            borderColor: '#7C4DFF',
-                            borderWidth: 2,
-                            borderRadius: 17,
+                            borderColor: '#dfe6e9',
+                            borderWidth: 1,
+                            borderRadius: 5,
                             marginTop: 20,
+                            width: 130
                         }}>
                             <RNPickerSelect style={pickerStyle}
                                 placeholder={{ label: "Horaire de début", value: null }}
@@ -161,14 +164,15 @@ function SendFrisbee(props) {
                         </View>
 
                         <View style={{
-                            borderColor: '#7C4DFF',
-                            borderWidth: 2,
-                            borderRadius: 17,
+                            borderColor: '#dfe6e9',
+                            borderWidth: 1,
+                            borderRadius: 5,
                             marginTop: 20,
-                            marginLeft: 15
+                            marginLeft: 15,
+                            width: 130
                         }}>
                             <RNPickerSelect style={pickerStyle}
-                                placeholder={{ label: "Horaire de fin", value: null }}
+                                placeholder={{ label: "Horaire de fin", value: null, fontSize: 7 }}
                                 onValueChange={(value) => setEnd(value)}
                                 items={[
                                     { label: '00h', value: '00h' },
@@ -201,7 +205,7 @@ function SendFrisbee(props) {
                     </View>
 
                     <View>
-                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 30, width: 300, marginTop: 25, padding: 10, marginBottom: 15 }}
+                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 30, width: 270, marginTop: 25, padding: 10, marginBottom: 15 }}
                             editable
                             multiline
                             numberOfLines={6}
@@ -214,7 +218,7 @@ function SendFrisbee(props) {
                     {/*  </KeyboardAvoidingView> */}
 
                     <Button
-                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17, marginTop: 20 }}
+                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 20, marginBottom: 150 }}
                         title="Envoyer un FRISBEE"
                         /* onPress={() => { GoToNextStepSignUp(signUpFavoritesSports) }} */
                         titleStyle={{
@@ -297,19 +301,20 @@ const styles = StyleSheet.create({
     },
     iconBack: {
         marginRight: 300,
+        marginTop: 40
     },
 });
 
 const pickerStyle = {
     inputIOS: {
-        color: '#7C4DFF',
+        color: '#838383',
         paddingHorizontal: 40,
         paddingVertical: 15,
         backgroundColor: '#white',
         borderRadius: 17,
     },
     placeholder: {
-        color: '#7C4DFF',
+        color: '#838383',
     },
     inputAndroid: {
         color: 'white',

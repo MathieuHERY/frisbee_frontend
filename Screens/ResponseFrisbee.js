@@ -83,12 +83,12 @@ function ResponseFrisbee(props) {
                         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Text h1 style={styles.h1Style}>
                                 {/* {item.Firstname} */}
-                                        Axelle
+                                Axelle
                                 </Text>
 
                             <Text style={styles.description}>
                                 {/* {item.Age} */}
-                                        Age
+                                Age
                                 </Text>
 
                             <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF' }}>
