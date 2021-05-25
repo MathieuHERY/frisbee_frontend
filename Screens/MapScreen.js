@@ -98,7 +98,7 @@ function MapScreen(props) {
       name: 'place_photo.jpeg',
     });
 
-    var UploadPlaceImageToCloudinary = await fetch("http://172.16.190.9:3000/upload-user-picture", {
+    var UploadPlaceImageToCloudinary = await fetch("http://192.168.1.63:3000/upload-user-picture", {
       method: 'post',
       body: data
     });
@@ -107,7 +107,7 @@ function MapScreen(props) {
 
     if (responseFromCloudinary.imageSaved) {
 
-        var addPinToDB = await fetch ('http://172.16.190.9:3000/newplace', {
+        var addPinToDB = await fetch ('http://192.168.1.63:3000/newplace', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `name=${titrePOI}&address=${adressPOI}&description=${descPOI}&sport=${sportItemPOI}&latitude=${tempPOI.latitude}&longitude=${tempPOI.longitude}&picture=${responseFromCloudinary.url}`
@@ -194,7 +194,7 @@ function MapScreen(props) {
                     }
                 );
             };
-            var request = await fetch(`http://172.16.190.9:3000/places`);
+            var request = await fetch(`http://192.168.1.63:3000/places`);
             var response = await request.json();
             setListPoint(response.PinsData)
 

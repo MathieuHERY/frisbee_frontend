@@ -15,91 +15,6 @@ import {
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
-/* 
-const users = [
-    {
-        Firstname: 'Axelle',
-        Age: '20-35 ans',
-        FavoritesSports: 'Ping-pong',
-        SportsHabits: 'Week-end',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/axelle_circle.png'),
-        UserLatitude: 45.75892606750682,  // Place Belcour, Lyon 2
-        UserLongitude: 4.832001892099143,
-    },
-    {
-        Firstname: 'Mathieu',
-        Age: '20-35 ans',
-        FavoritesSports: ['Running', 'Football'],
-        SportsHabits: 'Soir & week-end',
-        SportsHours: '17h à 19h',
-        UserPicture: require('../assets/mathieu_circle.png'),
-        UserLatitude: 45.760030349116455, // Carrefour La Part Dieu, Lyon 3
-        UserLongitude: 4.856242322951902,
-    },
-    {
-        Firstname: 'Marilène',
-        Age: '20-35 ans',
-        FavoritesSports: 'Running',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '10h à 15h',
-        UserPicture: require('../assets/marilene_circle.png'),
-        UserLatitude: 45.74226375921547, // Décathlon Confluence, Lyon 2
-        UserLongitude: 4.81562665542188,
-    },
-    {
-        Firstname: 'Sandara',
-        Age: '20-35 ans',
-        FavoritesSports: 'Yoga',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/sandara_circle.png'),
-        UserLatitude: 45.77585598433732, // Parc de la Tête d'Or, Lyon
-        UserLongitude: 4.85408305845722,
-    },
-    {
-        Firstname: 'Olivier',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/olivier.jpeg'),
-        UserLatitude: 45.77585598433732, // Parc de la Tête d'Or, Lyon
-        UserLongitude: 4.85408305845722,
-    },
-    {
-        Firstname: 'Ophélia',
-        Age: '20-35 ans',
-        FavoritesSports: ['Volleyball', 'Football'],
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/ophelia.jpeg'),
-        UserLatitude: 48.87525174619298, // Arc de Triomphe, Paris
-        UserLongitude: 2.295082113019037,
-    },
-    {
-        Firstname: 'Cantin',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/cantin.jpeg'),
-        UserLatitude: 48.85955520827693, // Tour Eiffel, Paris
-        UserLongitude: 2.294136285652365,
-    },
-    {
-        Firstname: 'Hermann',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/hermann.jpeg'),
-        UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
-        UserLongitude: 2.337396640165934,
-    },
-]; */
-
-
 function UsersScreen(props) {
 
     let [fontsLoaded] = useFonts({
@@ -125,7 +40,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.190.9:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://192.168.1.63:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             // console.log('log de usersResponse', usersResponse);
@@ -144,24 +59,6 @@ function UsersScreen(props) {
     {/* OVERLAY: PRESS ON AVATAR = VIEW ON A SPECIFIC USER */ }
     var userOverlay = focusUser.map(function (user, i) {
         return (
-
-            // <Overlay
-            //     isVisible={visibleOverlay}
-            //     fullScreen={true}
-            //     onBackdropPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
-            // >
-            //     <View style={styles.container}>
-            //         <ScrollView>
-            //             <View>
-            //                 <Icon
-            //                     iconStyle={styles.iconCloseOverlay}
-            //                     name='close'
-            //                     size={30}
-            //                     type='Ionicons'
-            //                     color='#FF4757'
-            //                     onPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
-            //                 />
-            //             </View>
 
             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
                 <Avatar
@@ -227,9 +124,7 @@ function UsersScreen(props) {
 
                 </View>
             </View>
-            //         </ScrollView>
-            //     </View>
-            // </Overlay>
+
 
         )
         
@@ -289,71 +184,6 @@ function UsersScreen(props) {
 
                                                 {userOverlay}
 
-                                                {/* 
-                                                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
-                                                    <Avatar
-                                                        rounded
-                                                        size="xlarge"
-                                                        source={{ uri: user.UserPicture }}
-                                                    />
-
-                                                    <Text h1 style={styles.h1StyleOverlay}>
-                                                        {user.Firstname}
-                                                    </Text>
-
-                                                    <Text style={styles.ageDescriptionOverlay}>
-                                                        {user.Age}
-                                                    </Text>
-
-                                                    <Chip
-                                                        buttonStyle={styles.ChipFocus}
-                                                        title={user.FavoritesSports}
-                                                        titleStyle={styles.ChipFocusTitle}
-                                                        type="outline"
-                                                    />
-
-                                                    <Text style={styles.description}>
-                                                        {user.Description}
-                                                    </Text>
-
-                                                    <View>
-                                                        <Text style={styles.description}>
-                                                            {user.Firstname} est disponible :
-                                                    </Text>
-
-                                                        <Text style={styles.description}>
-                                                            <EvilIcons
-                                                                name="calendar"
-                                                                size={24}
-                                                                color="#838383"
-                                                            />
-                                                            {user.SportsHabits}
-                                                        </Text>
-
-                                                        <Text style={styles.description}>
-                                                            <EvilIcons name="clock"
-                                                                size={24}
-                                                                color="#838383"
-                                                            />
-                                                            {user.SportsHours}
-                                                        </Text>
-
-                                                        <Button
-                                                            title='Lance un FRISBEE'
-                                                            buttonStyle={styles.buttonFrisbeeOverlay}
-                                                            titleStyle={styles.buttonTextStyleFrisbee}
-                                                            icon={
-                                                                <Feather name="disc"
-                                                                    size={18}
-                                                                    color="#ffffff"
-                                                                />
-                                                            }
-                                                            // onPress={() => console.log('Appui sur FRISBEE')}
-                                                            onPress={() => { props.navigation.navigate('SendFrisbee'), setVisibleOverlay(false) }}
-                                                        />
-
-                                                    </View>
-                                                </View> */}
                                             </ScrollView>
                                         </View>
                                     </Overlay>

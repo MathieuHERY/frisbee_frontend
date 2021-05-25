@@ -16,54 +16,8 @@ import {
 import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
-/* import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units'; */
-
-/* const Frisbee = [
-    {
-        Firstname: 'Olivier',
-        CreationDate: 'le 11/05/2020',
-        Address: 'Stade Léo Lagrange, 69002 Lyon',
-        Sport: 'Basketball',
-        isAccepted: null,
-        DateMeeting: 'Samedi 22 mai à 15 h',
-        UserPicture: require('../assets/olivier.jpeg'),
-
-    },
-    {
-        Firstname: 'Ophélia',
-        CreationDate: 'le 11/05/2020',
-        Address: 'Stade Léo Lagrange, 69002 Lyon',
-        Sport: 'Basketball',
-        isAccepted: false,
-        DateMeeting: 'Samedi 22 mai à 15 h',
-        UserPicture: require('../assets/ophelia.jpeg'),
-    },
-    {
-        Firstname: 'Cantin',
-        CreationDate: 'le 11/05/2020',
-        Address: 'Stade Léo Lagrange, 69002 Lyon',
-        Sport: 'Basketball',
-        isAccepted: null,
-        DateMeeting: 'Samedi 22 mai à 15 h',
-        UserPicture: require('../assets/cantin.jpeg'),
-
-    },
-    {
-        Firstname: 'Hermann',
-        CreationDate: 'le 11/05/2020',
-        Address: 'Stade Léo Lagrange, 69002 Lyon',
-        Sport: 'Basketball',
-        isAccepted: true,
-        DateMeeting: 'Samedi 22 mai à 15 h',
-        UserPicture: require('../assets/hermann.jpeg'),
-    },
-];
- */
-
 
 function FrisbeeScreen(props) {
-
-    console.log('user Token dans frisbee', props.userToken)
 
 const [allFrisbees, setAllFrisbees] = useState([])
 const [radioButtonValue, setRadioButtonValue] = useState(0)
@@ -79,36 +33,39 @@ var radio_props = [
     });
 
     useEffect(() => {
-        console.log('useEffect déclenché');
         async function getAllFrisbee() {
-            var userInfoRequest = await fetch(`http://172.16.188.161:3000/allfrisbees`);
+            var userInfoRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
             var userInfoResponse = await userInfoRequest.json();
+            console.log(userInfoResponse)
             var FrisbeeFiltered;
-            // console.log(radioButtonValue);
             if (radioButtonValue.value === 0) {
-               FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userInvited.token !== props.userToken)
+               FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userInvited.token === props.userToken)
             } else {
-                FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userCreator.token !== props.userToken)
+                FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userCreator.token === props.userToken)
             }
             setAllFrisbees(FrisbeeFiltered)
         };
         getAllFrisbee();
-        // console.log('frisbee recu', allFrisbees)
-        // console.log('frisbee envoyé', allFrisbees)
     }, [radioButtonValue]);
+
+    var GotoFrisbeeResponseScreen = (item) => {
+        var frisbee = item
+        props.frisbeeData(frisbee)
+        props.navigation.navigate('ResponseFrisbee')
+    }
 
 
 var frisbeeListSent = allFrisbees.map (function(item, i)
 {
 var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
     return (
-        <Card containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
+        <Card key={item._id} containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ marginRight: 30, marginLeft: 10, justifyContent:'center' }}>
                                 <Avatar
                                     size="large"
                                     rounded
-                                    source={{uri:item.userCreator.UserPicture}
+                                    source={{uri:item.userInvited.UserPicture}
                                     }
                                 />
 
@@ -116,7 +73,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                             <View style={{ marginRight: 5, }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text h1 style={styles.h1Style}>
-                                        {item.userCreator.Firstname}
+                                        {item.userInvited.Firstname}
                                 </Text>
                                     <Text style={styles.date}>
                                     {new Date(item.CreatedDate).toLocaleDateString("fr-FR")}
@@ -171,23 +128,6 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                                     <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 13, flex:1}}>
                                     {item.AddressMeeting}</Text>
                                 </View>
-                                <View style={{alignItems:'center'}}>
-                                {(item.isAccepted === 'null') &&
-                                <Button
-                                    title="Réponds à l'invitation"
-                                    buttonStyle={styles.buttonFrisbee}
-                                    titleStyle={styles.buttonTextStyleFrisbee}
-                                    icon={
-                                        <Feather name="disc"
-                                            size={18}
-                                            color="#ffffff"
-                                        />
-                                    }
-                                    // onPress={() => console.log('Appui sur FRISBEE')}
-                                    onPress={() => props.navigation.navigate('ResponseFrisbee')}
-                                />
-                            }
-                        </View>
                     </View>
                 </View>
             </Card>
@@ -199,13 +139,13 @@ var frisbeeListReceived = allFrisbees.map (function(item, i)
 var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
     return (
-        <Card containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
+        <Card key={item._id} containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ marginRight: 30, marginLeft: 10, justifyContent:'center' }}>
                                 <Avatar
                                     size="large"
                                     rounded
-                                    source={{uri:item.userInvited.UserPicture}
+                                    source={{uri:item.userCreator.UserPicture}
                                     }
                                 />
 
@@ -213,7 +153,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                             <View style={{ marginRight: 5, }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text h1 style={styles.h1Style}>
-                                        {item.userInvited.Firstname}
+                                        {item.userCreator.Firstname}
                                 </Text>
                                     <Text style={styles.date}>
                                     {new Date(item.CreatedDate).toLocaleDateString("fr-FR")}
@@ -235,12 +175,12 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                                     }
                                     {(item.isAccepted === 'true') &&
                                          <Text style={styles.answerAccepted}>
-                                            {item.userInvited.Firstname} a accepté ton frisbee !
+                                            ACCEPTÉ
                                          </Text>
                                     }
                                     {(item.isAccepted === 'false') &&
                                          <Text style={styles.answerRejected}>
-                                            {item.userInvited.Firstname} a décliné ton frisbee !
+                                             DECLINÉ
                                          </Text>
                                     }
                                 </View>
@@ -280,8 +220,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                                             color="#ffffff"
                                         />
                                     }
-                                    // onPress={() => console.log('Appui sur FRISBEE')}
-                                    onPress={() => props.navigation.navigate('ResponseFrisbee')}
+                                    onPress={() => GotoFrisbeeResponseScreen(item)}
                                 />
                             }
                         </View>
@@ -320,13 +259,21 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
     )
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+      frisbeeData : function (frisbee) {
+        dispatch({ type: 'getFrisbeeData', frisbee : frisbee })
+      }
+    }
+  };
+
 function mapStateToProps(state) {
     return { userToken: state.userToken }
 }
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps,
 )(FrisbeeScreen);
 
 
