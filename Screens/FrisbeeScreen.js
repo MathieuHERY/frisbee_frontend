@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Icon, Button, Avatar, Chip, Overlay, ButtonGroup, Card } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,7 +15,7 @@ import {
 import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
-import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+/* import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units'; */
 
 const Frisbee = [
     {
@@ -57,11 +58,20 @@ const Frisbee = [
     },
 ];
 
+
+
+function FrisbeeScreen(props) {
+
+    console.log('user Token dans frisbee', props.userToken)
+
+const [allFrisbees, setAllFrisbees] = useState([])
 const buttons = ['Reçus', 'Envoyés']
+const [selectedbuttons, setSelectedbuttons] = useState(0)
 
-function FrisbeeScreen() {
+var updateIndex = (selectedbuttons) => {
+    setSelectedbuttons({selectedbuttons})
+}
 
-const [frisbeeList, setFrisbeeList] = useState([])
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -70,16 +80,23 @@ const [frisbeeList, setFrisbeeList] = useState([])
 
     useEffect(() => {
         async function getAllFrisbee() {
-            var request = await fetch(`http://172.16.188.137:3000/frisbee`);
-            var response = await request.json();
-            setFrisbeeList(response.frisbeeData)
+            var userInfoRequest = await fetch(`http://172.16.188.161:3000/allfrisbees`);
+            var userInfoResponse = await userInfoRequest.json();
+
+        setAllFrisbees(userInfoResponse.frisbees)
+
         };
         getAllFrisbee();
     }, []);
 
 
-var ReceivedFrisbee = Frisbee.map (function(item, i)
+
+var ReceivedFrisbee = allFrisbees.filter(item => item.userInvited.token === props.userToken)
+var frisbeeReceivedList = ReceivedFrisbee.map (function(item, i)
 {
+var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+
+
     return (
         <Card containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF'}}>
                         <View style={{ flexDirection: 'row' }}>
@@ -87,7 +104,7 @@ var ReceivedFrisbee = Frisbee.map (function(item, i)
                                 <Avatar
                                     size="large"
                                     rounded
-                                    source={{uri:item.UserPicture}
+                                    source={{uri:item.userCreator.UserPicture}
                                     }
                                 />
 
@@ -95,10 +112,10 @@ var ReceivedFrisbee = Frisbee.map (function(item, i)
                             <View style={{ marginRight: 5, }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text h1 style={styles.h1Style}>
-                                        {item.Firstname}
+                                        {item.userCreator.Firstname}
                                 </Text>
                                     <Text style={styles.date}>
-                                    {item.CreationDate}
+                                    {new Date(item.CreatedDate).toLocaleDateString("fr-FR")}
                                 </Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -110,21 +127,29 @@ var ReceivedFrisbee = Frisbee.map (function(item, i)
                                             type="outline"
                                         />
                                     </Text>
-                                    {(item.isAccepted === null) &&
+                                    {(item.isAccepted === 'null') &&
                                          <Text style={styles.answerPending}>
                                             EN ATTENTE
                                          </Text>
                                     }
-                                    {(item.isAccepted === true) &&
+                                    {(item.isAccepted === 'true') &&
                                          <Text style={styles.answerAccepted}>
                                             ACCEPTÉ
                                          </Text>
                                     }
-                                    {(item.isAccepted === false) &&
+                                    {(item.isAccepted === 'false') &&
                                          <Text style={styles.answerRejected}>
                                             DECLINÉ
                                          </Text>
                                     }
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                <EvilIcons name="calendar"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    {new Date(item.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
                                 <EvilIcons name="clock"
@@ -132,7 +157,7 @@ var ReceivedFrisbee = Frisbee.map (function(item, i)
                                                 color="#838383"
                                             />
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
-                                    {item.DateMeeting}</Text>
+                                    {item.HoursMeeting}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom:5, marginTop:5}}>
                                 <EvilIcons name="location"
@@ -140,10 +165,10 @@ var ReceivedFrisbee = Frisbee.map (function(item, i)
                                                 color="#838383"
                                             />
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
-                                    {item.Address}</Text>
+                                    {item.AddressMeeting}</Text>
                                 </View>
                                 <View style={{alignItems:'center'}}>
-                                {(item.isAccepted === null) &&
+                                {(item.isAccepted === 'null') &&
                                 <Button
                                         title="Réponds à l'invitation"
                                         buttonStyle={styles.buttonFrisbee}
@@ -175,18 +200,29 @@ var ReceivedFrisbee = Frisbee.map (function(item, i)
                 <View style={styles.buttonGroup}>
                     <ButtonGroup
                         buttons={buttons}
+                        onPress={()=> updateIndex()}
+                        selectedIndex={selectedbuttons}
                         containerStyle={{ height: 40 }}
                         buttonContainerStyle={{ backgroundColor: '#F1F1F1' }}
                         textStyle={{ color: '#000' }}
                     />
                 </View>
                 <View>
-                    {ReceivedFrisbee}
+                    {frisbeeReceivedList}
                     </View>
                     </ScrollView>
                 </View>
     )
 }
+
+function mapStateToProps(state) {
+    return { userToken: state.userToken }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(FrisbeeScreen);
 
 
 const styles = StyleSheet.create({
@@ -284,5 +320,3 @@ const styles = StyleSheet.create({
     },
 });
 
-
-export default FrisbeeScreen;
