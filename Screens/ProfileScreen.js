@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
@@ -22,79 +22,188 @@ function ProfileScreen(props) {
     });
 
 
+    const [user, setUser] = useState([]);
+
+
+    useEffect(() => {
+
+        const user = async function () {
+
+            const data = await fetch('http://172.16.190.9:3000/user');
+            const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
+            console.log(body.result);
+            setUser(body.userData); //récupère tous les users
+
+        };
+        user()
+
+    }, []);
+
+    console.log('log usersList', user)
+    var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
+    console.log(props.userToken);
+
+
+
 
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
             <ScrollView>
-                <View
 
-                    style={styles.container}>
+                <View style={styles.container}>
 
-                    <Avatar
-                        rounded
-                        size="xlarge"
-                        source={{ uri: props.newUser.UserPicture }} // À Dynamiser
-                        onPress={() => console.log('Appui sur photo profil')}
-                    />
+                    {
+                        userData.map((user, i) => (
+                            <View key={i}>
+                                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
 
-                    <Text h1 style={styles.h1Style}>{props.newUser.firstname}</Text>
-
-                    <Text style={styles.ageDescription}>{props.newUser.age}</Text>
-
-
-
-
-                    {/*  ------------------------------ mauvaise présentation --------------------------------------------- */}
+                                    <Icon
+                                        raised
+                                        name='logOff'
+                                        type='ionicon'
+                                        color='#7C4DFF'
+                                        onPress={() => props.navigation.navigate('SignInUpScreen')}
+                                        size={30}
+                                    />
 
 
-                    <View style={{ flexDirection: 'row' }}>
-                        <Chip
-                            buttonStyle={styles.ChipFocus}
-                            title={props.newUser.sport}
-                            titleStyle={styles.ChipFocusTitle}
-                            type="outline"
-                            Text={props.newUser.sport}
-                            titleProps={props.newUser.sport}
-                            key={props.newUser.sport}
-                            value={props.newUser.sport}
-                            items={props.newUser.sport}
+                                    <Avatar
+                                        rounded
+                                        size="xlarge"
+                                        source={{ uri: user.UserPicture }} // À Dynamiser
+                                    />
+
+                                    <Text h1 style={styles.h1Style}>{user.Firstname}</Text>
+
+                                    <Text style={styles.ageDescription}>{user.Age}</Text>
+
+
+
+                                    {/* 
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Chip
+                                            buttonStyle={styles.ChipFocus}
+                                            title={user.FavoritesSports}
+                                            titleStyle={styles.ChipFocusTitle}
+                                            type="outline"
+                                            Text={user.FavoritesSports}
+                                            titleProps={user.FavoritesSports}
+                                            key={user.FavoritesSports}
+                                            value={user.FavoritesSports}
+                                            items={user.FavoritesSports}
+                                        />
+                                    </View> */}
+
+                                    <Text style={{ justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ marginTop: 20 }}>{user.FavoritesSports}</Text>
+
+
+
+                                    <Text style={styles.description}>{user.Description}
+                                    </Text>
+
+                                    <Text style={styles.description}> Mes disponibilités : </Text>
+
+
+                                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
+
+                                        <Text style={styles.disponibilités1}>
+                                            <EvilIcons
+                                                name="calendar"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                            {user.SportsHabits}
+                                        </Text>
+
+                                        <Text style={styles.disponibilités}>
+                                            <EvilIcons name="clock"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                            {user.SportsHours}
+                                        </Text>
+                                    </View>
+                                </View></View>
+                        ))
+
+                    }
+
+
+
+
+                    {/* --------------------------------------------------------------------------------------------------- */}
+
+                    <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
+
+                        <Icon
+                            raised
+                            name='ios-arrow-back'
+                            type='ionicon'
+                            color='#7C4DFF'
+                            onPress={() => props.navigation.navigate('SignInUpScreen')}
+                            size={30}
                         />
-                    </View>
 
-                    <Text style={{ borderColor: '#7C4DFF', borderWidth: 1, borderRadius: 10, height: 25, width: 250, justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ }}>{props.newUser.sport}</Text>
+                        
+                        <Avatar
+                            rounded
+                            size="xlarge"
+                            source={{ uri: props.newUser.UserPicture }} // À Dynamiser
+                            onPress={() => console.log('Appui sur photo profil')}
+                        />
 
+                        <Text h1 style={styles.h1Style}>{props.newUser.firstname}</Text>
 
-                    {/* ------------------------------------------------------------------------------------------------------- */}
-
-
-
-
-                    <Text style={styles.description}>{props.newUser.description}
-                    </Text>
-
-                    <Text style={styles.description}> Mes disponibilités : </Text>
+                        <Text style={styles.ageDescription}>{props.newUser.age}</Text>
 
 
-                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
 
-                        <Text style={styles.disponibilités1}>
-                            <EvilIcons
-                                name="calendar"
-                                size={24}
-                                color="#838383"
+
+                        {/*  <View style={{ flexDirection: 'row' }}>
+                            <Chip
+                                buttonStyle={styles.ChipFocus}
+                                title={props.newUser.sport}
+                                titleStyle={styles.ChipFocusTitle}
+                                type="outline"
+                                Text={props.newUser.sport}
+                                titleProps={props.newUser.sport}
+                                key={props.newUser.sport}
+                                value={props.newUser.sport}
+                                items={props.newUser.sport}
                             />
-                            {props.newUser.habits}
-                        </Text>
+                        </View> */}
 
-                        <Text style={styles.disponibilités}>
-                            <EvilIcons name="clock"
-                                size={24}
-                                color="#838383"
-                            />
-                            {props.newUser.hoursStart} à {props.newUser.hoursEnd}
-                        </Text>
+                        <Text style={{ borderColor: '#7C4DFF', borderWidth: 1, borderRadius: 10, height: 25, width: 250, justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ }}>{props.newUser.sport}</Text>
+
+
+
+
+                        <Text style={styles.description}>{props.newUser.description} </Text>
+
+                        <Text style={styles.description}> Mes disponibilités : </Text>
+
+
+                        <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
+
+                            <Text style={styles.disponibilités1}>
+                                <EvilIcons
+                                    name="calendar"
+                                    size={24}
+                                    color="#838383"
+                                />
+                                {props.newUser.habits}
+                            </Text>
+
+                            <Text style={styles.disponibilités}>
+                                <EvilIcons name="clock"
+                                    size={24}
+                                    color="#838383"
+                                />
+                                {props.newUser.hoursStart} à {props.newUser.hoursEnd}
+                            </Text>
+                        </View>
                     </View>
 
                 </View>
@@ -149,7 +258,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat_300Light',
         marginLeft: 30,
         marginRight: 30,
-        marginTop: 25,
+        marginTop: 30,
         marginBottom: 10,
         textAlign: 'justify',
     },

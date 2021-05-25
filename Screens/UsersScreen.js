@@ -137,7 +137,7 @@ function UsersScreen(props) {
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             console.log('log de usersResponse', usersResponse);
-            setUsersList(usersResponse.usersData);
+            setUsersList(usersResponse.usersData); //récupère tous les users
 
         };
         usersAroundMe()
@@ -146,7 +146,7 @@ function UsersScreen(props) {
 
 
     console.log('log usersList', usersList)
-    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token);
+    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token); //retourne tous les utilisateurs qui n'ont pas le même token que moi (mettre 3 égales, le filtre, je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
     console.log(props.newUser.token, 'token sur UserScreen');
 
     return (
@@ -167,6 +167,10 @@ function UsersScreen(props) {
                     <View key={i}>
                         <View style={{ flexDirection: 'row', marginBottom: 30 }}>
 
+
+                            {/* DISPLAY EACH USER */}
+                            <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF' }}>
+
                             <View style={{ marginLeft: 20, marginRight: 20 }}>
                                 <Avatar
                                     rounded
@@ -177,11 +181,6 @@ function UsersScreen(props) {
                                 />
                             </View>
 
-
-
-
-                            {/* DISPLAY EACH USER */}
-                            <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF' }}>
                             <View style={{ flexDirection: 'column' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text h1 style={styles.h1Style}>

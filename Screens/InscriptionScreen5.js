@@ -35,6 +35,7 @@ function InscriptionScreen5(props) {
   /*   Save user without picture */
   var saveUserWithoutPic = async function () {
     var SignupWithoutPic = await fetch("http://172.16.190.9:3000/sign-up", {
+
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=null&UserLatitude=0&UserLongitude=0`

@@ -208,6 +208,7 @@ function MapScreen(props) {
             setListPoint(response.PinsData)
 
 
+
         };
         askPermissions();
     }, []);

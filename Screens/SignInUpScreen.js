@@ -52,6 +52,7 @@ function SignInUpScreen(props) {
     }
   }
 
+  //navigation 
   var HandleClickchangeStep = () => {
     props.HandleClickParentchangeStep()
   }
@@ -134,7 +135,7 @@ function SignInUpScreen(props) {
   );
 }}
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) { //récupération du token pour la connexion 
   return {
     addToken: function (token) {
       console.log(token);
