@@ -27,7 +27,7 @@ const [isLogin, setIsLogin] = useState(false);
 
     if (isLogin) {
         return (
-        <SignInUpScreen HandleClickParentGoToMapScreen = {HandleClickGoToMapScreen} navigation={props.navigation}/>
+        <SignInUpScreen HandleClickParentGoToMapScreen = {HandleClickGoToMapScreen} navigation={props.navigation}/> 
         )
     }
 

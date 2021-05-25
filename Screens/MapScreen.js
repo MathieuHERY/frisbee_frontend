@@ -55,8 +55,6 @@ function MapScreen(props) {
     const [focusInfo, setfocusInfo] = useState([])
 
 
-    //--------------------------------------------------------------------------------------------------
-
     const [visibleAddLocationOverlay, setVisibleAddLocationOverlay] = useState(false);
     const [addPOI, setAddPOI] = useState(false); //ajouter un lieu sur la map 
     const [listPOI, setListPOI] = useState([]); //sauvegarder les coordonnées des nouveaux POI
@@ -67,7 +65,7 @@ function MapScreen(props) {
     const [isVisibleAddPOI, setIsVisibleAddPOI] = useState(false); //overlay
     const [tempPOI, setTempPOI] = useState([]);
     const [newPinAdded, setnewPinAdded] = useState(false)
-    
+
     const [StatusGranted, setStatusGranted] = useState(false);
 
     const [open, setOpen] = useState(false);
@@ -90,55 +88,57 @@ function MapScreen(props) {
 
         console.log(adressPOI)
 
-        if (tempPOI.longitude && tempPOI.latitude &&  titrePOI && adressPOI && descPOI && sportItemPOI && imagePOI) {
-        
-            var copyListPOI = [...listPOI, { longitude: tempPOI.longitude, latitude: tempPOI.latitude, titre: titrePOI, adresse: adressPOI, description: descPOI, sportItem: sportItemPOI, image: imagePOI}];
+        if (tempPOI.longitude && tempPOI.latitude && titrePOI && adressPOI && descPOI && sportItemPOI && imagePOI) {
 
-    /* Send Picture to back-end to upload to Cloudinary */
+            var copyListPOI = [...listPOI, { longitude: tempPOI.longitude, latitude: tempPOI.latitude, titre: titrePOI, adresse: adressPOI, description: descPOI, sportItem: sportItemPOI, image: imagePOI }];
 
-    var data = new FormData();
-    data.append('picture', {
-      uri: imagePOI,
-      type: 'image/jpeg',
-      name: 'place_photo.jpeg',
-    });
 
-    var UploadPlaceImageToCloudinary = await fetch("http://192.168.1.67:3000/upload-user-picture", {
-      method: 'post',
-      body: data
-    });
 
-    var responseFromCloudinary = await UploadPlaceImageToCloudinary.json()
+            /* Send Picture to back-end to upload to Cloudinary */
 
-    if (responseFromCloudinary.imageSaved) {
+            var data = new FormData();
+            data.append('picture', {
+                uri: imagePOI,
+                type: 'image/jpeg',
+                name: 'place_photo.jpeg',
+            });
 
-        var addPinToDB = await fetch ('http://192.168.1.67:3000/newplace', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `name=${titrePOI}&address=${adressPOI}&description=${descPOI}&sport=${sportItemPOI}&latitude=${tempPOI.latitude}&longitude=${tempPOI.longitude}&picture=${responseFromCloudinary.url}`
-          })
-          
-        var responseFromDB = await addPinToDB.json();
-        console.log(responseFromDB)
-        
-        if (responseFromDB.result) {
+            var UploadPlaceImageToCloudinary = await fetch("http://192.168.1.67:3000/upload-user-picture", {
+                method: 'post',
+                body: data
+            });
 
-        setIsVisibleAddPOI(false);
-        setTempPOI();
-        setDescPOI();
-        setTitrePOI();
-        setAdressPOI()
-        setSportItemPOI();
-        setImagePOI('');
-        setAddPOI();
-        setnewPinAdded(true)
-        
+            var responseFromCloudinary = await UploadPlaceImageToCloudinary.json()
+
+            if (responseFromCloudinary.imageSaved) {
+
+                var addPinToDB = await fetch('http://192.168.1.67:3000/newplace', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `name=${titrePOI}&address=${adressPOI}&description=${descPOI}&sport=${sportItemPOI}&latitude=${tempPOI.latitude}&longitude=${tempPOI.longitude}&picture=${responseFromCloudinary.url}`
+                })
+
+                var responseFromDB = await addPinToDB.json();
+                console.log(responseFromDB)
+
+                if (responseFromDB.result) {
+
+                    setIsVisibleAddPOI(false);
+                    setTempPOI();
+                    setDescPOI();
+                    setTitrePOI();
+                    setAdressPOI()
+                    setSportItemPOI();
+                    setImagePOI('');
+                    setAddPOI();
+                    setnewPinAdded(true)
+
+                }
+
+            }
+
+        }
     }
-
-    }
-
-    }
-}
 
 
 
@@ -173,7 +173,6 @@ function MapScreen(props) {
     }
 
 
-    //-----------------------------------------------------------------------------
 
     var OpenFilterSport = () => {
         setVisibleFilterOverlay(true)
@@ -214,6 +213,7 @@ function MapScreen(props) {
         };
         askPermissions();
     }, []);
+
 
     /*   Filter pin on map */
 
@@ -538,7 +538,7 @@ function MapScreen(props) {
                             </View>
 
                             <Input
-                                containerStyle={{ marginBottom: 25, marginTop:25, width: '90%' }}
+                                containerStyle={{ marginBottom: 25, marginTop: 25, width: '90%' }}
                                 placeholder='Adresse complète du lieu'
                                 onChangeText={(val) => setAdressPOI(val)}
                                 textInput={{ color: "#eb4d4b" }}
@@ -642,13 +642,13 @@ function MapScreen(props) {
 }
 
 function mapStateToProps(state) {
-    return {newUser: state.newUser}
-   }
-  
-  export default connect(
+    return { newUser: state.newUser }
+}
+
+export default connect(
     mapStateToProps,
     null
-  )(MapScreen); 
+)(MapScreen);
 
 const styles = StyleSheet.create({
     containerAddPOI: {
@@ -739,7 +739,7 @@ const styles = StyleSheet.create({
 
 const pickerStyle = {
     inputIOS: {
-      fontSize:15,
+        fontSize: 15,
         color: '#7C4DFF',
         paddingHorizontal: 40,
         paddingVertical: 15,
@@ -748,13 +748,13 @@ const pickerStyle = {
     },
     placeholder: {
         color: '#7C4DFF',
-        fontSize:15,
-      },
+        fontSize: 15,
+    },
     inputAndroid: {
-      fontSize:15,
+        fontSize: 15,
         color: 'white',
         paddingHorizontal: 10,
         backgroundColor: 'red',
         borderRadius: 5,
     },
-  };
+};

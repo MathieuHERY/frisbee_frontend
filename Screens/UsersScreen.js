@@ -134,10 +134,10 @@ function UsersScreen(props) {
         const usersAroundMe = async function () {
 
             const usersRawResponse = await fetch('http://192.168.1.67:3000/users-filtered'); // Appel à la route
-            const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
+            const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             console.log('log de usersResponse', usersResponse);
-            setUsersList(usersResponse.usersData);
+            setUsersList(usersResponse.usersData); //récupère tous les users
 
         };
         usersAroundMe()
@@ -146,7 +146,7 @@ function UsersScreen(props) {
 
 
     console.log('log usersList', usersList)
-    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token);
+    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token); //retourne tous les utilisateurs qui n'ont pas le même token que moi (mettre 3 égales, le filtre, je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
     console.log(props.newUser.token, 'token sur UserScreen');
 
     return (
