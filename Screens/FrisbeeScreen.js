@@ -170,7 +170,7 @@ function FrisbeeScreen(props) {
 
                 <Text style={styles.title}>
                     Mes FRISBEE
-            </Text>
+                </Text>
 
                 <View style={styles.buttonGroup}>
                     <ButtonGroup

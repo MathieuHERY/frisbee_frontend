@@ -146,189 +146,195 @@ function UsersScreen(props) {
 
 
     console.log('log usersList', usersList)
-    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token); //retourne tous les utilisateurs qui n'ont pas le même token que moi (mettre 3 égales, le filtre, je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
+    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token); // Retourne tous les utilisateurs sauf moi
     console.log(props.newUser.token, 'token sur UserScreen');
+
+
+    {/* OVERLAY: PRESS ON AVATAR = VIEW ON A SPECIFIC USER */ }
+    var userFocus = usersListFiltered.map((user, i) => {
+        return (
+            <Overlay
+                isVisible={visibleOverlay}
+                fullScreen={true}
+                onBackdropPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
+            >
+                <ScrollView>
+                    <View>
+                        <Icon
+                            iconStyle={styles.iconCloseOverlay}
+                            name='close'
+                            size={30}
+                            type='Ionicons'
+                            color='#FF4757'
+                            onPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
+                        />
+                    </View>
+
+                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+                        <Avatar
+                            rounded
+                            size="xlarge"
+                            source={{ uri: user.UserPicture }}
+                        />
+
+                        <Text h1 style={styles.h1StyleOverlay}>
+                            {user.Firstname}
+                        </Text>
+
+                        <Text style={styles.ageDescriptionOverlay}>
+                            {user.Age}
+                        </Text>
+
+                        <Chip
+                            buttonStyle={styles.ChipFocus}
+                            title={user.FavoritesSports}
+                            titleStyle={styles.ChipFocusTitle}
+                            type="outline"
+                        />
+
+                        <Text style={styles.description}>
+                            {user.Description}
+                        </Text>
+
+                        <View>
+                            <Text style={styles.description}>
+                                {user.Firstname} est disponible :
+                            </Text>
+
+                            <Text style={styles.description}>
+                                <EvilIcons
+                                    name="calendar"
+                                    size={24}
+                                    color="#838383"
+                                />
+                                {user.SportsHabits}
+                            </Text>
+
+                            <Text style={styles.description}>
+                                <EvilIcons name="clock"
+                                    size={24}
+                                    color="#838383"
+                                />
+                                {user.SportsHours}
+                            </Text>
+
+                            <Button
+                                title='Lance un FRISBEE'
+                                buttonStyle={styles.buttonFrisbeeOverlay}
+                                titleStyle={styles.buttonTextStyleFrisbee}
+                                icon={
+                                    <Feather name="disc"
+                                        size={18}
+                                        color="#ffffff"
+                                    />
+                                }
+                                // onPress={() => console.log('Appui sur FRISBEE')}
+                                onPress={() => {props.navigation.navigate('SendFrisbee'), setVisibleOverlay(false)}}
+                            />
+
+                        </View>
+                    </View>
+                </ScrollView>
+            </Overlay>
+        )
+    }
+    )
 
     return (
 
-        <ScrollView style={{ marginTop: 40 }}>
+        <View style={styles.container}>
+            <ScrollView style={{ marginTop: 40 }}>
 
-            <Text style={styles.title}>
-                Fais du sport avec...
+                <Text style={styles.title}>
+                    Fais du sport avec...
             </Text>
 
 
-            {/* LOOP ON EACH USER FROM DB */}
-            {
-                usersListFiltered.map((user, i) => (
-                    // usersList.map((user, i) => (
-                    // users.map((user, i) => (
-                    
-                    <View key={i}>
-                        <View style={{ flexDirection: 'row', marginBottom: 30 }}>
+                {/* LOOP ON EACH USER FROM DB */}
+                {
+                    usersListFiltered.map((user, i) => (
+                        // usersList.map((user, i) => (
+                        // users.map((user, i) => (
 
-
-                            {/* DISPLAY EACH USER */}
-                            <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF' }}>
-
-                            <View style={{ marginLeft: 20, marginRight: 20 }}>
-                                <Avatar
-                                    rounded
-                                    size="xlarge"
-                                    source={{ uri: user.UserPicture }}
-                                    // onPress={() => console.log('Appui sur photo profil')}
-                                    onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours, picture: user.UserPicture })}
-                                />
-                            </View>
-
-                            <View style={{ flexDirection: 'column' }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text h1 style={styles.h1Style}>
-                                        {user.Firstname}
-                                    </Text>
-
-                                    <Text style={styles.ageDescription}>
-                                        {user.Age}
-                                    </Text>
-                                </View>
-
-                                <View>
-                                    <Chip
-                                        buttonStyle={styles.ChipFocus}
-                                        title={user.FavoritesSports}
-                                        titleStyle={styles.ChipFocusTitle}
-                                        type="outline"
+                        <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF' }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ marginRight: 30, marginLeft: 10, justifyContent: 'center' }}>
+                                    <Avatar
+                                        size="large"
+                                        rounded
+                                        source={{ uri: user.UserPicture }}
+                                        // onPress={() => console.log('Appui sur photo profil')}
+                                        onPress={e => onPressAvatar(e, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours, picture: user.UserPicture })
+                                        }
                                     />
 
-                                    <Text style={styles.description}>
-                                        <EvilIcons
-                                            name="calendar"
+                                    {userFocus}
+
+                                </View>
+                                <View style={{ marginRight: 5, }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text h1 style={styles.h1Style}>
+                                            {user.Firstname}
+                                        </Text>
+
+                                        <Text style={styles.ageDescription}>
+                                            {user.Age}
+                                        </Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text h1 style={styles.h1Style}>
+                                            <Chip
+                                                buttonStyle={styles.ChipFocus}
+                                                title={user.Sport}
+                                                titleStyle={styles.ChipFocusTitle}
+                                                type="outline"
+                                            />
+                                        </Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <EvilIcons name="calendar"
                                             size={24}
                                             color="#838383"
                                         />
-                                        {user.SportsHabits}
-                                    </Text>
+                                        <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                            {user.SportsHabits}</Text>
+                                    </View>
 
-                                    <Text style={styles.description}>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 5, marginTop: 5 }}>
                                         <EvilIcons name="clock"
                                             size={24}
                                             color="#838383"
                                         />
-                                        {user.SportsHours}
-                                    </Text>
+                                        <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
+                                            {user.SportsHours}</Text>
+                                    </View>
+
+                                    <View style={{ alignItems: 'center' }}>
+                                        <Button
+                                            title='Lance un FRISBEE'
+                                            buttonStyle={styles.buttonFrisbee}
+                                            titleStyle={styles.buttonTextStyleFrisbee}
+                                            icon={
+                                                <Feather name="disc"
+                                                    size={18}
+                                                    color="#ffffff"
+                                                />
+                                            }
+                                            onPress={() => props.navigation.navigate('SendFrisbee')}
+                                        />
+                                    </View>
 
                                 </View>
-
-                                <Button
-                                    title='Lance un FRISBEE'
-                                    buttonStyle={styles.buttonFrisbee}
-                                    titleStyle={styles.buttonTextStyleFrisbee}
-                                    icon={
-                                        <Feather name="disc"
-                                            size={18}
-                                            color="#ffffff"
-                                        />
-                                    }
-                                    onPress={() => props.navigation.navigate('SendFrisbee')}
-                                />
-
                             </View>
-                            </Card>
-
-                            {/* OVERLAY: VIEW ON A SPECIFIC USER */}
-                            <Overlay
-                                isVisible={visibleOverlay}
-                                fullScreen={true}
-                                onBackdropPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
-                            >
-                                <ScrollView>
-                                    <View>
-                                        <Icon
-                                            iconStyle={styles.iconCloseOverlay}
-                                            name='close'
-                                            size={30}
-                                            type='Ionicons'
-                                            color='#FF4757'
-                                            onPress={() => { setVisibleOverlay(false), setFocusUser([]) }}
-                                        />
-                                    </View>
-
-                                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
-                                        <Avatar
-                                            rounded
-                                            size="xlarge"
-                                            source={{ uri: user.UserPicture }}
-                                        />
-
-                                        <Text h1 style={styles.h1StyleOverlay}>
-                                            {user.Firstname}
-                                        </Text>
-
-                                        <Text style={styles.ageDescriptionOverlay}>
-                                            {user.Age}
-                                        </Text>
-
-                                        <Chip
-                                            buttonStyle={styles.ChipFocus}
-                                            title={user.FavoritesSports}
-                                            titleStyle={styles.ChipFocusTitle}
-                                            type="outline"
-                                        />
-
-                                        <Text style={styles.description}>
-                                            {user.Description}
-                                        </Text>
-
-                                        <View>
-                                            <Text style={styles.description}>
-                                                {user.Firstname} est disponible :
-                                            </Text>
-
-                                            <Text style={styles.description}>
-                                                <EvilIcons
-                                                    name="calendar"
-                                                    size={24}
-                                                    color="#838383"
-                                                />
-                                                {user.SportsHabits}
-                                            </Text>
-
-                                            <Text style={styles.description}>
-                                                <EvilIcons name="clock"
-                                                    size={24}
-                                                    color="#838383"
-                                                />
-                                                {user.SportsHours}
-                                            </Text>
-
-                                            <Button
-                                                title='Lance un FRISBEE'
-                                                buttonStyle={styles.buttonFrisbeeOverlay}
-                                                titleStyle={styles.buttonTextStyleFrisbee}
-                                                icon={
-                                                    <Feather name="disc"
-                                                        size={18}
-                                                        color="#ffffff"
-                                                    />
-                                                }
-                                                // onPress={() => console.log('Appui sur FRISBEE')}
-                                                onPress={() => props.navigation.navigate('SendFrisbee')}
-                                            />
+                        </Card>
+                    ))
+                }
 
 
-                                        </View>
-                                    </View>
-                                </ScrollView>
-                            </Overlay>
-
-
-                        </View>
-                    </View>
-                ))
-            }
-
-            {/* FILTRES BUTTON */}
-            {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                {/* FILTRES BUTTON */}
+                {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <FAB
                     style={styles.fabFilters}
                     small
@@ -346,7 +352,8 @@ function UsersScreen(props) {
                 />
             </View> */}
 
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 }
 
@@ -355,12 +362,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF',
         // alignItems: 'center',
         // justifyContent: 'center',
     },
     ChipFocus: {
-        backgroundColor: '#F3F3F3',
+        backgroundColor: '#FFF',
         marginBottom: 5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
