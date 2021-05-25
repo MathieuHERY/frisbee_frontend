@@ -15,7 +15,7 @@ import {
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
-
+/* 
 const users = [
     {
         Firstname: 'Axelle',
@@ -97,7 +97,7 @@ const users = [
         UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
         UserLongitude: 2.337396640165934,
     },
-];
+]; */
 
 
 function UsersScreen(props) {
@@ -362,6 +362,7 @@ const styles = StyleSheet.create({
     ChipFocus: {
         backgroundColor: '#FFF',
         marginBottom: 5,
+        marginTop:10,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
         width: vw(25),
@@ -403,6 +404,7 @@ const styles = StyleSheet.create({
     buttonTextStyleFrisbee: {
         fontFamily: 'Nunito_400Regular',
         fontSize: 15,
+        marginLeft:5,
     },
     fabFilters: {
         position: 'absolute',

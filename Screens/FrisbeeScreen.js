@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Button, Avatar, Chip, Overlay, ButtonGroup, Card } from 'react-native-elements';
+import { Icon, Button, Avatar, Chip, Overlay, Card } from 'react-native-elements';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
@@ -17,7 +18,7 @@ import {
 } from '@expo-google-fonts/montserrat';
 /* import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units'; */
 
-const Frisbee = [
+/* const Frisbee = [
     {
         Firstname: 'Olivier',
         CreationDate: 'le 11/05/2020',
@@ -57,7 +58,7 @@ const Frisbee = [
         UserPicture: require('../assets/hermann.jpeg'),
     },
 ];
-
+ */
 
 
 function FrisbeeScreen(props) {
@@ -65,13 +66,12 @@ function FrisbeeScreen(props) {
     console.log('user Token dans frisbee', props.userToken)
 
 const [allFrisbees, setAllFrisbees] = useState([])
-const buttons = ['Reçus', 'Envoyés']
-const [selectedbuttons, setSelectedbuttons] = useState(0)
+const [radioButtonValue, setRadioButtonValue] = useState(0)
 
-var updateIndex = (selectedbuttons) => {
-    setSelectedbuttons({selectedbuttons})
-}
-
+var radio_props = [
+    {label: 'Reçus', value: 0 },
+    {label: 'Envoyés', value: 1 }
+  ];
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
@@ -79,26 +79,30 @@ var updateIndex = (selectedbuttons) => {
     });
 
     useEffect(() => {
+        console.log('useEffect déclenché');
         async function getAllFrisbee() {
             var userInfoRequest = await fetch(`http://172.16.188.161:3000/allfrisbees`);
             var userInfoResponse = await userInfoRequest.json();
-
-        setAllFrisbees(userInfoResponse.frisbees)
-
+            var FrisbeeFiltered;
+            // console.log(radioButtonValue);
+            if (radioButtonValue.value === 0) {
+               FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userInvited.token !== props.userToken)
+            } else {
+                FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userCreator.token !== props.userToken)
+            }
+            setAllFrisbees(FrisbeeFiltered)
         };
         getAllFrisbee();
-    }, []);
+        // console.log('frisbee recu', allFrisbees)
+        // console.log('frisbee envoyé', allFrisbees)
+    }, [radioButtonValue]);
 
 
-
-var ReceivedFrisbee = allFrisbees.filter(item => item.userInvited.token === props.userToken)
-var frisbeeReceivedList = ReceivedFrisbee.map (function(item, i)
+var frisbeeListSent = allFrisbees.map (function(item, i)
 {
 var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
-
-
     return (
-        <Card containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF'}}>
+        <Card containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ marginRight: 30, marginLeft: 10, justifyContent:'center' }}>
                                 <Avatar
@@ -159,12 +163,12 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
                                     {item.HoursMeeting}</Text>
                                 </View>
-                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom:5, marginTop:5}}>
+                                <View style={{ flexDirection: 'row', marginBottom:5, marginTop:5}}>
                                 <EvilIcons name="location"
                                                 size={24}
                                                 color="#838383"
                                             />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 13, flex:1}}>
                                     {item.AddressMeeting}</Text>
                                 </View>
                                 <View style={{alignItems:'center'}}>
@@ -190,6 +194,104 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
         )
     })
 
+var frisbeeListReceived = allFrisbees.map (function(item, i)
+{
+var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+
+    return (
+        <Card containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ marginRight: 30, marginLeft: 10, justifyContent:'center' }}>
+                                <Avatar
+                                    size="large"
+                                    rounded
+                                    source={{uri:item.userInvited.UserPicture}
+                                    }
+                                />
+
+                            </View>
+                            <View style={{ marginRight: 5, }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text h1 style={styles.h1Style}>
+                                        {item.userInvited.Firstname}
+                                </Text>
+                                    <Text style={styles.date}>
+                                    {new Date(item.CreatedDate).toLocaleDateString("fr-FR")}
+                                </Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text h1 style={styles.h1Style}>
+                                        <Chip
+                                            buttonStyle={styles.ChipFocus}
+                                            title={item.Sport}
+                                            titleStyle={styles.ChipFocusTitle}
+                                            type="outline"
+                                        />
+                                    </Text>
+                                    {(item.isAccepted === 'null') &&
+                                         <Text style={styles.answerPending}>
+                                            EN ATTENTE
+                                         </Text>
+                                    }
+                                    {(item.isAccepted === 'true') &&
+                                         <Text style={styles.answerAccepted}>
+                                            {item.userInvited.Firstname} a accepté ton frisbee !
+                                         </Text>
+                                    }
+                                    {(item.isAccepted === 'false') &&
+                                         <Text style={styles.answerRejected}>
+                                            {item.userInvited.Firstname} a décliné ton frisbee !
+                                         </Text>
+                                    }
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                <EvilIcons name="calendar"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    {new Date(item.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                <EvilIcons name="clock"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    {item.HoursMeeting}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', marginBottom:5, marginTop:5}}>
+                                <EvilIcons name="location"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 13, flex:1}}>
+                                    {item.AddressMeeting}</Text>
+                                </View>
+                                <View style={{alignItems:'center'}}>
+                                {(item.isAccepted === 'null') &&
+                                <Button
+                                    title="Réponds à l'invitation"
+                                    buttonStyle={styles.buttonFrisbee}
+                                    titleStyle={styles.buttonTextStyleFrisbee}
+                                    icon={
+                                        <Feather name="disc"
+                                            size={18}
+                                            color="#ffffff"
+                                        />
+                                    }
+                                    // onPress={() => console.log('Appui sur FRISBEE')}
+                                    onPress={() => props.navigation.navigate('ResponseFrisbee')}
+                                />
+                            }
+                        </View>
+                    </View>
+                </View>
+            </Card>
+        )
+    })
+
+
     return (
         <View style={styles.container}>
             <ScrollView style={{ marginTop: 40 }}>
@@ -199,17 +301,19 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                 </Text>
 
                 <View style={styles.buttonGroup}>
-                    <ButtonGroup
-                        buttons={buttons}
-                        onPress={()=> updateIndex()}
-                        selectedIndex={selectedbuttons}
-                        containerStyle={{ height: 40 }}
-                        buttonContainerStyle={{ backgroundColor: '#F1F1F1' }}
-                        textStyle={{ color: '#000' }}
-                    />
+                <RadioForm
+                radio_props={radio_props}
+                initial={0}
+                formHorizontal={true}
+                labelHorizontal={false}
+                buttonColor={'#7C4DFF'}
+                selectedButtonColor={'#7C4DFF'}
+                animation={true}
+                onPress={(value) => {setRadioButtonValue({value:value})}}
+/>
                 </View>
                 <View>
-                    {frisbeeReceivedList}
+                    {radioButtonValue.value === 0 ? (frisbeeListReceived) : (frisbeeListSent) }
                     </View>
                     </ScrollView>
                 </View>
