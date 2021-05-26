@@ -29,8 +29,8 @@ import {Provider} from 'react-redux';
 import newUser from './reducers/newUser';
 import userToken from './reducers/token_reducer';
 import frisbee from './reducers/frisbees';
-import userInvited from './reducers/userInvited';
-const store = createStore(combineReducers({newUser, userToken, userInvited, frisbee})) // Added
+import resultAnswer from './reducers/answerFrisbee'
+const store = createStore(combineReducers({newUser, userToken, frisbee,resultAnswer})) // Added
 
 
 /* import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; */

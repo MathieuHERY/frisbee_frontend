@@ -29,7 +29,7 @@ function ProfileScreen(props) {
 
         const user = async function () {
 
-            const data = await fetch('http://172.16.190.9:3000/user');
+            const data = await fetch('http://172.16.188.156:3000/user');
             const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
             // console.log(body.result);
             setUser(body.userData); //récupère tous les users
@@ -39,22 +39,12 @@ function ProfileScreen(props) {
 
     }, []);
 
-    console.log('log usersList', user)
-    var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
-    console.log('token dans ProfileScreen', props.userToken);
 
-
-    if (!fontsLoaded) {
-        return <AppLoading />;
-    } else {
+   if (props.newUser.token !== null || props.newUser.token !== undefined ) {
+    var userData = user.filter(user => user.token === props.newUser.token)
+    var  UserInfoFromSignup = userData.map(function (user, i) {
         return (
-            <ScrollView>
-
-                <View style={styles.container}>
-
-                    {
-                        userData.map((user, i) => (
-                            <View key={i}>
+            <View key={i}>
                                 <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
 
                                     <Icon
@@ -77,10 +67,13 @@ function ProfileScreen(props) {
 
                                     <Text style={styles.ageDescription}>{user.Age}</Text>
 
-
-                                    <Text style={{ justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ marginTop: 20 }}>{user.FavoritesSports}</Text>
-
-
+                                    {user.FavoritesSports.map((item, i) => (
+                                        console.log(item),
+                                        <Text Text style={{ justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ marginTop: 20 }}>{item}</Text>
+                                        )
+            
+                                    )
+                                    }
 
                                     <Text style={styles.description}>{user.Description}
                                     </Text>
@@ -108,14 +101,93 @@ function ProfileScreen(props) {
                                         </Text>
                                     </View>
                                 </View></View>
-                        ))
-
+                        )
                     }
+            )
+} 
 
-                    <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
+if (props.userToken !== null || props.userToken !== undefined ) {
+    userData = user.filter(user => user.token === props.userToken)
+    UserInfoFromSignin = userData.map(function (user, i) {
+        return (
+            <View key={i}>
+                                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
 
-                    </View>
+                                    <Icon
+                                        raised
+                                        name='ios-arrow-back'
+                                        type='ionicon'
+                                        color='#7C4DFF'
+                                        onPress={() => props.navigation.navigate('SignInUpScreen')}
+                                        size={30}
+                                    />
 
+
+                                    <Avatar
+                                        rounded
+                                        size="xlarge"
+                                        source={{ uri: user.UserPicture }} // À Dynamiser
+                                    />
+
+                                    <Text h1 style={styles.h1Style}>{user.Firstname}</Text>
+
+                                    <Text style={styles.ageDescription}>{user.Age}</Text>
+
+                                    {user.FavoritesSports.map((item, i) => (
+                                        console.log(item),
+                                        <Text Text style={{ justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ marginTop: 20 }}>{item}</Text>
+                                        )
+            
+                                    )
+                                    }
+
+                                    <Text style={styles.description}>{user.Description}
+                                    </Text>
+
+                                    <Text style={styles.description}> Mes disponibilités : </Text>
+
+
+                                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
+
+                                        <Text style={styles.disponibilités1}>
+                                            <EvilIcons
+                                                name="calendar"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                            {user.SportsHabits}
+                                        </Text>
+
+                                        <Text style={styles.disponibilités}>
+                                            <EvilIcons name="clock"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                            {user.SportsHours}
+                                        </Text>
+                                    </View>
+                                </View></View>
+                        )
+                    }
+            )
+}
+
+    
+
+   console.log('token dans ProfileScreen', props.userToken)
+   console.log('token 2 dans ProfileScreen', props.newUser.token)
+
+ /*    var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
+    console.log('token dans ProfileScreen', props.userToken); */
+
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
+            <ScrollView>
+                <View style={styles.container}>
+                {UserInfoFromSignin}
+                {UserInfoFromSignup}
                 </View>
             </ScrollView>
         )
