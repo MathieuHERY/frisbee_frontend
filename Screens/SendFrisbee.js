@@ -227,6 +227,7 @@ function SendFrisbee(props) {
                             marginRight: 15
                         }}
                         onPress={() => props.navigation.navigate('FrisbeeScreen')}
+                        
                     >
                     </Button>
 

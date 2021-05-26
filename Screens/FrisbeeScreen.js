@@ -80,7 +80,7 @@ var updateIndex = (selectedbuttons) => {
 
     useEffect(() => {
         async function getAllFrisbee() {
-            var userInfoRequest = await fetch(`http://172.16.188.161:3000/allfrisbees`);
+            var userInfoRequest = await fetch(`http://172.16.190.9:3000/allfrisbees`);
             var userInfoResponse = await userInfoRequest.json();
 
         setAllFrisbees(userInfoResponse.frisbees)
