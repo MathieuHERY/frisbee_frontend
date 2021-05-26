@@ -25,8 +25,6 @@ import {
 
 function MapScreen(props) {
 
-    console.log('info user from reducer', props.newUser)
-
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
@@ -86,7 +84,6 @@ function MapScreen(props) {
 
     var handleSubmit = async () => {
 
-        console.log(adressPOI)
 
         if (tempPOI.longitude && tempPOI.latitude &&  titrePOI && adressPOI && descPOI && sportItemPOI && imagePOI) {
         
@@ -117,7 +114,6 @@ function MapScreen(props) {
           })
           
         var responseFromDB = await addPinToDB.json();
-        console.log(responseFromDB)
         
         if (responseFromDB.result) {
 
@@ -163,8 +159,6 @@ function MapScreen(props) {
             quality: 0.5,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
             setImagePOI(result.uri);
         }
@@ -187,7 +181,6 @@ function MapScreen(props) {
     const [currentLatitude, setCurrentLatitude] = useState();
     const [currentLongitude, setCurrentLongitude] = useState();
 
-    console.log(props.mapPoint)
 
     useEffect(() => {
         async function askPermissions() {
@@ -200,11 +193,9 @@ function MapScreen(props) {
                         setUserPosition([...userPosition, { lat: location.coords.latitude, lon: location.coords.longitude }])
                     }
                 );
-                console.log(userPosition)
             };
             var request = await fetch(`http://192.168.1.67:3000/places`);
             var response = await request.json();
-            console.log(response)
             setListPoint(response.PinsData)
 
 

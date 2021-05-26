@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay, Card } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
-import { ModalDatePicker } from "react-native-material-date-picker";
 import AppLoading from 'expo-app-loading';
 import {
     useFonts,
@@ -17,35 +15,42 @@ import {
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 
-const users = [
-    {
-        Firstname: 'Axelle',
-        Age: '20-35 ans',
-        FavoritesSports: 'Ping-pong',
-        SportsHabits: 'Week-end',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/axelle_circle.png'),
-        UserLatitude: 45.75892606750682,  // Place Belcour, Lyon 2
-        UserLongitude: 4.832001892099143,
-    },
-    {
-        Firstname: 'Mathieu',
-        Age: '20-35 ans',
-        FavoritesSports: ['Running', 'Football'],
-        SportsHabits: 'Soir & week-end',
-        SportsHours: '17h à 19h',
-        UserPicture: require('../assets/mathieu_circle.png'),
-        UserLatitude: 45.760030349116455, // Carrefour La Part Dieu, Lyon 3
-        UserLongitude: 4.856242322951902,
-    },
-]
-
 function ResponseFrisbee(props) {
+
+    var frisbeeToAnswer = props.frisbee;
+    var optionsDate = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
     });
+
+
+    var frisbeeAccepted = async (frisbeeId) => {
+        var submitAcceptedAnswer = await fetch('http://192.168.1.63:3000/accept-frisbee', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
+        body: `_id=${frisbeeId}&isAccepted=true`
+      })
+      var responseFromDB = await submitAcceptedAnswer.json();
+
+      if (responseFromDB.result) {
+        props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
+      }
+    }
+
+    var frisbeeRejected = async (frisbeeId) => {
+        var submitRejectedAnswer = await fetch('http://192.168.1.63:3000/reject-frisbee', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
+            body: `_id=${frisbeeId}&isAccepted=false`
+          })
+          var responseFromDB = await submitRejectedAnswer.json();
+    
+          if (responseFromDB.result) {
+            props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
+          }
+    }
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -65,70 +70,37 @@ function ResponseFrisbee(props) {
                             size={30}
                         />
                     </View>
-
-
-                    {/* VIEW ON A SPECIFIC USER */}
                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                        {/* <View style={{ marginRight: 30, marginLeft: 10, justifyContent: 'center' }}> */}
                         <Avatar
                             size="xlarge"
                             rounded
-                            // source={{uri:item.UserPicture}
-                            source={users[0].UserPicture}
-                        // }
+                            source={{ uri: frisbeeToAnswer.userCreator.UserPicture }}
                         />
-
-                        {/* </View> */}
-                        {/* <View style={{ marginRight: 5 }}> */}
                         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Text h1 style={styles.h1Style}>
-                                {/* {item.Firstname} */}
-                                Axelle
-                                </Text>
+                                {frisbeeToAnswer.userCreator.Firstname}
+                            </Text>
 
                             <Text style={styles.description}>
-                                {/* {item.Age} */}
-                                Age
-                                </Text>
+                                {frisbeeToAnswer.userCreator.Age}
+                            </Text>
 
                             <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF' }}>
                                 <Text style={styles.description}>
-                                    {/* {item.Description} */}
-                                        Hey salut Mathieu, j’ai vu que tu faisais aussi du basket. Ca te dit un p’tit basket samedi pro ? J’ai un bon niveau et j’ai un ballon.
-                                        À samedi p-ê !
-                                        Marilène
-                                    </Text>
+                                    {frisbeeToAnswer.Message}
+                                </Text>
                             </Card>
 
-
-                            {/* </View> */}
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text h1 style={styles.h1Style}>
                                     <Chip
                                         buttonStyle={styles.ChipFocus}
-                                        // title={item.Sport}
-                                        title="Sport"
+                                        title={frisbeeToAnswer.Sport}
                                         titleStyle={styles.ChipFocusTitle}
                                         type="outline"
                                     />
                                 </Text>
-                                {/* {(item.isAccepted === null) &&
-                                         <Text style={styles.answerPending}>
-                                            EN ATTENTE
-                                         </Text>
-                                    }
-                                    {(item.isAccepted === true) &&
-                                         <Text style={styles.answerAccepted}>
-                                            ACCEPTÉ
-                                         </Text>
-                                    }
-                                    {(item.isAccepted === false) &&
-                                         <Text style={styles.answerRejected}>
-                                            DECLINÉ
-                                         </Text>
-                                    } */}
                             </View>
-
                             <View >
                                 <View style={{ flexDirection: 'row' }}>
                                     <EvilIcons
@@ -137,8 +109,7 @@ function ResponseFrisbee(props) {
                                         color="#838383"
                                     />
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, marginBottom: 20 }}>
-                                        {/* {item.DateMeeting} */}
-                                    Date du FRISBEE
+                                        {new Date(frisbeeToAnswer.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}
                                     </Text>
                                 </View>
 
@@ -148,8 +119,7 @@ function ResponseFrisbee(props) {
                                         color="#838383"
                                     />
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, marginBottom: 20 }}>
-                                        {/* {item.DateMeeting} */}
-                                    Heure du FRISBEE
+                                        {frisbeeToAnswer.HoursMeeting}
                                     </Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 5, marginTop: 5, marginBottom: 20 }}>
@@ -158,8 +128,7 @@ function ResponseFrisbee(props) {
                                         color="#838383"
                                     />
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
-                                        {/* {item.Address} */}
-                                    Lieu pour faire du sport
+                                        {frisbeeToAnswer.AddressMeeting}
                                     </Text>
                                 </View>
 
@@ -168,11 +137,9 @@ function ResponseFrisbee(props) {
                         </View>
                     </View>
 
-
                     {/* BUTTONS ACCEPTER / DÉCLINER */}
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <View>
-                            {/* {(item.isAccepted === null) && */}
                             <Button
                                 title="Accepter"
                                 buttonStyle={styles.buttonFrisbeeAccepted}
@@ -183,8 +150,7 @@ function ResponseFrisbee(props) {
                                         color="#ffffff"
                                     />
                                 }
-                                // onPress={() => console.log('Appui sur FRISBEE')}
-                                onPress={() => props.navigation.navigate('BottomBar', { screen: "FRISBEE" })}
+                                onPress={() => frisbeeAccepted(frisbeeToAnswer._id)}
                             />
 
                         </View>
@@ -200,13 +166,10 @@ function ResponseFrisbee(props) {
                                         color="#ffffff"
                                     />
                                 }
-                                // onPress={() => console.log('Appui sur FRISBEE')}
-                                onPress={() => props.navigation.navigate('BottomBar', { screen: "FRISBEE" })}
+                                onPress={() => frisbeeRejected(frisbeeToAnswer._id)}
                             />
 
                         </View>
-
-                        {/* } */}
                     </View>
 
                 </ScrollView>
@@ -214,6 +177,16 @@ function ResponseFrisbee(props) {
         )
     }
 }
+
+function mapStateToProps(state) {
+    return { frisbee: state.frisbee }
+}
+
+export default connect(
+    mapStateToProps,
+    null,
+)(ResponseFrisbee);
+
 
 
 const styles = StyleSheet.create({
@@ -227,7 +200,6 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        maxWidth: 80,
         height: 35,
         marginBottom: 5,
     },
@@ -256,31 +228,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontFamily: 'Montserrat_300Light',
         marginBottom: 5,
-    },
-    answerPending: {
-        fontSize: 14,
-
-        fontFamily: 'Nunito_400Regular',
-        color: '#FF8933',
-        marginBottom: 5,
-        marginRight: 10,
-        justifyContent: 'center',
-    },
-    answerAccepted: {
-        fontSize: 14,
-        fontFamily: 'Nunito_400Regular',
-        color: '#00CE52',
-        marginBottom: 5,
-        marginRight: 10,
-        justifyContent: 'center',
-    },
-    answerRejected: {
-        fontSize: 14,
-        fontFamily: 'Nunito_400Regular',
-        color: '#FF4757',
-        marginBottom: 5,
-        marginRight: 10,
-        justifyContent: 'center',
     },
     description: {
         fontSize: 14,
@@ -322,5 +269,3 @@ const styles = StyleSheet.create({
         marginLeft: 300,
     },
 });
-
-export default ResponseFrisbee;

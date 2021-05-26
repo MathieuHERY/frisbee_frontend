@@ -43,7 +43,6 @@ function SignInUpScreen(props) {
     if (body.result == true) {
       setUserExists(true)
       props.addToken(body.token)
-      // props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
       //HandleClickGoToMapScreen();
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
       
