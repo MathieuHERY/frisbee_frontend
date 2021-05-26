@@ -47,7 +47,9 @@ function SendFrisbee(props) {
 
     }, []);
 
-    console.log('log usersList', user)
+    console.log(props.userInvited.firstname, "log props user invited firstname")
+
+    /* console.log('log usersList', user) */
     var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
     console.log(props.userToken);
 
@@ -78,7 +80,7 @@ function SendFrisbee(props) {
                     <Avatar
                         rounded
                         size="xlarge"
-                        source={require('../assets/axelle_circle.png')}
+                        /* source={{ uri: props.userInvited.userInvited.picture}} */
                         onPress={() => console.log('Appui sur photo profil')}
                     />
 

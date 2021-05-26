@@ -14,6 +14,7 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+import userInvited from '../reducers/userInvited';
 
 function UsersScreen(props) {
 
@@ -61,7 +62,7 @@ function UsersScreen(props) {
 
 
 
-
+/* 
     const [firstname, setFirstname] = useState("");
     const [picture, setPicture] = useState("");
     const [id, setId] = useState("");
@@ -78,9 +79,12 @@ function UsersScreen(props) {
           
 
         }
-      
+       */
 
-
+        var sendFrisbee = (e, id, user) => {
+            setFocusUser([...focusUser, user])
+            props.sendFrisbee(userInvited)
+        }
 
 
     
@@ -269,7 +273,7 @@ function UsersScreen(props) {
                                                     color="#ffffff"
                                                 />
                                             }
-                                            onPress={() => { sendFrisbee(id, firstname, picture) ;  console.log(firstname, "prénom de l'user que l'on souhaite inviter"); props.navigation.navigate('SendFrisbee')}}
+                                            onPress={e => sendFrisbee(e, user._id, { id: user._id, firstname: user.Firstname, picture: user.UserPicture, token: user.token },  props.navigation.navigate('SendFrisbee') )}
                                         />
                                     </View>
 
@@ -390,29 +394,27 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapDispatchToProps(dispatch) {
-    return {
-        pressOnAvatar: function (userInvited) {
-            console.log('log dans le Dispatch', userInvited);
-            dispatch({ type: 'focusOnUser', userTokenInvited: userInvited })
-        }
-    }
-}
+
 
 function mapStateToProps(state) {
     return { userToken: state.userToken }
 }
 
-function mapDispatchToProps(dispatch) { //envoie infos 
+function mapDispatchToProps(dispatch) {
     return {
-      userInfos: function (userInvited) {
-        /* console.log(userInvited); */
-        dispatch({ type: 'userInvited', userInvited: userInvited }) //prends les infos
-      }
-    }
-  }
+        sendFrisbee: function (userInvited) {
+            console.log('log dans le Dispatch', userInvited);
+            dispatch({ type: 'userInvited', userInvited: userInvited })
+        }
+    } 
+}
+
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(UsersScreen);
+
+
+
+  
