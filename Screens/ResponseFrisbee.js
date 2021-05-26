@@ -27,7 +27,7 @@ function ResponseFrisbee(props) {
 
 
     var frisbeeAccepted = async (frisbeeId) => {
-        var submitAcceptedAnswer = await fetch('http://192.168.1.63:3000/accept-frisbee', {
+        var submitAcceptedAnswer = await fetch('http://172.16.188.156:3000/accept-frisbee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
         body: `_id=${frisbeeId}&isAccepted=true`
@@ -35,12 +35,13 @@ function ResponseFrisbee(props) {
       var responseFromDB = await submitAcceptedAnswer.json();
 
       if (responseFromDB.result) {
+        props.sendAnswerFrisbee(!props.resultAnswer)
         props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
       }
     }
 
     var frisbeeRejected = async (frisbeeId) => {
-        var submitRejectedAnswer = await fetch('http://192.168.1.63:3000/reject-frisbee', {
+        var submitRejectedAnswer = await fetch('http://172.16.188.156:3000/reject-frisbee', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
             body: `_id=${frisbeeId}&isAccepted=false`
@@ -48,6 +49,7 @@ function ResponseFrisbee(props) {
           var responseFromDB = await submitRejectedAnswer.json();
     
           if (responseFromDB.result) {
+            props.sendAnswerFrisbee(!props.resultAnswer)
             props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
           }
     }
@@ -178,13 +180,22 @@ function ResponseFrisbee(props) {
     }
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+      sendAnswerFrisbee : function (answerFrisbee) {
+          console.log('sendAnswerFrisbee dans réponse :', answerFrisbee)
+        dispatch({ type: 'SubmitAnswerFrisbee', resultAnswer : answerFrisbee })
+      }
+    }
+  };
+
 function mapStateToProps(state) {
-    return { frisbee: state.frisbee }
+    return { frisbee: state.frisbee, resultAnswer : state.resultAnswer }
 }
 
 export default connect(
     mapStateToProps,
-    null,
+    mapDispatchToProps,
 )(ResponseFrisbee);
 
 
