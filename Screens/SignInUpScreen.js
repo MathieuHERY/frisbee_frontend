@@ -31,19 +31,18 @@ function SignInUpScreen(props) {
 
   var handleSubmitSignin = async () => {
 
-    const data = await fetch("http://172.16.188.156:3000/sign-in", {
+    const data = await fetch("http://192.168.1.63:3000/sign-in", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${signUpEmail}&Password=${signUpPassword}`
     })
 
     const body = await data.json()
-    console.log(body.result)
 
     if (body.result == true) {
       setUserExists(true)
-      props.addToken(body.token)
-      //HandleClickGoToMapScreen();
+      var user = body.user
+      props.getUserInfo(user)
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
       
     } else {
@@ -136,9 +135,9 @@ function SignInUpScreen(props) {
 
 function mapDispatchToProps(dispatch) { //récupération du token pour la connexion 
   return {
-    addToken: function (token) {
-      console.log(token);
-      dispatch({ type: 'getUserToken', userToken : token })
+    getUserInfo : function (user) {
+      console.log('dispatch SignIn', user);
+      dispatch({ type: 'getUserInfoLogged', newUser : user })
     }
   }
 }

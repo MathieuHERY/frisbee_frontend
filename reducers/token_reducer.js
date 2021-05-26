@@ -1,4 +1,4 @@
-export default function(userToken = "", action) {
+export default function(userToken = {}, action) {
     if (action.type == 'getUserToken' ) {
         return action.userToken;
     } else {

@@ -28,6 +28,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-advanced-select": "^1.0.7",
+    "react-native-datepicker": "^1.7.2",
     "react-native-dropdown-picker": "^5.1.15",
     "react-native-elements": "^3.4.1",
     "react-native-expo-viewport-units": "^0.0.8",

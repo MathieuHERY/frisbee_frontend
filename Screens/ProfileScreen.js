@@ -16,169 +16,12 @@ import {
 
 function ProfileScreen(props) {
 
+    console.log('userprofile', props.newUser)
+
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
     });
-
-
-    const [user, setUser] = useState([]);
-
-
-    useEffect(() => {
-
-        const user = async function () {
-
-            const data = await fetch('http://172.16.188.156:3000/user');
-            const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
-            // console.log(body.result);
-            setUser(body.userData); //récupère tous les users
-
-        };
-        user()
-
-    }, []);
-
-
-   if (props.newUser.token !== null || props.newUser.token !== undefined ) {
-    var userData = user.filter(user => user.token === props.newUser.token)
-    var  UserInfoFromSignup = userData.map(function (user, i) {
-        return (
-            <View key={i}>
-                                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
-
-                                    <Icon
-                                        raised
-                                        name='ios-arrow-back'
-                                        type='ionicon'
-                                        color='#7C4DFF'
-                                        onPress={() => props.navigation.navigate('SignInUpScreen')}
-                                        size={30}
-                                    />
-
-
-                                    <Avatar
-                                        rounded
-                                        size="xlarge"
-                                        source={{ uri: user.UserPicture }} // À Dynamiser
-                                    />
-
-                                    <Text h1 style={styles.h1Style}>{user.Firstname}</Text>
-
-                                    <Text style={styles.ageDescription}>{user.Age}</Text>
-
-                                    {user.FavoritesSports.map((item, i) => (
-                                        console.log(item),
-                                        <Text Text style={{ justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ marginTop: 20 }}>{item}</Text>
-                                        )
-            
-                                    )
-                                    }
-
-                                    <Text style={styles.description}>{user.Description}
-                                    </Text>
-
-                                    <Text style={styles.description}> Mes disponibilités : </Text>
-
-
-                                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
-
-                                        <Text style={styles.disponibilités1}>
-                                            <EvilIcons
-                                                name="calendar"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {user.SportsHabits}
-                                        </Text>
-
-                                        <Text style={styles.disponibilités}>
-                                            <EvilIcons name="clock"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {user.SportsHours}
-                                        </Text>
-                                    </View>
-                                </View></View>
-                        )
-                    }
-            )
-} 
-
-if (props.userToken !== null || props.userToken !== undefined ) {
-    userData = user.filter(user => user.token === props.userToken)
-    UserInfoFromSignin = userData.map(function (user, i) {
-        return (
-            <View key={i}>
-                                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
-
-                                    <Icon
-                                        raised
-                                        name='ios-arrow-back'
-                                        type='ionicon'
-                                        color='#7C4DFF'
-                                        onPress={() => props.navigation.navigate('SignInUpScreen')}
-                                        size={30}
-                                    />
-
-
-                                    <Avatar
-                                        rounded
-                                        size="xlarge"
-                                        source={{ uri: user.UserPicture }} // À Dynamiser
-                                    />
-
-                                    <Text h1 style={styles.h1Style}>{user.Firstname}</Text>
-
-                                    <Text style={styles.ageDescription}>{user.Age}</Text>
-
-                                    {user.FavoritesSports.map((item, i) => (
-                                        console.log(item),
-                                        <Text Text style={{ justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ marginTop: 20 }}>{item}</Text>
-                                        )
-            
-                                    )
-                                    }
-
-                                    <Text style={styles.description}>{user.Description}
-                                    </Text>
-
-                                    <Text style={styles.description}> Mes disponibilités : </Text>
-
-
-                                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
-
-                                        <Text style={styles.disponibilités1}>
-                                            <EvilIcons
-                                                name="calendar"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {user.SportsHabits}
-                                        </Text>
-
-                                        <Text style={styles.disponibilités}>
-                                            <EvilIcons name="clock"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {user.SportsHours}
-                                        </Text>
-                                    </View>
-                                </View></View>
-                        )
-                    }
-            )
-}
-
-    
-
-   console.log('token dans ProfileScreen', props.userToken)
-   console.log('token 2 dans ProfileScreen', props.newUser.token)
-
- /*    var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
-    console.log('token dans ProfileScreen', props.userToken); */
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -186,16 +29,63 @@ if (props.userToken !== null || props.userToken !== undefined ) {
         return (
             <ScrollView>
                 <View style={styles.container}>
-                {UserInfoFromSignin}
-                {UserInfoFromSignup}
-                </View>
+            <View>
+                                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
+
+                                    <Icon
+                                        raised
+                                        name='ios-arrow-back'
+                                        type='ionicon'
+                                        color='#7C4DFF'
+                                        onPress={() => props.navigation.navigate('SignInUpScreen')}
+                                        size={30}
+                                    />
+
+
+                                    <Avatar
+                                        rounded
+                                        size="xlarge"
+                                        source={{ uri: props.newUser.UserPicture }} // À Dynamiser
+                                    />
+
+                                    <Text h1 style={styles.h1Style}>{props.newUser.Firstname}</Text>
+
+                                    <Text style={styles.ageDescription}>{props.newUser.Age}</Text>
+
+                                    <Text style={styles.description}>{props.newUser.Description}
+                                    </Text>
+
+                                    <Text style={styles.description}> Mes disponibilités : </Text>
+
+
+                                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
+
+                                        <Text style={styles.disponibilités1}>
+                                            <EvilIcons
+                                                name="calendar"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                            {props.newUser.SportsHabits}
+                                        </Text>
+
+                                        <Text style={styles.disponibilités}>
+                                            <EvilIcons name="clock"
+                                                size={24}
+                                                color="#838383"
+                                            />
+                                            {props.newUser.SportsHours}
+                                        </Text>
+                                    </View>
+                                </View></View>
+                                </View>
             </ScrollView>
-        )
-    }
-}
+                        )
+                    }
+                }
 
 function mapStateToProps(state) {
-    return { newUser: state.newUser, userToken: state.userToken }
+    return { newUser: state.newUser}
 }
 
 export default connect(

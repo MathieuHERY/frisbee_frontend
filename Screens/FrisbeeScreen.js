@@ -34,33 +34,35 @@ var radio_props = [
         Nunito_400Regular,
     });
 
+    console.log('info user in Frisbee', props.newUser)
 
     useEffect(() => {
         async function loadFrisbeeReceived() {
-            var frisbeeRequest = await fetch(`http://172.16.188.156:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
-            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.userToken)
+
+          var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.newUser.token)
             setFrisbeeReceived(FrisbeeFiltered)
+            console.log('frisbee', frisbeeReceived)
         };
         async function loadFrisbeeSent() {
-            var frisbeeRequest = await fetch(`http://172.16.188.156:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
-            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.userToken)
+            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.newUser.token)
             setFrisbeeSent(FrisbeeFiltered)
         };
         loadFrisbeeReceived();
         loadFrisbeeSent();
 
-    }, [radioButtonValue, props.resultAnswer]); 
+    }, [radioButtonValue,props.resultAnswer]); 
+
+
 
     var GotoFrisbeeResponseScreen = (item) => {
         var frisbee = item
         props.frisbeeData(frisbee)
         props.navigation.navigate('ResponseFrisbee')
     }
-
-/* const frisbeeReceivedSorted = frisbeeReceived.sort((a, b) => a.CreatedDate - b.CreatedDate);
-    console.log(frisbeeReceivedSorted) */
 
 var frisbeeListReceived = frisbeeReceived.map (function(item, i)
 {
@@ -275,7 +277,7 @@ function mapDispatchToProps(dispatch) {
   };
 
 function mapStateToProps(state) {
-    return { userToken: state.userToken, resultAnswer : state.resultAnswer }
+    return { newUser: state.newUser, resultAnswer : state.resultAnswer }
 }
 
 export default connect(

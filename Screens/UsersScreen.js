@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Input, Button, Avatar, Chip, FAB, Overlay, Card } from 'react-native-elements';
+import { Icon, Input, Button, Avatar, Chip, FAB, Overlay, Card,Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -14,7 +14,6 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
-import userInvited from '../reducers/userInvited';
 
 
 function UsersScreen(props) {
@@ -42,7 +41,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.188.156:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://192.168.1.63:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             // console.log('log de usersResponse', usersResponse);
@@ -54,12 +53,10 @@ function UsersScreen(props) {
     }, []);
 
     // console.log('log usersList', usersList)
-    var usersListFiltered = usersList.filter(user => user.token != props.userToken); // Retourne tous les utilisateurs sauf moi
-    console.log('token sur UserScreen', props.userToken);
+    var usersListFiltered = usersList.filter(user => user.token != props.newUser.token); // Retourne tous les utilisateurs sauf moi
 
-
-    var sendFrisbee = (e, id, userInvited) => { //user est l'argument, donc doit être la même que dans le dispatch
-        props.sendFrisbee(userInvited) //dispatch
+    var sendFrisbee = (e, id, user) => { //user est l'argument, donc doit être la même que dans le dispatch
+        props.sendFrisbee(user) //dispatch
     }
 
 
@@ -81,7 +78,6 @@ function UsersScreen(props) {
                     <Text style={styles.ageDescriptionOverlay}>
                         {user.age}
                     </Text>
-
                     <Chip
                         buttonStyle={styles.ChipFocus}
                         title={user.sports}
@@ -208,14 +204,21 @@ function UsersScreen(props) {
                                             </Text>
                                         </View>
 
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap:'wrap', width:230, marginTop:5, marginBottom:5}}>
                                             <Text h1 style={styles.h1Style}>
-                                                <Chip
-                                                    buttonStyle={styles.ChipFocus}
-                                                    title={user.Sport}
-                                                    titleStyle={styles.ChipFocusTitle}
-                                                    type="outline"
-                                                />
+
+                                                {user.FavoritesSports.map(function(sport,i){
+
+                                                    return(
+                                                        <Badge
+                                                        badgeStyle={styles.SportBadge}
+                                                        value={sport}
+                                                        textStyle={styles.ChipFocusTitle}
+                                                        type="outline"
+                                                    />
+                                                    )
+
+                                                })}
                                             </Text>
                                         </View>
 
@@ -260,25 +263,6 @@ function UsersScreen(props) {
                         ))
                     }
 
-                    {/* FILTRES BUTTON */}
-                    {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <FAB
-                            style={styles.fabFilters}
-                            small
-                            color='#FFFFFF80'
-                            title="Filtres" titleStyle={{ color: '#000000', fontFamily: 'Nunito_400Regular' }}
-                            icon={
-                                <Icon
-                                    Ionicons name="filter-list"
-                                    size={20}
-                                    color="black"
-                                />
-                            }
-                            onPress={() => { setVisibleFilterOverlay(true) }}
-                        // onPress={() => console.log('Appui sur filtrer')}
-                        />
-                    </View> */}
-
                 </ScrollView>
             </View>
         )
@@ -302,7 +286,13 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         width: vw(25),
     },
+    SportBadge: {
+        backgroundColor: '#FFF',
+        borderColor: '#7C4DFF',
+        borderWidth: 1.5,
+    },
     ChipFocusTitle: {
+        fontSize:10,
         color: '#7C4DFF',
         fontFamily: 'Nunito_400Regular'
     },
@@ -381,15 +371,15 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch) {
     return {
-        sendFrisbee: function (userInvited) {
-            console.log('log dans le Dispatch', userInvited);
-            dispatch({ type: 'userInvited', userInvited: userInvited })
+        sendFrisbee: function (user) {
+            console.log('log dans le Dispatch', user);
+            dispatch({ type: 'getUserInvitedInfo', userInvited: user })
         }
     } 
 }
 
 function mapStateToProps(state) {
-    return { userToken: state.userToken }
+    return {newUser : state.newUser}
 }
 
 
