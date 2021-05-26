@@ -116,9 +116,6 @@ function UsersScreen(props) {
         setVisibleOverlay(true)
         setFocusUser([...focusUser])
     }
-    // console.log(focusUser, "Log sur MapScreen focusUser");
-    // console.log(props.newUser, "tout l'objet avec token sur UserScreen");
-    // console.log(props.newUser.token, 'token sur UserScreen');
 
 
     // USERS FILTERED 
@@ -126,10 +123,10 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.188.161:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://192.168.1.67:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
-            console.log('log de usersResponse', usersResponse);
+            /* console.log('log de usersResponse', usersResponse); */
             setUsersList(usersResponse.usersData); //récupère tous les users
 
         };
@@ -138,10 +135,39 @@ function UsersScreen(props) {
     }, []);
 
 
-    console.log('log usersList', usersList)
+    /* console.log('log usersList', usersList) */
     var usersListFiltered = usersList.filter(user => user.token != props.newUser.token); // Retourne tous les utilisateurs sauf moi
-    console.log(props.newUser.token, 'token sur UserScreen');
+    /* console.log(props.newUser.token, 'token sur UserScreen'); */
 
+    
+
+
+
+
+
+
+    const [firstname, setFirstname] = useState("");
+    const [picture, setPicture] = useState("");
+    const [id, setId] = useState("");
+
+
+    var sendFrisbee = (id ,firstname, picture) => { //appel fonction propsuserinfo toutes les clés user info 
+    
+        
+        
+          var userInvited = {id: id, firstname: firstname, picture: picture, token: props.token }; //définit un objet user avec des clés info récupérés des champs
+          userIvited => userIvited.token === props.userInvitedToken; 
+          console.log(firstname, "prénom de l'user que l'on souhaite inviter")
+          props.userInfos(userInvited)
+          
+
+        }
+      
+
+
+
+
+    
 
     {/* OVERLAY: PRESS ON AVATAR = VIEW ON A SPECIFIC USER */ }
     var userFocus = usersListFiltered.map((user, i) => {
@@ -315,7 +341,7 @@ function UsersScreen(props) {
                                                     color="#ffffff"
                                                 />
                                             }
-                                            onPress={() => props.navigation.navigate('SendFrisbee')}
+                                            onPress={() => { sendFrisbee(id, firstname, picture) ;  console.log(firstname, "prénom de l'user que l'on souhaite inviter"); props.navigation.navigate('SendFrisbee')}}
                                         />
                                     </View>
 
@@ -435,10 +461,19 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    return { newUser: state.newUser }
+    return { newUser: state.newUser, userToken: state.userToken  }
 }
+
+function mapDispatchToProps(dispatch) { //envoie infos 
+    return {
+      userInfos: function (userInvited) {
+        /* console.log(userInvited); */
+        dispatch({ type: 'userInvited', userInvited: userInvited }) //prends les infos
+      }
+    }
+  }
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps,
 )(UsersScreen);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
@@ -30,14 +30,35 @@ function SendFrisbee(props) {
     const [begin, setBegin] = useState("");
     const [end, setEnd] = useState("");
 
+    const [user, setUser] = useState([]);
+
+
+    useEffect(() => {
+
+        const user = async function () {
+
+            const data = await fetch('http://192.168.1.67:3000/user');
+            const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
+            console.log(body.result);
+            setUser(body.userData); //récupère tous les users
+
+        };
+        user()
+
+    }, []);
+
+    console.log('log usersList', user)
+    var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
+    console.log(props.userToken);
+
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
             <ScrollView>
-                <View
-
-                    style={styles.container}>
+                <View style={styles.container}>
+                    
 
                     {/* <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}> */}
@@ -62,7 +83,7 @@ function SendFrisbee(props) {
                     />
 
                     <Text h1 style={styles.h1Style}>Lance un FRISBEE</Text>
-                    <Text h1 style={styles.h1StyleBis}>à Axelle</Text>
+                    <Text h1 style={styles.h1StyleBis}>{props.userInvited.firstname}</Text>
 
                     <Text style={styles.ageDescription}>Votre message :</Text>
 
@@ -324,4 +345,11 @@ const pickerStyle = {
     },
 };
 
-export default SendFrisbee;
+function mapStateToProps(state) {
+    return { userInvited : state.userInvited}
+   }
+
+   export default connect(
+    mapStateToProps,
+    null
+  )(SendFrisbee);

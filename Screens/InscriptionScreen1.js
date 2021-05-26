@@ -30,11 +30,11 @@ function InscriptionScreen1(props) {
     props.HandleClickParentchangeStep()
   }
 
-  var GoToNextStepSignUp = (signUpEmail, signUpFirstname, signUpPassword) => {
+  var GoToNextStepSignUp = (signUpEmail, signUpFirstname, signUpPassword) => { //appel fonction propsuserinfo toutes les clés user info 
 
     if (signUpEmail && signUpFirstname && signUpPassword) {
 
-      let user = { email: signUpEmail, password: signUpPassword, firstname: signUpFirstname };
+      let user = { email: signUpEmail, password: signUpPassword, firstname: signUpFirstname }; //définit un objet user avec des clés info récupérés des champs
       console.log(signUpEmail);
 
       props.UserFirstInfo(user)
@@ -91,7 +91,7 @@ function InscriptionScreen1(props) {
           <Button
             buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17, marginTop: 20 }}
             title="Suivant"
-            onPress={() => { GoToNextStepSignUp(signUpEmail, signUpFirstname, signUpPassword) }}
+            onPress={() => { GoToNextStepSignUp(signUpEmail, signUpFirstname, signUpPassword) }} //passe les infos qui sont récupérés plus haut 
             titleStyle={{
               fontFamily: 'Nunito_400Regular',
               marginLeft: 15,
@@ -106,14 +106,16 @@ function InscriptionScreen1(props) {
 }
 
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) { //envoie infos 
   return {
     UserFirstInfo: function (user) {
       console.log(user);
-      dispatch({ type: 'addInfoFirstStep', newUser: user })
+      dispatch({ type: 'addInfoFirstStep', newUser: user }) //prends les infos
     }
   }
 }
+
+//clique sur marilène : let userinvited objet : id prénom + photo création reducer + fonction info user invited , passe l'objet user à l'interieur, donc fonction user, dans le reducer dans chaque bouton passer les bons paramètres, reprendre iscription screen 1
 
 export default connect(
   null,

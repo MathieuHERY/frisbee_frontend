@@ -34,7 +34,7 @@ function InscriptionScreen5(props) {
 
   /*   Save user without picture */
   var saveUserWithoutPic = async function () {
-    var SignupWithoutPic = await fetch("http://172.16.188.161:3000/sign-up", {
+    var SignupWithoutPic = await fetch("http://192.168.1.67:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=null&UserLatitude=0&UserLongitude=0`
@@ -90,7 +90,7 @@ function InscriptionScreen5(props) {
       name: 'user_photo.jpeg',
     });
 
-    var request = await fetch("http://172.16.188.161:3000/upload-user-picture", {
+    var request = await fetch("http://192.168.1.67:3000/upload-user-picture", {
       method: 'post',
       body: data
     });
@@ -99,7 +99,7 @@ function InscriptionScreen5(props) {
 
     if (response.imageSaved) {
 
-      var SignupWithPic = await fetch("http://172.16.188.161:3000/sign-up", {
+      var SignupWithPic = await fetch("http://192.168.1.67:3000/sign-up", {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=${response.url}&UserLatitude=0&UserLongitude=0`
