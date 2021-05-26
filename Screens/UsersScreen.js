@@ -14,90 +14,7 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
-
-
-const users = [
-    {
-        Firstname: 'Axelle',
-        Age: '20-35 ans',
-        FavoritesSports: 'Ping-pong',
-        SportsHabits: 'Week-end',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/axelle_circle.png'),
-        UserLatitude: 45.75892606750682,  // Place Belcour, Lyon 2
-        UserLongitude: 4.832001892099143,
-    },
-    {
-        Firstname: 'Mathieu',
-        Age: '20-35 ans',
-        FavoritesSports: ['Running', 'Football'],
-        SportsHabits: 'Soir & week-end',
-        SportsHours: '17h à 19h',
-        UserPicture: require('../assets/mathieu_circle.png'),
-        UserLatitude: 45.760030349116455, // Carrefour La Part Dieu, Lyon 3
-        UserLongitude: 4.856242322951902,
-    },
-    {
-        Firstname: 'Marilène',
-        Age: '20-35 ans',
-        FavoritesSports: 'Running',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '10h à 15h',
-        UserPicture: require('../assets/marilene_circle.png'),
-        UserLatitude: 45.74226375921547, // Décathlon Confluence, Lyon 2
-        UserLongitude: 4.81562665542188,
-    },
-    {
-        Firstname: 'Sandara',
-        Age: '20-35 ans',
-        FavoritesSports: 'Yoga',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/sandara_circle.png'),
-        UserLatitude: 45.77585598433732, // Parc de la Tête d'Or, Lyon
-        UserLongitude: 4.85408305845722,
-    },
-    {
-        Firstname: 'Olivier',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/olivier.jpeg'),
-        UserLatitude: 45.77585598433732, // Parc de la Tête d'Or, Lyon
-        UserLongitude: 4.85408305845722,
-    },
-    {
-        Firstname: 'Ophélia',
-        Age: '20-35 ans',
-        FavoritesSports: ['Volleyball', 'Football'],
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/ophelia.jpeg'),
-        UserLatitude: 48.87525174619298, // Arc de Triomphe, Paris
-        UserLongitude: 2.295082113019037,
-    },
-    {
-        Firstname: 'Cantin',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/cantin.jpeg'),
-        UserLatitude: 48.85955520827693, // Tour Eiffel, Paris
-        UserLongitude: 2.294136285652365,
-    },
-    {
-        Firstname: 'Hermann',
-        Age: '20-35 ans',
-        FavoritesSports: 'Basketball',
-        SportsHabits: 'Tous les jours',
-        SportsHours: '9h à 20h',
-        UserPicture: require('../assets/hermann.jpeg'),
-        UserLatitude: 48.86195579255304, // Musée du Louvre, Paris
-        UserLongitude: 2.337396640165934,
-    },
-];
+import userInvited from '../reducers/userInvited';
 
 
 function UsersScreen(props) {
@@ -139,6 +56,11 @@ function UsersScreen(props) {
     // console.log('log usersList', usersList)
     var usersListFiltered = usersList.filter(user => user.token != props.userToken); // Retourne tous les utilisateurs sauf moi
     console.log('token sur UserScreen', props.userToken);
+
+
+    var sendFrisbee = (e, id, userInvited) => { //user est l'argument, donc doit être la même que dans le dispatch
+        props.sendFrisbee(userInvited) //dispatch
+    }
 
 
     {/* OVERLAY: PRESS ON AVATAR = VIEW ON A SPECIFIC USER */ }
@@ -326,7 +248,9 @@ function UsersScreen(props) {
                                                         color="#ffffff"
                                                     />
                                                 }
-                                                onPress={() => props.navigation.navigate('SendFrisbee')}
+                                                // onPress={() => { props.navigation.navigate('SendFrisbee'), setVisibleOverlay(false), setFocusUser([]) }}
+                                                onPress={e => sendFrisbee(e, user._id, { id: user._id, firstname: user.Firstname, picture: user.UserPicture, token: user.token }, props.navigation.navigate('SendFrisbee'))}
+
                                             />
                                         </View>
 
@@ -373,6 +297,7 @@ const styles = StyleSheet.create({
     ChipFocus: {
         backgroundColor: '#FFF',
         marginBottom: 5,
+        marginTop:10,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
         width: vw(25),
@@ -414,6 +339,7 @@ const styles = StyleSheet.create({
     buttonTextStyleFrisbee: {
         fontFamily: 'Nunito_400Regular',
         fontSize: 15,
+        marginLeft:5,
     },
     fabFilters: {
         position: 'absolute',
@@ -453,11 +379,21 @@ const styles = StyleSheet.create({
 });
 
 
+function mapDispatchToProps(dispatch) {
+    return {
+        sendFrisbee: function (userInvited) {
+            console.log('log dans le Dispatch', userInvited);
+            dispatch({ type: 'userInvited', userInvited: userInvited })
+        }
+    } 
+}
+
 function mapStateToProps(state) {
     return { userToken: state.userToken }
 }
 
+
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(UsersScreen);

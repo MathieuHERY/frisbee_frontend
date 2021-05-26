@@ -7,4 +7,3 @@ export default function(userToken = "", action) {
 }
 
 
-// TO DO : Ajouter le MapDispatchToProps sur la page ScreenInscription5

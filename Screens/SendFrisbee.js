@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon, Input, Button, Avatar, Chip, FAB, Overlay } from 'react-native-elements';
@@ -29,74 +29,179 @@ function SendFrisbee(props) {
     const [lieu, setLieu] = useState("");
     const [begin, setBegin] = useState("");
     const [end, setEnd] = useState("");
+    const [usersList, setUsersList] = useState([]);
+    const [userIdInvited, setUserIdInvited] = useState("");
+    const [userIdSender, setUserIdSender] = useState("");
 
-    if (!fontsLoaded) {
-        return <AppLoading />;
-    } else {
-        return (
-            <ScrollView>
-                <View
+    useEffect(() => {
 
-                    style={styles.container}>
+        const allUsersData = async function () {
 
-                    {/* <KeyboardAvoidingView
+            const data = await fetch('http://172.16.190.9:3000/user');
+            const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
+            // console.log("log de body dans SendFrisbee", body);
+            setUsersList(body.userData);
+            // console.log("log de tous les users sur SendFrisbee", body.userData); //récupère tous les users
+        };
+        allUsersData()
+    }, []
+    )
+
+    // Je filtre tous les users et je ressors l'utilisateur connecté
+    var userFrisbeeSender = usersList.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
+    // console.log('token dans SendFrisbee', props.userToken); // Le token de la personne connectée
+    // console.log("log de userFrisbeeSender", userFrisbeeSender); // Un tableau avec toutes les infos de la personne connectée
+
+    // Je récupère l'ID de la personne connectée
+
+        setUserIdSender(userFrisbeeSender[0]._id);
+        
+
+
+    console.log("log variable d'état userIdSender", userIdSender);
+
+ 
+    var submitFrisbee = async function() {
+        var frisbeeData = await fetch("http://172.16.190.9:3000/send-frisbee", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `userCreator=${props.userInvited}&userInvited=${props.userInvited._id}&AddressMeeting=${lieu}&Message=${message}&Sport=${sport}&DateMeeting=${date}&HoursMeeting=${`${begin}-${end}`}`
+            })
+        console.log('log de props.userInvited', props.userInvited);
+    }
+
+
+
+if (!fontsLoaded) {
+    return <AppLoading />;
+} else {
+    return (
+        <ScrollView>
+            <View
+                style={styles.container}>
+
+                {/* <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}> */}
 
 
-                    <View style={styles.iconBack}>
-                        <Icon
-                            raised
-                            name='ios-arrow-back'
-                            type='ionicon'
-                            color='#7C4DFF'
-                            onPress={() => props.navigation.navigate('BottomBar', { screen: "SPORTIFS" })}
-                            size={30}
-                        />
-                    </View>
-
-                    <Avatar
-                        rounded
-                        size="xlarge"
-                        source={require('../assets/axelle_circle.png')}
-                        onPress={() => console.log('Appui sur photo profil')}
+                <View style={styles.iconBack}>
+                    <Icon
+                        raised
+                        name='ios-arrow-back'
+                        type='ionicon'
+                        color='#7C4DFF'
+                        onPress={() => props.navigation.navigate('BottomBar', { screen: "SPORTIFS" })}
+                        size={30}
                     />
+                </View>
 
-                    <Text h1 style={styles.h1Style}>Lance un FRISBEE</Text>
-                    <Text h1 style={styles.h1StyleBis}>à Axelle</Text>
+                <Avatar
+                    rounded
+                    size="xlarge"
+                    // source={require('../assets/axelle_circle.png')}
+                    source={{ uri: props.userInvited.picture }}
+                    onPress={() => console.log('Appui sur photo profil')}
+                />
 
-                    <Text style={styles.ageDescription}>Votre message :</Text>
+                <Text h1 style={styles.h1Style}>Lance un FRISBEE</Text>
+                <Text h1 style={styles.h1StyleBis}>à {props.userInvited.firstname}</Text>
 
-                    <View>
-                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 270, marginTop: 15, padding: 10 }}
-                            editable
-                            multiline
-                            numberOfLines={6}
-                            maxLength={200}
-                            onChangeText={(value) => setMessage(value)}
-                            placeholder="Il faut bien se lancer un jour ..."
+                <Text style={styles.ageDescription}>Votre message :</Text>
+
+                <View>
+                    <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 270, marginTop: 15, padding: 10 }}
+                        editable
+                        multiline
+                        numberOfLines={6}
+                        maxLength={200}
+                        onChangeText={(value) => setMessage(value)}
+                        placeholder="Il faut bien se lancer un jour ..."
+                    />
+                </View>
+
+
+                <View style={{
+                    borderColor: '#dfe6e9',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    marginTop: 20,
+                    width: 270,
+                    color: "#838383"
+                }}>
+                    <RNPickerSelect style={pickerStyle}
+                        placeholder={{ label: "Sélectionnez le sport", value: null }}
+                        onValueChange={(value) => setSport(value)}
+                        items={[
+                            { label: 'Football', value: 'Football' },
+                            { label: 'Basket-Ball', value: 'Basket-Ball' },
+                            { label: 'Volley-Ball', value: 'Volley-Ball' },
+                            { label: 'Ping-Pong', value: 'Ping-Pong' },
+                            { label: 'Yoga', value: 'Yoga' },
+                            { label: 'Running', value: 'Running' },
+                            { label: 'Work-Out', value: 'Work-Out' },
+                        ]}
+                    />
+                </View>
+
+                <View style={{
+                    borderColor: '#dfe6e9',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    marginTop: 20,
+                    width: 270
+                }}>
+                    <View style={{ alignSelf: 'stretch' }}>
+                        <ModalDatePicker
+                            button={<Text style={{ color: "#838383", fontFamily: "Nunito_400Regular", padding: 10 }}> Sélectionnez une date </Text>}
+                            locale="tr"
+                            onSelect={(date) => console.log(date)}
+                            isHideOnSelect={true}
+                            initialDate={new Date()}
+                            onValueChange={(value) => setDate(value)}
+                        /* language={require('./locales/en.json')}. # Your localization file */
                         />
                     </View>
 
+                </View>
 
+
+
+                <View style={{ flexDirection: 'row' }}>
                     <View style={{
                         borderColor: '#dfe6e9',
                         borderWidth: 1,
                         borderRadius: 5,
                         marginTop: 20,
-                        width: 270,
-                        color: "#838383"
+                        width: 130
                     }}>
                         <RNPickerSelect style={pickerStyle}
-                            placeholder={{ label: "Sélectionnez le sport", value: null }}
-                            onValueChange={(value) => setSport(value)}
+                            placeholder={{ label: "Horaire de début", value: null }}
+                            onValueChange={(value) => setBegin(value)}
                             items={[
-                                { label: 'Football', value: 'Football' },
-                                { label: 'Basket-Ball', value: 'Basket-Ball' },
-                                { label: 'Volley-Ball', value: 'Volley-Ball' },
-                                { label: 'Ping-Pong', value: 'Ping-Pong' },
-                                { label: 'Yoga', value: 'Yoga' },
-                                { label: 'Running', value: 'Running' },
-                                { label: 'Work-Out', value: 'Work-Out' },
+                                { label: '00h', value: '00h' },
+                                { label: '01h', value: '01h' },
+                                { label: '02h', value: '02h' },
+                                { label: '03h', value: '03h' },
+                                { label: '04h', value: '04h' },
+                                { label: '05h', value: '05h' },
+                                { label: '06h', value: '06h' },
+                                { label: '07h', value: '07h' },
+                                { label: '08h', value: '08h' },
+                                { label: '09h', value: '09h' },
+                                { label: '10h', value: '10h' },
+                                { label: '11h', value: '11h' },
+                                { label: '12h', value: '12h' },
+                                { label: '13h', value: '13h' },
+                                { label: '14h', value: '14h' },
+                                { label: '15h', value: '15h' },
+                                { label: '16h', value: '16h' },
+                                { label: '17h', value: '17h' },
+                                { label: '18h', value: '18h' },
+                                { label: '19h', value: '19h' },
+                                { label: '20h', value: '20h' },
+                                { label: '21h', value: '21h' },
+                                { label: '22h', value: '22h' },
+                                { label: '23h', value: '23h' },
                             ]}
                         />
                     </View>
@@ -106,135 +211,78 @@ function SendFrisbee(props) {
                         borderWidth: 1,
                         borderRadius: 5,
                         marginTop: 20,
-                        width: 270
+                        marginLeft: 15,
+                        width: 130
                     }}>
-                        <View style={{ alignSelf: 'stretch' }}>
-                            <ModalDatePicker
-                                button={<Text style={{ color: "#838383", fontFamily: "Nunito_400Regular", padding: 10 }}> Sélectionnez une date </Text>}
-                                locale="tr"
-                                onSelect={(date) => console.log(date)}
-                                isHideOnSelect={true}
-                                initialDate={new Date()}
-                                onValueChange={(value) => setDate(value)}
-                            /* language={require('./locales/en.json')}. # Your localization file */
-                            />
-                        </View>
-
-                    </View>
-
-
-
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{
-                            borderColor: '#dfe6e9',
-                            borderWidth: 1,
-                            borderRadius: 5,
-                            marginTop: 20,
-                            width: 130
-                        }}>
-                            <RNPickerSelect style={pickerStyle}
-                                placeholder={{ label: "Horaire de début", value: null }}
-                                onValueChange={(value) => setBegin(value)}
-                                items={[
-                                    { label: '00h', value: '00h' },
-                                    { label: '01h', value: '01h' },
-                                    { label: '02h', value: '02h' },
-                                    { label: '03h', value: '03h' },
-                                    { label: '04h', value: '04h' },
-                                    { label: '05h', value: '05h' },
-                                    { label: '06h', value: '07h' },
-                                    { label: '08h', value: '08h' },
-                                    { label: '09h', value: '09h' },
-                                    { label: '10h', value: '10h' },
-                                    { label: '11h', value: '11h' },
-                                    { label: '12h', value: '12h' },
-                                    { label: '13h', value: '13h' },
-                                    { label: '14h', value: '14h' },
-                                    { label: '15h', value: '15h' },
-                                    { label: '16h', value: '16h' },
-                                    { label: '17h', value: '17h' },
-                                    { label: '18h', value: '18h' },
-                                    { label: '19h', value: '19h' },
-                                    { label: '20h', value: '20h' },
-                                    { label: '21h', value: '21h' },
-                                    { label: '22h', value: '22h' },
-                                    { label: '23h', value: '23h' },
-                                ]}
-                            />
-                        </View>
-
-                        <View style={{
-                            borderColor: '#dfe6e9',
-                            borderWidth: 1,
-                            borderRadius: 5,
-                            marginTop: 20,
-                            marginLeft: 15,
-                            width: 130
-                        }}>
-                            <RNPickerSelect style={pickerStyle}
-                                placeholder={{ label: "Horaire de fin", value: null, fontSize: 7 }}
-                                onValueChange={(value) => setEnd(value)}
-                                items={[
-                                    { label: '00h', value: '00h' },
-                                    { label: '01h', value: '01h' },
-                                    { label: '02h', value: '02h' },
-                                    { label: '03h', value: '03h' },
-                                    { label: '04h', value: '04h' },
-                                    { label: '05h', value: '05h' },
-                                    { label: '06h', value: '07h' },
-                                    { label: '08h', value: '08h' },
-                                    { label: '09h', value: '09h' },
-                                    { label: '10h', value: '10h' },
-                                    { label: '11h', value: '11h' },
-                                    { label: '12h', value: '12h' },
-                                    { label: '13h', value: '13h' },
-                                    { label: '14h', value: '14h' },
-                                    { label: '15h', value: '15h' },
-                                    { label: '16h', value: '16h' },
-                                    { label: '17h', value: '17h' },
-                                    { label: '18h', value: '18h' },
-                                    { label: '19h', value: '19h' },
-                                    { label: '20h', value: '20h' },
-                                    { label: '21h', value: '21h' },
-                                    { label: '22h', value: '22h' },
-                                    { label: '23h', value: '23h' },
-                                ]}
-                            />
-                        </View>
-
-                    </View>
-
-                    <View>
-                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 30, width: 270, marginTop: 25, padding: 10, marginBottom: 15 }}
-                            editable
-                            multiline
-                            numberOfLines={6}
-                            maxLength={200}
-                            onChangeText={(value) => setLieu(value)}
-                            placeholder="Indiquez le lieu du rendez-vous"
+                        <RNPickerSelect style={pickerStyle}
+                            placeholder={{ label: "Horaire de fin", value: null, fontSize: 7 }}
+                            onValueChange={(value) => setEnd(value)}
+                            items={[
+                                { label: '00h', value: '00h' },
+                                { label: '01h', value: '01h' },
+                                { label: '02h', value: '02h' },
+                                { label: '03h', value: '03h' },
+                                { label: '04h', value: '04h' },
+                                { label: '05h', value: '05h' },
+                                { label: '06h', value: '07h' },
+                                { label: '08h', value: '08h' },
+                                { label: '09h', value: '09h' },
+                                { label: '10h', value: '10h' },
+                                { label: '11h', value: '11h' },
+                                { label: '12h', value: '12h' },
+                                { label: '13h', value: '13h' },
+                                { label: '14h', value: '14h' },
+                                { label: '15h', value: '15h' },
+                                { label: '16h', value: '16h' },
+                                { label: '17h', value: '17h' },
+                                { label: '18h', value: '18h' },
+                                { label: '19h', value: '19h' },
+                                { label: '20h', value: '20h' },
+                                { label: '21h', value: '21h' },
+                                { label: '22h', value: '22h' },
+                                { label: '23h', value: '23h' },
+                            ]}
                         />
                     </View>
 
-                    {/*  </KeyboardAvoidingView> */}
-
-                    <Button
-                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 20, marginBottom: 150 }}
-                        title="Envoyer un FRISBEE"
-                        /* onPress={() => { GoToNextStepSignUp(signUpFavoritesSports) }} */
-                        titleStyle={{
-                            fontFamily: 'Nunito_400Regular',
-                            marginLeft: 15,
-                            marginRight: 15
-                        }}
-                        onPress={() => props.navigation.navigate('FrisbeeScreen')}
-                        
-                    >
-                    </Button>
-
                 </View>
-            </ScrollView>
-        )
-    }
+
+                <View>
+                    <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 30, width: 270, marginTop: 25, padding: 10, marginBottom: 15 }}
+                        editable
+                        multiline
+                        numberOfLines={6}
+                        maxLength={200}
+                        onChangeText={(value) => setLieu(value)}
+                        placeholder="Indiquez le lieu du rendez-vous"
+                    />
+                </View>
+
+                {/*  </KeyboardAvoidingView> */}
+
+                <Button
+                    buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 20, marginBottom: 150 }}
+                    title="Envoyer un FRISBEE"
+                    /* onPress={() => { GoToNextStepSignUp(signUpFavoritesSports) }} */
+                    titleStyle={{
+                        fontFamily: 'Nunito_400Regular',
+                        marginLeft: 15,
+                        marginRight: 15
+                    }}
+                    onPress={() => submitFrisbee() }
+                    // On ajoute une function "submnit Frisbee" et dans cette fonction : fetch + POST + body
+                    // onPress={() => props.navigation.navigate('FrisbeeScreen')}
+                // On fait passer un objet et les infos du formulaire, + les props avec les info de l'utilisateur invité
+                // props.navigation.navigate('FrisbeeScreen')
+
+
+                >
+                </Button>
+
+            </View>
+        </ScrollView>
+    )
+}
 }
 
 
@@ -325,4 +373,15 @@ const pickerStyle = {
     },
 };
 
-export default SendFrisbee;
+function mapStateToProps(state) {
+    return { 
+        userInvited: state.userInvited,
+        newUser: state.newUser,
+        userToken: state.userToken
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(SendFrisbee);
