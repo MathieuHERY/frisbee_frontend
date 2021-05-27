@@ -28,7 +28,7 @@ function ResponseFrisbee(props) {
 
     //accepter un frisbee
     var frisbeeAccepted = async (frisbeeId) => {
-        var submitAcceptedAnswer = await fetch('http://172.16.188.162:3000/accept-frisbee', {
+        var submitAcceptedAnswer = await fetch('http://192.168.1.7:3000/accept-frisbee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
         body: `_id=${frisbeeId}&isAccepted=true`
@@ -37,14 +37,14 @@ function ResponseFrisbee(props) {
 
       if (responseFromDB.result) {
         props.sendAnswerFrisbee(!props.resultAnswer)
-        props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
+        props.navigation.navigate('BottomBar', { screen: "FRISBEES" })
       }
     }
 
 
     //refuser un frisbee
     var frisbeeRejected = async (frisbeeId) => {
-        var submitRejectedAnswer = await fetch('http://172.16.188.162:3000/reject-frisbee', {
+        var submitRejectedAnswer = await fetch('http://192.168.1.7:3000/reject-frisbee', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
             body: `_id=${frisbeeId}&isAccepted=false`
@@ -53,7 +53,7 @@ function ResponseFrisbee(props) {
     
           if (responseFromDB.result) {
             props.sendAnswerFrisbee(!props.resultAnswer)
-            props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
+            props.navigation.navigate('BottomBar', { screen: "FRISBEES" })
           }
     }
 
@@ -62,7 +62,7 @@ function ResponseFrisbee(props) {
     } else {
         return (
             <View style={styles.container}>
-                <ScrollView style={{ marginTop: 20 }}>
+                <ScrollView style={{ marginTop: 20, marginBottom: 60 }}>
 
                     {/* BACK ICON */}
                     <View style={styles.iconBack}>
@@ -71,7 +71,7 @@ function ResponseFrisbee(props) {
                             name='ios-arrow-back'
                             type='ionicon'
                             color='#7C4DFF'
-                            onPress={() => props.navigation.navigate('BottomBar', { screen: "FRISBEE" })}
+                            onPress={() => props.navigation.navigate('BottomBar', { screen: "FRISBEES" })}
                             size={30}
                         />
                     </View>
