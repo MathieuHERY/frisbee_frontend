@@ -73,7 +73,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
 if (frisbeeReceived.length === 0) {
     return (
 
-       <Text>Tu n'as pas encore reçu de Frisbee.</Text>
+       <Text>Tu n'as pas encore reçu de FRISBEE.</Text>
     )
 } else {
     return (
@@ -123,11 +123,11 @@ if (frisbeeReceived.length === 0) {
                                     }
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                <EvilIcons name="calendar"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    <EvilIcons name="calendar"
+                                        size={24}
+                                        color="#838383"
+                                    />
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
                                     {new Date(item.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
@@ -135,7 +135,7 @@ if (frisbeeReceived.length === 0) {
                                                 size={24}
                                                 color="#838383"
                                             />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
                                     {item.HoursMeeting}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', marginBottom:5, marginTop:5}}>
@@ -143,7 +143,7 @@ if (frisbeeReceived.length === 0) {
                                                 size={24}
                                                 color="#838383"
                                             />
-                                    <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 13, flex:1}}>
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 15, flex:1}}>
                                     {item.AddressMeeting}</Text>
                                 </View>
                                 <View style={{alignItems:'center'}}>
@@ -176,7 +176,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
 if (frisbeeSent.length === 0) {
     return (
 
-       <Text>Tu n'as pas encore envoyé de Frisbee. Lances un Frisbee à un des sportifs autour de toi ! </Text>
+       <Text>Tu n'as pas encore envoyé de FRISBEE. Lance un FRISBEE à l'un des sportifs autour de toi !</Text>
     )
 } else {
 
@@ -228,26 +228,26 @@ if (frisbeeSent.length === 0) {
                                     }
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                <EvilIcons name="calendar"
-                                                size={24}
-                                                color="#838383"
-                                            />
+                                    <EvilIcons name="calendar"
+                                        size={24}
+                                        color="#838383"
+                                    />
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
                                     {new Date(item.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                <EvilIcons name="clock"
-                                                size={24}
-                                                color="#838383"
-                                            />
+                                    <EvilIcons name="clock"
+                                        size={24}
+                                        color="#838383"
+                                    />
                                     <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
                                     {item.HoursMeeting}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', marginBottom:5, marginTop:5}}>
-                                <EvilIcons name="location"
-                                                size={24}
-                                                color="#838383"
-                                            />
+                                    <EvilIcons name="location"
+                                        size={24}
+                                        color="#838383"
+                                    />
                                     <Text style={{ textAlign: 'left', fontFamily: 'Montserrat_300Light', fontSize: 13, flex:1}}>
                                     {item.AddressMeeting}</Text>
                                 </View>
@@ -265,7 +265,7 @@ if (frisbeeSent.length === 0) {
             <ScrollView style={{ marginTop: 40 }}>
 
                 <Text style={styles.title}>
-                    Mes FRISBEE
+                    Mes FRISBEES
                 </Text>
 
                 <View style={styles.buttonGroup}>
@@ -282,9 +282,9 @@ if (frisbeeSent.length === 0) {
                 </View>
                 <View>
                     {radioButtonValue.value === 0 ? (frisbeeListReceived.length != 0 ? (frisbeeListReceived) :  (<View style={styles.errorMessage}>
-                        <Text style={styles.errorMessageText}>Vous n'avez pas encore reçu de Frisbee</Text>
+                        <Text style={styles.errorMessageText}>Tu n'as pas encore reçu de FRISBEE.</Text>
                         <Button
-                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 40, marginBottom: 150 }}
+                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17, marginTop: 40, marginBottom: 150 }}
                         title="Envoyer un FRISBEE"
                         titleStyle={{
                             fontFamily: 'Nunito_400Regular',
@@ -299,9 +299,9 @@ if (frisbeeSent.length === 0) {
                     
                     : (frisbeeListSent.length != 0 ? (frisbeeListSent) : 
                     (<View style={styles.errorMessage}>
-                        <Text style={styles.errorMessageText}>Vous n'avez pas encore envoyé de Frisbee</Text>
+                        <Text style={styles.errorMessageText}>Tu n'as pas encore envoyé de FRISBEE.</Text>
                         <Button
-                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 40, marginBottom: 150 }}
+                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17, marginTop: 40, marginBottom: 150 }}
                         title="Envoyer un FRISBEE"
                         titleStyle={{
                             fontFamily: 'Nunito_400Regular',
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        maxWidth: 80,
+        maxWidth: 90,
         height: 35,
     },
     ChipFocusTitle: {
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     h1Style: {
-        fontSize: 20,
+        fontSize: 22,
         fontFamily: 'Montserrat_300Light',
         marginRight: 40,
         marginBottom: 5
@@ -378,7 +378,6 @@ const styles = StyleSheet.create({
     },
     answerPending: {
         fontSize: 14,
-
         fontFamily: 'Nunito_400Regular',
         color: '#FF8933',
         marginBottom: 5,

@@ -75,7 +75,7 @@ function InscriptionScreen2(props) {
             <Text style={{ marginBottom: 20, fontSize: 16, width: "70%", fontFamily: 'Montserrat_300Light', textAlign: 'center' }}>Toujours aussi jeune, hein : </Text>
 
             <View style={{
-              borderColor: '#7C4DFF',
+              borderColor: '#dfe6e9',
               borderWidth: 2,
               borderRadius: 17,
             }}>
@@ -167,14 +167,14 @@ const styles = StyleSheet.create({
 
 const pickerStyle = {
   inputIOS: {
-    color: '#7C4DFF',
+    color: '#838383',
     paddingHorizontal: 40,
     paddingVertical: 15,
     backgroundColor: '#fff',
     borderRadius: 17,
   },
   placeholder: {
-    color: '#7C4DFF',
+    color: '#838383',
   },
   inputAndroid: {
     color: '#ffffff',

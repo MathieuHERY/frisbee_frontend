@@ -43,7 +43,7 @@ function SendFrisbee(props) {
         var response = await frisbeeData.json()
         if (response.result)
         {
-            props.navigation.navigate('BottomBar', { screen: "SPORTIFS" })
+            props.navigation.navigate('BottomBar', { screen: "FRISBEES" })
         }
     }
 
