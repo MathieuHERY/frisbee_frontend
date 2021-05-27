@@ -1,16 +1,8 @@
 export default function(userInvited = {}, action) {
-    if(action.type === "userInvited") {
-        console.log(action.userInvited)
-
-        return {
-            ...userInvited, //copie de l'objet, peut pas modifier directement l'objet et on y injecte les infos suivantes 
-            id: action.userInvited.id,
-            firstname: action.userInvited.firstname,
-            picture:action.userInvited.picture,
-            token: action.userInvited.token,
+    if(action.type === "getUserInvitedInfo") {
+        console.log('console log dans le reducer:', action.userInvited)
+        return action.userInvited
+        } else {
+            return userInvited; 
         }
-
-    } else {
-    return userInvited; 
-}
 }

@@ -1,40 +1,46 @@
 export default function(newUser = {}, action) {
     if(action.type === "addInfoFirstStep") {
-        console.log(action.newUser)
+
         return action.newUser
     }
     if(action.type === "addInfoSecondStep") {
-        console.log(action.newUser)
+
         return {
             ...newUser,
-            age: action.newUser.age,
-            description:action.newUser.description,
+            Age: action.newUser.age,
+            Description:action.newUser.description,
         }
     }
     if(action.type === "addInfoFourStep") {
-        console.log(action.newUser)
+
         return {
             ...newUser,
-            habits:action.newUser.habits, 
-            hoursStart : action.newUser.hoursStart,
-            hoursEnd : action.newUser.hoursEnd
+            SportsHabits:action.newUser.habits, 
+            SportsHours : `${action.newUser.hoursStart} à ${action.newUser.hoursEnd}`,
         }
     
     }
     if(action.type === "addInfoThirdStep") {
-        console.log(action.newUser)
+
         return {
             ...newUser,
-            sport:action.newUser.sport
+            FavoritesSports:action.newUser.sport
         }
     
     } if(action.type === "GetUserInfoConnected") {
-        console.log(action.newUser)
+        console.log('userLog',action.newUser )
         return {
             ...newUser,
-            token:action.newUser.token
+            token:action.newUser.token, 
+            _id : action.newUser.id,
+            UserPicture : action.newUser.picture
         }
     
+    } if(action.type === "getUserInfoLogged") {
+        console.log('userLog',action.newUser )
+        return action.newUser
+
+
     } else {
         return newUser;
     }

@@ -31,19 +31,18 @@ function SignInUpScreen(props) {
 
   var handleSubmitSignin = async () => {
 
-    const data = await fetch("http://192.168.1.7:3000/sign-in", {
+    const data = await fetch("http://172.16.190.9:3000/sign-in", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${signUpEmail}&Password=${signUpPassword}`
     })
 
     const body = await data.json()
-    console.log(body.result)
 
     if (body.result == true) {
       setUserExists(true)
-      props.addToken(body.token)
-      //HandleClickGoToMapScreen();
+      var user = body.user
+      props.getUserInfo(user)
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
       
     } else {
@@ -98,7 +97,7 @@ function SignInUpScreen(props) {
         style={{fontFamily: 'Nunito_400Regular', fontSize: 17}}
       />
 
-    <Text style={{color: "#838383", marginBottom: 35, textDecorationLine: 'underline', fontFamily: 'Nunito_400Regular', fontSize: 13}}>Oops ... mot de passe (encore) oublie ?</Text>
+    <Text style={{color: "#838383", marginBottom: 35, textDecorationLine: 'underline', fontFamily: 'Nunito_400Regular', fontSize: 13}}>Oops... mot de passe (encore) oublié ?</Text>
 
 
       {ErrorsSignup}
@@ -117,7 +116,7 @@ function SignInUpScreen(props) {
       </Button>
 
       {/* sign-up */}
-      <Text style={{ marginBottom: 15, fontFamily: 'Nunito_400Regular', fontSize: 15 }}>Vous n'avez pas de compte ?</Text>
+      <Text style={{ marginBottom: 15, fontFamily: 'Nunito_400Regular', fontSize: 15 }}>Pas encore de compte ?</Text>
       <Button
         buttonStyle={{ backgroundColor: "#7C4DFF", borderRadius: 17 }}
         title="Je m'inscris !"
@@ -136,9 +135,9 @@ function SignInUpScreen(props) {
 
 function mapDispatchToProps(dispatch) { //récupération du token pour la connexion 
   return {
-    addToken: function (token) {
-      console.log(token);
-      dispatch({ type: 'getUserToken', userToken : token })
+    getUserInfo : function (user) {
+      console.log('dispatch SignIn', user);
+      dispatch({ type: 'getUserInfoLogged', newUser : user })
     }
   }
 }

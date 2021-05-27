@@ -34,10 +34,10 @@ function InscriptionScreen5(props) {
 
   /*   Save user without picture */
   var saveUserWithoutPic = async function () {
-    var SignupWithoutPic = await fetch("http://192.168.1.7:3000/sign-up", {
+    var SignupWithoutPic = await fetch("http://172.16.190.9:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${JSON.stringify(props.newUser.sport)}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=null&UserLatitude=0&UserLongitude=0`
+      body: `Email=${props.newUser.Email}&Firstname=${props.newUser.Firstname}&Password=${props.newUser.Password}&Age=${props.newUser.Age}&Description=${props.newUser.Description}&FavoritesSports=${JSON.stringify(props.newUser.FavoritesSports)}&SportsHabits=${props.newUser.SportsHabits}&SportsHours=${props.newUser.SportsHours}&UserPicture=null&UserLatitude=0&UserLongitude=0`
     })
     var response = await SignupWithoutPic.json()
     
@@ -45,7 +45,7 @@ function InscriptionScreen5(props) {
       setIsLogin(true)
       setUserConnected(response.saveUser)
       setUserToken(response.saveUser.token)
-      let user = {token : response.saveUser.token}
+      let user = {token : response.saveUser.token, id : response.saveUser._id}
       props.UserInfo(user)
       props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
       // console.log('token utilisateur sans photo', response.token)
@@ -90,7 +90,7 @@ function InscriptionScreen5(props) {
       name: 'user_photo.jpeg',
     });
 
-    var request = await fetch("http://192.168.1.7:3000/upload-user-picture", {
+    var request = await fetch("http://172.16.190.9:3000/upload-user-picture", {
       method: 'post',
       body: data
     });
@@ -99,10 +99,10 @@ function InscriptionScreen5(props) {
 
     if (response.imageSaved) {
 
-      var SignupWithPic = await fetch("http://192.168.1.7:3000/sign-up", {
+      var SignupWithPic = await fetch("http://172.16.190.9:3000/sign-up", {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `Email=${props.newUser.email}&Firstname=${props.newUser.firstname}&Password=${props.newUser.password}&Age=${props.newUser.age}&Description=${props.newUser.description}&FavoritesSports=${props.newUser.sport}&SportsHabits=${props.newUser.habits}&SportsHours=${`${props.newUser.hoursStart}-${props.newUser.hoursEnd}`}&UserPicture=${response.url}&UserLatitude=0&UserLongitude=0`
+        body: `Email=${props.newUser.Email}&Firstname=${props.newUser.Firstname}&Password=${props.newUser.Password}&Age=${props.newUser.Age}&Description=${props.newUser.Description}&FavoritesSports=${JSON.stringify(props.newUser.FavoritesSports)}&SportsHabits=${props.newUser.SportsHabits}&SportsHours=${props.newUser.SportsHours}&UserPicture=${response.url}&UserLatitude=0&UserLongitude=0`
       })
 
       var responseSignUp = await SignupWithPic.json()
@@ -111,7 +111,7 @@ function InscriptionScreen5(props) {
         setIsLogin(true)
         setUserConnected(responseSignUp.saveUser)
         setUserToken(responseSignUp.saveUser.token)
-        let user = {token : responseSignUp.saveUser.token}
+        let user = {token : responseSignUp.saveUser.token, id : responseSignUp.saveUser._id, picture : responseSignUp.saveUser.userPicture }
         props.UserInfo(user)
         props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
         // props.getTokenFromUser(userToken) // Dispatch the token into the reducer

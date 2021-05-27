@@ -34,7 +34,7 @@ function InscriptionScreen1(props) {
 
     if (signUpEmail && signUpFirstname && signUpPassword) {
 
-      let user = { email: signUpEmail, password: signUpPassword, firstname: signUpFirstname };
+      let user = { Email: signUpEmail, Password: signUpPassword, Firstname: signUpFirstname };
       console.log(signUpEmail);
 
       props.UserFirstInfo(user)
