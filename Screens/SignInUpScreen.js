@@ -97,7 +97,7 @@ function SignInUpScreen(props) {
         style={{fontFamily: 'Nunito_400Regular', fontSize: 17}}
       />
 
-    <Text style={{color: "#838383", marginBottom: 35, textDecorationLine: 'underline', fontFamily: 'Nunito_400Regular', fontSize: 13}}>Oops ... mot de passe (encore) oublie ?</Text>
+    <Text style={{color: "#838383", marginBottom: 35, textDecorationLine: 'underline', fontFamily: 'Nunito_400Regular', fontSize: 13}}>Oops... mot de passe (encore) oublié ?</Text>
 
 
       {ErrorsSignup}
@@ -116,7 +116,7 @@ function SignInUpScreen(props) {
       </Button>
 
       {/* sign-up */}
-      <Text style={{ marginBottom: 15, fontFamily: 'Nunito_400Regular', fontSize: 15 }}>Vous n'avez pas de compte ?</Text>
+      <Text style={{ marginBottom: 15, fontFamily: 'Nunito_400Regular', fontSize: 15 }}>Pas encore de compte ?</Text>
       <Button
         buttonStyle={{ backgroundColor: "#7C4DFF", borderRadius: 17 }}
         title="Je m'inscris !"

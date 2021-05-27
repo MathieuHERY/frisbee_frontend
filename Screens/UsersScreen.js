@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Input, Button, Avatar, Chip, FAB, Overlay, Card,Badge } from 'react-native-elements';
+import { Icon, Input, Button, Avatar, Chip, FAB, Overlay, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -94,31 +94,36 @@ function UsersScreen(props) {
                         type="outline"
                     />
 
-                    <Text style={styles.description}>
+                    <Text style={styles.userDescriptionOverlay}>
                         {user.description}
                     </Text>
 
                     <View>
-                        <Text style={styles.description}>
+                        <Text h2 style={styles.h2StyleOverlay}>
                             {user.firstname} est disponible :
                                 </Text>
 
-                        <Text style={styles.description}>
-                            <EvilIcons
-                                name="calendar"
-                                size={24}
-                                color="#838383"
-                            />
-                            {user.habits}
-                        </Text>
+                        <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF', marginBottom: 10 }}>
 
-                        <Text style={styles.description}>
-                            <EvilIcons name="clock"
-                                size={24}
-                                color="#838383"
-                            />
-                            {user.hours}
-                        </Text>
+                            <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                                <EvilIcons name="calendar"
+                                    size={24}
+                                    color="#838383"
+                                />
+                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                    {user.habits}</Text>
+                            </View>
+
+                            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 5, marginTop: 5, marginLeft: 30 }}>
+                                <EvilIcons name="clock"
+                                    size={24}
+                                    color="#838383"
+                                />
+                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
+                                    {user.hours}</Text>
+                            </View>
+
+                        </Card>
 
                         <Button
                             title='Lance un FRISBEE'
@@ -213,18 +218,18 @@ function UsersScreen(props) {
                                             </Text>
                                         </View>
 
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap:'wrap', width:230, marginTop:5, marginBottom:5}}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', width: 230, marginTop: 5, marginBottom: 5 }}>
                                             <Text h1 style={styles.h1Style}>
 
-                                                {user.FavoritesSports.map(function(sport,i){
+                                                {user.FavoritesSports.map(function (sport, i) {
 
-                                                    return(
+                                                    return (
                                                         <Badge
-                                                        badgeStyle={styles.SportBadge}
-                                                        value={sport}
-                                                        textStyle={styles.ChipFocusTitle}
-                                                        type="outline"
-                                                    />
+                                                            badgeStyle={styles.SportBadge}
+                                                            value={sport}
+                                                            textStyle={styles.ChipFocusTitle}
+                                                            type="outline"
+                                                        />
                                                     )
 
                                                 })}
@@ -289,8 +294,8 @@ const styles = StyleSheet.create({
     },
     ChipFocus: {
         backgroundColor: '#FFF',
-        marginBottom: 5,
-        marginTop:10,
+        marginBottom: 15,
+        marginTop: 10,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
         width: vw(25),
@@ -299,9 +304,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
+        marginRight: 3,
     },
     ChipFocusTitle: {
-        fontSize:10,
+        fontSize: 10,
         color: '#7C4DFF',
         fontFamily: 'Nunito_400Regular'
     },
@@ -319,9 +325,14 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginBottom: 5
     },
-    description: {
+    userDescriptionOverlay: {
         fontSize: 14,
         fontFamily: 'Montserrat_300Light',
+        textAlign: 'justify',
+        marginLeft: 40,
+        marginRight: 40,
+        marginTop: 15,
+        marginBottom: 10,
         textAlign: 'justify',
     },
     ageDescription: {
@@ -338,15 +349,7 @@ const styles = StyleSheet.create({
     buttonTextStyleFrisbee: {
         fontFamily: 'Nunito_400Regular',
         fontSize: 15,
-        marginLeft:5,
-    },
-    fabFilters: {
-        position: 'absolute',
-        fontSize: 10,
-        margin: 16,
-        // right: 100,
-        bottom: 10,
-        backgroundColor: '#FFFFFF80',
+        marginLeft: 5,
     },
     containerOverlay: {
         flex: 1,
@@ -364,17 +367,32 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         width: vw(47),
         marginTop: 20,
+        marginLeft: 30,
     },
     h1StyleOverlay: {
         fontSize: 20,
         fontFamily: 'Montserrat_300Light',
         // marginRight: 10,
-        // marginBottom: 5
+        marginBottom: 10,
+        marginTop: 15,
+    },
+    h2StyleOverlay: {
+        fontSize: 13,
+        fontFamily: 'Montserrat_300Light',
+        textAlign: 'center',
+        marginLeft: 30,
+        marginRight: 30,
     },
     ageDescriptionOverlay: {
         fontSize: 14,
         fontFamily: 'Montserrat_300Light',
     },
+    availabilityOverlay: {
+        fontSize: 14,
+        fontFamily: 'Montserrat_300Light',
+        marginLeft: 50,
+        marginRight: 50,
+    }
 });
 
 
@@ -396,12 +414,12 @@ function mapDispatchToProps(dispatch) {
             console.log('log dans le Dispatch', user);
             dispatch({ type: 'getUserInvitedInfo', userInvited: user })
         }
-    } 
+    }
 }
 
-/* function mapStateToProps(state) {
-    return {newUser : state.newUser}
-} */
+function mapStateToProps(state) {
+    return { newUser: state.newUser }
+}
 
 
 export default connect(
