@@ -29,7 +29,7 @@ function UsersScreen(props) {
 
     var onPressAvatar = (e, id, user) => {
         setVisibleOverlay(true)
-        setFocusUser([...focusUser, user])
+        setFocusUser([...focusUser, user]) //doit vider le tableau et ajouter uniquement sur celui que l'on a cliqué
     }
     // console.log(focusUser, "Log sur MapScreen focusUser");
     // console.log(props.userToken, "tout l'objet avec token sur UserScreen");
@@ -58,32 +58,8 @@ function UsersScreen(props) {
 
     
 
-
-
-
-
-/* 
-    const [firstname, setFirstname] = useState("");
-    const [picture, setPicture] = useState("");
-    const [id, setId] = useState("");
-
-
-    var sendFrisbee = (id ,firstname, picture) => { //appel fonction propsuserinfo toutes les clés user info 
-    
-        
-        
-          var userInvited = {id: id, firstname: firstname, picture: picture, token: props.token }; //définit un objet user avec des clés info récupérés des champs
-          userIvited => userIvited.token === props.userInvitedToken; 
-          console.log(firstname, "prénom de l'user que l'on souhaite inviter")
-          props.userInfos(userInvited)
-          
-
-        }
-       */
-
-        var sendFrisbee = (e, id, user) => {
-            setFocusUser([...focusUser, user])
-            props.sendFrisbee(userInvited)
+        var sendFrisbee = (e, id, userInvited) => { //user est l'argument, donc doit être la même que dans le dispatch
+            props.sendFrisbee(userInvited) //dispatch
         }
 
 
@@ -101,7 +77,7 @@ function UsersScreen(props) {
                 />
 
                 <Text h1 style={styles.h1StyleOverlay}>
-                    {user.firstname}
+                    {user.firstname} 
                 </Text>
 
                 <Text style={styles.ageDescriptionOverlay}>
@@ -273,8 +249,8 @@ function UsersScreen(props) {
                                                     color="#ffffff"
                                                 />
                                             }
-                                            onPress={e => sendFrisbee(e, user._id, { id: user._id, firstname: user.Firstname, picture: user.UserPicture, token: user.token },  props.navigation.navigate('SendFrisbee') )}
-                                        />
+                                            onPress={e => sendFrisbee(e, user._id, { id: user._id, firstname: user.Firstname, picture: user.UserPicture, token: user.token },  props.navigation.navigate('SendFrisbee') )} //e = évènement 
+                                        /> 
                                     </View>
 
                                 </View>

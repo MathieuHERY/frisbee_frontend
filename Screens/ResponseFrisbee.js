@@ -17,7 +17,7 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 function ResponseFrisbee(props) {
 
-    var frisbeeToAnswer = props.frisbee;
+    var frisbeeToAnswer = props.frisbee; //récupération des informations du reducers, injection des infos dans la variable frisbeeToAnswer
     var optionsDate = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
 
     let [fontsLoaded] = useFonts({
@@ -25,7 +25,7 @@ function ResponseFrisbee(props) {
         Nunito_400Regular,
     });
 
-
+    //accepter un frisbee
     var frisbeeAccepted = async (frisbeeId) => {
         var submitAcceptedAnswer = await fetch('http://192.168.1.67:3000/accept-frisbee', {
         method: 'POST',
@@ -39,6 +39,8 @@ function ResponseFrisbee(props) {
       }
     }
 
+
+    //refuser un frisbee
     var frisbeeRejected = async (frisbeeId) => {
         var submitRejectedAnswer = await fetch('http://192.168.1.67:3000/reject-frisbee', {
             method: 'POST',
@@ -70,12 +72,14 @@ function ResponseFrisbee(props) {
                             size={30}
                         />
                     </View>
+
                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Avatar
                             size="xlarge"
                             rounded
-                            source={{ uri: frisbeeToAnswer.userCreator.UserPicture }}
+                            source={{ uri: frisbeeToAnswer.userCreator.UserPicture }} //récupération photo du créateur de l'envoie du frisbee 
                         />
+
                         <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Text h1 style={styles.h1Style}>
                                 {frisbeeToAnswer.userCreator.Firstname}
@@ -150,7 +154,7 @@ function ResponseFrisbee(props) {
                                         color="#ffffff"
                                     />
                                 }
-                                onPress={() => frisbeeAccepted(frisbeeToAnswer._id)}
+                                onPress={() => frisbeeAccepted(frisbeeToAnswer._id)} //id de qui ? 
                             />
 
                         </View>

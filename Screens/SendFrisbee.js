@@ -32,20 +32,19 @@ function SendFrisbee(props) {
 
     const [user, setUser] = useState([]);
 
+    var sendFrisbeeToUser = props.userInvited; //récupère 
+    console.log("send Frisbee", sendFrisbeeToUser);
 
-    useEffect(() => {
 
-        const user = async function () {
+     var submitFrisbee = async function() {
+        var frisbeeData = await fetch("http://192.168.1.67:3000/send-frisbee", {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+             body: `userInvited=${props.userInvited._id}&message=${message}&Sport=${sport}&DateMeeting=${date}&AdressMeeting=${lieu}&HoursMeeting=${`${begin}-${end}`}`
+           })
+        }
 
-            const data = await fetch('http://192.168.1.67:3000/user');
-            const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
-            console.log(body.result);
-            setUser(body.userData); //récupère tous les users
 
-        };
-        user()
-
-    }, []);
 
     console.log(props.userInvited.firstname, "log props user invited firstname")
 
@@ -60,7 +59,7 @@ function SendFrisbee(props) {
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    
+
 
                     {/* <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}> */}
@@ -80,12 +79,12 @@ function SendFrisbee(props) {
                     <Avatar
                         rounded
                         size="xlarge"
-                        /* source={{ uri: props.userInvited.userInvited.picture}} */
+                        source={{ uri: props.userInvited.picture }}
                         onPress={() => console.log('Appui sur photo profil')}
                     />
 
                     <Text h1 style={styles.h1Style}>Lance un FRISBEE</Text>
-                    <Text h1 style={styles.h1StyleBis}>{props.userInvited.firstname}</Text>
+                    <Text h1 style={styles.h1StyleBis}> à {props.userInvited.firstname}</Text>
 
                     <Text style={styles.ageDescription}>Votre message :</Text>
 
@@ -250,9 +249,14 @@ function SendFrisbee(props) {
                             marginLeft: 15,
                             marginRight: 15
                         }}
-                        onPress={() => props.navigation.navigate('FrisbeeScreen')}
+                        //onPress={() => submitFrisbee() }
+                        onPress={() => props.navigation.navigate('FrisbeeScreen'), submitFrisbee()}
+                        //on fait passer un objet et les infos du formulaire + les props avec les infos de l'utilisateur invité
+                        // props.navigation.navigate("FrisbeeScreen")
+                        //On ajoute une fonction "submit Frisbee" et dans cette fonction : fetch + post + body
                     >
                     </Button>
+                    
 
                 </View>
             </ScrollView>
@@ -349,10 +353,10 @@ const pickerStyle = {
 };
 
 function mapStateToProps(state) {
-    return { userInvited : state.userInvited}
-   }
+    return { userInvited: state.userInvited }
+}
 
-   export default connect(
+export default connect(
     mapStateToProps,
     null
-  )(SendFrisbee);
+)(SendFrisbee);

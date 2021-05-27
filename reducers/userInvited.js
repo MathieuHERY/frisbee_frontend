@@ -1,9 +1,15 @@
+//traitement de l'action réalisée sur la page UsersFrisbee via le onPress
+// traitement de l'ordre 
+//Le rôle du reduceur est de gérer une et une seule valeur stockée dans le store de Redux.
+//C’est le reduceur qui va être en charge de modifier la valeur dans le store
+
+
 export default function(userInvited = {}, action) {
     if(action.type === "userInvited") {
         console.log(action.userInvited)
 
         return {
-            ...userInvited,
+            ...userInvited, //copie de l'objet, peut pas modifier directement l'objet et on y injecte les infos suivantes 
             id: action.userInvited.id,
             firstname: action.userInvited.firstname,
             picture:action.userInvited.picture,
@@ -11,6 +17,6 @@ export default function(userInvited = {}, action) {
         }
     
     } else {
-    return userInvited;
+    return userInvited; 
 }
 }

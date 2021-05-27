@@ -27,19 +27,16 @@ function InscriptionScreen1(props) {
 
 
   var HandleClickchangeStep = () => {
-    props.HandleClickParentchangeStep()
+    props.HandleClickParentchangeStep()  //parent = homeScreen
   }
 
+  //passer à la step 2
   var GoToNextStepSignUp = (signUpEmail, signUpFirstname, signUpPassword) => { //appel fonction propsuserinfo toutes les clés user info 
-
-    if (signUpEmail && signUpFirstname && signUpPassword) {
-
+    if (signUpEmail && signUpFirstname && signUpPassword) { //si les 3 champs sont remplis
       let user = { email: signUpEmail, password: signUpPassword, firstname: signUpFirstname }; //définit un objet user avec des clés info récupérés des champs
       console.log(signUpEmail);
-
-      props.UserFirstInfo(user)
-
-      HandleClickchangeStep();
+      props.UserFirstInfo(user) //envoie infos dans le reducer newUser
+      HandleClickchangeStep(); //+1 = step 2
     }
   }
 
