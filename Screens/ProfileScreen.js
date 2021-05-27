@@ -23,69 +23,99 @@ function ProfileScreen(props) {
         Nunito_400Regular,
     });
 
+
+    const [user, setUser] = useState([]);
+
+
+    useEffect(() => {
+
+        const user = async function () {
+
+            const data = await fetch('http://172.16.190.9:3000/user');
+            const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
+            // console.log(body.result);
+            setUser(body.userData); //récupère tous les users
+
+        };
+        user()
+
+    }, []);
+
+    console.log('log usersList', user)
+    var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
+    console.log('token dans ProfileScreen', props.userToken);
+
+
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
         return (
             <ScrollView>
                 <View style={styles.container}>
-            <View>
-                                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
+                    <View>
+                        <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
 
-                                    <Icon
+
+                            <Avatar
+                                rounded
+                                size="xlarge"
+                                source={{ uri: props.newUser.UserPicture }} // À Dynamiser
+                            />
+
+                            <Text h1 style={styles.h1Style}>{props.newUser.Firstname}</Text>
+
+                            <Text style={styles.ageDescription}>{props.newUser.Age}</Text>
+
+                            <Text style={styles.description}>{props.newUser.Description}
+                            </Text>
+
+                            <Text style={styles.description}> Mes disponibilités : </Text>
+
+
+                            <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center", marginBottom: 150 }}>
+
+                                <Text style={styles.disponibilités1}>
+                                    <EvilIcons
+                                        name="calendar"
+                                        size={24}
+                                        color="#838383"
+                                    />
+                                    {props.newUser.SportsHabits}
+                                </Text>
+
+                                <Text style={styles.disponibilités}>
+                                    <EvilIcons name="clock"
+                                        size={24}
+                                        color="#838383"
+                                    />
+                                    {props.newUser.SportsHours}
+                                </Text>
+
+                            
+
+                            </View>
+
+                            <Icon
                                         raised
-                                        name='ios-arrow-back'
+                                        name='ios-log-out-outline'
                                         type='ionicon'
                                         color='#7C4DFF'
                                         onPress={() => props.navigation.navigate('SignInUpScreen')}
                                         size={30}
+                                       
                                     />
 
 
-                                    <Avatar
-                                        rounded
-                                        size="xlarge"
-                                        source={{ uri: props.newUser.UserPicture }} // À Dynamiser
-                                    />
-
-                                    <Text h1 style={styles.h1Style}>{props.newUser.Firstname}</Text>
-
-                                    <Text style={styles.ageDescription}>{props.newUser.Age}</Text>
-
-                                    <Text style={styles.description}>{props.newUser.Description}
-                                    </Text>
-
-                                    <Text style={styles.description}> Mes disponibilités : </Text>
-
-
-                                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
-
-                                        <Text style={styles.disponibilités1}>
-                                            <EvilIcons
-                                                name="calendar"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {props.newUser.SportsHabits}
-                                        </Text>
-
-                                        <Text style={styles.disponibilités}>
-                                            <EvilIcons name="clock"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {props.newUser.SportsHours}
-                                        </Text>
-                                    </View>
-                                </View></View>
-                                </View>
+                        </View>
+                    </View>
+                </View>
             </ScrollView>
-                        )
-                    }
-                }
+        )
+    }
+}
 
 function mapStateToProps(state) {
-    return { newUser: state.newUser}
+    return { newUser: state.newUser }
 }
 
 export default connect(
@@ -104,13 +134,13 @@ const styles = StyleSheet.create({
         alignContent: "center"
     },
     h1Style: {
-        fontSize: 30,
+        fontSize: 25,
         fontFamily: 'Montserrat_300Light',
         marginBottom: 10,
         marginTop: 15,
     },
     ageDescription: {
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: 'Montserrat_300Light',
     },
     ChipFocus: {

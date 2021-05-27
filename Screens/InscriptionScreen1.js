@@ -64,7 +64,7 @@ function InscriptionScreen1(props) {
 
         <View style={styles.content}>
 
-          <Text h3 style={{ marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign: 'center' }}>Promis la prochaine fois on se rappelera de toi !</Text>
+          <Text h3 style={{ marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign: 'center' }}>Promis, la prochaine fois on se rappelera de toi !</Text>
 
           <Input
             containerStyle={{ marginBottom: 20, width: '70%' }}
@@ -136,5 +136,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
-
-
