@@ -73,14 +73,14 @@ function SendFrisbee(props) {
                     <Avatar
                         rounded
                         size="xlarge"
-                        source={{ uri: props.userInvited.picture }}
+                        source={{ uri: props.userInvited.userPicture }}
                         onPress={() => console.log('Appui sur photo profil')}
                     />
 
                     <Text h1 style={styles.h1Style}>Lance un FRISBEE</Text>
-                    <Text h1 style={styles.h1StyleBis}>à {props.userInvited.firstname}</Text>
+                    <Text h1 style={styles.h1StyleBis}>à {props.userInvited.Firstname}</Text>
 
-                    <Text style={styles.ageDescription}>Votre message :</Text>
+                    <Text style={styles.ageDescription}>Ton message :</Text>
 
                     <View>
                         <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 270, marginTop: 15, padding: 10 }}
@@ -116,25 +116,18 @@ function SendFrisbee(props) {
                             ]}
                         />
                     </View>
-
+{/* 
                     <View style={{
                         borderColor: '#dfe6e9',
                         borderWidth: 1,
                         borderRadius: 5,
                         marginTop: 20,
                         width: 270
-                    }}>
-                        <View style={{ alignSelf: 'stretch' }}>
-                            {/* <ModalDatePicker
-                            button={<Text style={{ color: "#838383", fontFamily: "Nunito_400Regular", padding: 10 }}> Sélectionnez une date </Text>}
-                            locale="fr"
-                            onSelect={(date) => console.log(date)}
-                            isHideOnSelect={true}
-                            initialDate={new Date()}
-                            onValueChange={(value) => setDate(value)}
-                        /> */}
+                    }}> */}
+                    <Text style={styles.ageDescription}>Date du FRISBEE :</Text>
+                      
                             <DatePicker
-                                style={{ width: 200 }}
+                                style={{ width: 270, marginTop: 20, }}
                                 locale={'fr'}
                                 date={date}
                                 mode="date"
@@ -142,8 +135,8 @@ function SendFrisbee(props) {
                                 format="YYYY-MM-DD"
                                 minDate={date}
                                 maxDate="2022-01-01"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
+                                confirmBtnText="Valider"
+                                cancelBtnText="Annuler"
                                 customStyles={{
 
                                     dateIcon: {
@@ -153,14 +146,17 @@ function SendFrisbee(props) {
                                         marginLeft: 0
                                     },
                                     dateInput: {
-                                        marginLeft: 36
+                                        marginLeft: 50,
+                                        borderRadius: 5,
+                                        borderColor: '#dfe6e9',
                                     }
                                 }}
                                 onDateChange={(date) => setDate(date)}
                             />
-                        </View>
+                     {/*    </View>
+ */}
 
-                    </View>
+<Text style={styles.ageDescription}>Horaire du FRISBEE :</Text>
 
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{
@@ -171,7 +167,7 @@ function SendFrisbee(props) {
                             width: 130
                         }}>
                             <RNPickerSelect style={pickerStyle}
-                                placeholder={{ label: "Horaire de début", value: null }}
+                                placeholder={{ label: "Début", value: null }}
                                 onValueChange={(value) => setBegin(value)}
                                 items={[
                                     { label: '00h', value: '00h' },
@@ -211,7 +207,7 @@ function SendFrisbee(props) {
                             width: 130
                         }}>
                             <RNPickerSelect style={pickerStyle}
-                                placeholder={{ label: "Horaire de fin", value: null, fontSize: 7 }}
+                                placeholder={{ label: "Fin", value: null, fontSize: 7 }}
                                 onValueChange={(value) => setEnd(value)}
                                 items={[
                                     { label: '00h', value: '00h' },
@@ -242,9 +238,9 @@ function SendFrisbee(props) {
                         </View>
 
                     </View>
-
+                    <Text style={styles.ageDescription}>Lieu du rendez-vous :</Text>
                     <View>
-                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 30, width: 270, marginTop: 25, padding: 10, marginBottom: 15 }}
+                        <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 80, width: 270, marginTop: 25, padding: 10, marginBottom: 15 }}
                             editable
                             multiline
                             numberOfLines={6}
@@ -257,7 +253,7 @@ function SendFrisbee(props) {
                     {/*  </KeyboardAvoidingView> */}
 
                     <Button
-                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 20, marginBottom: 150 }}
+                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 17, marginTop: 20, marginBottom: 150 }}
                         title="Envoyer un FRISBEE"
                         titleStyle={{
                             fontFamily: 'Nunito_400Regular',

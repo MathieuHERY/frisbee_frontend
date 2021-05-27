@@ -68,30 +68,36 @@ function UsersScreen(props) {
                     <Avatar
                         rounded
                         size="xlarge"
-                        source={{ uri: user.picture }}
+                        source={{ uri: user.UserPicture }}
                     />
 
                     <Text h1 style={styles.h1StyleOverlay}>
-                        {user.firstname}
+                        {user.Firstname}
                     </Text>
 
                     <Text style={styles.ageDescriptionOverlay}>
-                        {user.age}
+                        {user.Age}
                     </Text>
+                    <View style={{flexDirection:'row', flexWrap:'wrap', width:300, alignItems:'center', justifyContent:'center', marginTop:15}}>
+                    {user.FavoritesSports.map(function (sport, i) {
+                        return (
                     <Chip
                         buttonStyle={styles.ChipFocus}
-                        title={user.sports}
+                        title={sport}
                         titleStyle={styles.ChipFocusTitle}
                         type="outline"
                     />
+                        )})}
+
+                    </View>
 
                     <Text style={styles.userDescriptionOverlay}>
-                        {user.description}
+                        {user.Description}
                     </Text>
 
                     <View>
                         <Text h2 style={styles.h2StyleOverlay}>
-                            {user.firstname} est disponible :
+                            {user.Firstname} est disponible :
                                 </Text>
 
                         <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF', marginBottom: 10 }}>
@@ -102,7 +108,7 @@ function UsersScreen(props) {
                                     color="#838383"
                                 />
                                 <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
-                                    {user.habits}</Text>
+                                    {user.SportsHabits}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 5, marginTop: 5, marginLeft: 30 }}>
@@ -111,7 +117,7 @@ function UsersScreen(props) {
                                     color="#838383"
                                 />
                                 <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
-                                    {user.hours}</Text>
+                                    {user.SportsHours}</Text>
                             </View>
 
                         </Card>
@@ -167,7 +173,7 @@ function UsersScreen(props) {
                                             rounded
                                             source={{ uri: user.UserPicture }}
                                             // onPress={() => console.log('Appui sur photo profil')}
-                                            onPress={e => onPressAvatar(e, user._id, { firstname: user.Firstname, age: user.Age, description: user.Description, sports: user.FavoritesSports, habits: user.SportsHabits, hours: user.SportsHours, picture: user.UserPicture })
+                                            onPress={e => onPressAvatar(e, user._id, { Firstname: user.Firstname, Age: user.Age, Description: user.Description, FavoritesSports: user.FavoritesSports, SportsHabits: user.SportsHabits, SportsHours : user.SportsHours, UserPicture: user.UserPicture })
                                             }
                                         />
 
@@ -257,7 +263,7 @@ function UsersScreen(props) {
                                                     />
                                                 }
                                                 // onPress={() => { props.navigation.navigate('SendFrisbee'), setVisibleOverlay(false), setFocusUser([]) }}
-                                                onPress={e => sendFrisbee(e, user._id, { id: user._id, firstname: user.Firstname, picture: user.UserPicture, token: user.token }, props.navigation.navigate('SendFrisbee'))}
+                                                onPress={e => sendFrisbee(e, user._id, { id: user._id, Firstname: user.Firstname, userPicture: user.UserPicture, token: user.token }, props.navigation.navigate('SendFrisbee'))}
 
                                             />
                                         </View>
@@ -285,8 +291,9 @@ const styles = StyleSheet.create({
     },
     ChipFocus: {
         backgroundColor: '#FFF',
-        marginBottom: 15,
-        marginTop: 10,
+        marginBottom: 5,
+        marginTop: 5,
+        marginRight:5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
         width: vw(25),
