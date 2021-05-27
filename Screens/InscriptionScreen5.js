@@ -154,7 +154,7 @@ function InscriptionScreen5(props) {
         />) : (<MaterialIcons name="add-a-photo" size={100} color="#dfe6e9" onPress={openImagePickerAsync} />)}
 
         {image ? (<Text style={{ marginBottom: 80, marginTop: 20, color: "#7C4DFF", textDecorationLine: 'underline' }}
-          onPress={openImagePickerAsync}>Pas satisfait ? Changes donc de photo ! </Text>) : (<Text style={{ marginBottom: 80, marginTop: 20, color: "#7C4DFF", textDecorationLine: 'underline' }}
+          onPress={openImagePickerAsync}>Pas satisfait ? Change donc de photo ! </Text>) : (<Text style={{ marginBottom: 80, marginTop: 20, color: "#7C4DFF", textDecorationLine: 'underline' }}
             onPress={openImagePickerAsync}>Ajouter votre plus belle photo ! </Text>)}
 
 
