@@ -34,7 +34,7 @@ function SendFrisbee(props) {
     console.log('log de props.userInvited', props.userInvited);
 
     var submitFrisbee = async function () {
-        var frisbeeData = await fetch("http://192.168.1.63:3000/send-frisbee", {
+        var frisbeeData = await fetch("http://172.16.188.162:3000/send-frisbee", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `userCreator=${props.newUser._id}&userInvited=${props.userInvited.id}&AddressMeeting=${lieu}&Message=${message}&Sport=${sport}&DateMeeting=${date}&HoursMeeting=${`${begin} à ${end}`}`

@@ -38,7 +38,7 @@ var radio_props = [
 
     useEffect(() => {
         async function loadFrisbeeReceived() {
-            var frisbeeRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://172.16.188.162:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
 
           var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.newUser.token)
@@ -46,7 +46,7 @@ var radio_props = [
             console.log('frisbee', frisbeeReceived)
         };
         async function loadFrisbeeSent() {
-            var frisbeeRequest = await fetch(`http://192.168.1.63:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://172.16.188.162:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
             var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.newUser.token)
             setFrisbeeSent(FrisbeeFiltered)
@@ -68,6 +68,12 @@ var frisbeeListReceived = frisbeeReceived.map (function(item, i)
 {
 var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
+if (frisbeeReceived.length === 0) {
+    return (
+
+       <Text>Tu n'as pas encore reçu de Frisbee.</Text>
+    )
+} else {
     return (
         <Card key={item._id} containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
                         <View style={{ flexDirection: 'row' }}>
@@ -158,11 +164,21 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                 </View>
             </Card>
         )
-    })
+    }
+}
+)
 
-    var frisbeeListSent = frisbeeSent.map (function(item, i)
+var frisbeeListSent = frisbeeSent.map (function(item, i)
 {
 var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+if (frisbeeSent.length === 0) {
+    return (
+
+       <Text>Tu n'as pas encore envoyé de Frisbee. Lances un Frisbee à un des sportifs autour de toi ! </Text>
+    )
+} else {
+
+{
     return (
         <Card key={item._id} containerStyle={{borderWidth:0.1, borderRadius:10, borderColor:'#D1CFCF', flexShrink:1}}>
                         <View style={{ flexDirection: 'row' }}>
@@ -237,8 +253,10 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                 </View>
             </Card>
         )
-    })
-console.log(radioButtonValue)
+    }
+}
+}
+    )
 
     return (
         <View style={styles.container}>
@@ -261,7 +279,38 @@ console.log(radioButtonValue)
 />
                 </View>
                 <View>
-                    {radioButtonValue.value === 0 ? (frisbeeListReceived) : (frisbeeListSent) }
+                    {radioButtonValue.value === 0 ? (frisbeeListReceived.length != 0 ? (frisbeeListReceived) :  (<View style={styles.errorMessage}>
+                        <Text style={styles.errorMessageText}>Vous n'avez pas encore reçu de Frisbee</Text>
+                        <Button
+                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 40, marginBottom: 150 }}
+                        title="Envoyer un FRISBEE"
+                        titleStyle={{
+                            fontFamily: 'Nunito_400Regular',
+                            marginLeft: 15,
+                            marginRight: 15
+                        }}
+                        onPress={() => props.navigation.navigate('BottomBar', { screen: "SPORTIFS" })}
+                    >
+                    </Button>
+
+                        </View>)) 
+                    
+                    : (frisbeeListSent.length != 0 ? (frisbeeListSent) : 
+                    (<View style={styles.errorMessage}>
+                        <Text style={styles.errorMessageText}>Vous n'avez pas encore envoyé de Frisbee</Text>
+                        <Button
+                        buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Montserrat_300Light', borderRadius: 5, marginTop: 40, marginBottom: 150 }}
+                        title="Envoyer un FRISBEE"
+                        titleStyle={{
+                            fontFamily: 'Nunito_400Regular',
+                            marginLeft: 15,
+                            marginRight: 15
+                        }}
+                        onPress={() => props.navigation.navigate('BottomBar', { screen: "SPORTIFS" })}
+                    >
+                    </Button>
+
+                        </View>))}
                     </View>
                     </ScrollView>
                 </View>
@@ -379,5 +428,17 @@ const styles = StyleSheet.create({
         marginRight: 40,
         marginBottom: 20,
     },
+    errorMessage : {
+        alignItems:'center', 
+        justifyContent:'center', 
+        marginTop:50,
+    }, 
+    errorMessageText : {
+        fontSize: 16,
+        fontFamily: 'Montserrat_300Light',
+        textAlign: 'center',
+    }, 
+
+
 });
 
