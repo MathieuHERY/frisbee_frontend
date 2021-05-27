@@ -13,6 +13,7 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 function ResponseFrisbee(props) {
@@ -114,7 +115,7 @@ function ResponseFrisbee(props) {
                                         size={24}
                                         color="#838383"
                                     />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, marginBottom: 20 }}>
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, marginBottom: 10 }}>
                                         {new Date(frisbeeToAnswer.DateMeeting).toLocaleDateString("fr-FR", optionsDate)}
                                     </Text>
                                 </View>
@@ -124,7 +125,7 @@ function ResponseFrisbee(props) {
                                         size={24}
                                         color="#838383"
                                     />
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, marginBottom: 20 }}>
+                                    <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, marginBottom: 10 }}>
                                         {frisbeeToAnswer.HoursMeeting}
                                     </Text>
                                 </View>
@@ -167,9 +168,10 @@ function ResponseFrisbee(props) {
                                 buttonStyle={styles.buttonFrisbeeDeclined}
                                 titleStyle={styles.buttonTextStyleFrisbee}
                                 icon={
-                                    <Feather name="disc" // !!!! ICÔNE À AJUSTER !!!!
+                                    <FontAwesome5
+                                        name="surprise"
                                         size={18}
-                                        color="#ffffff"
+                                        color="white"
                                     />
                                 }
                                 onPress={() => frisbeeRejected(frisbeeToAnswer._id)}
@@ -251,6 +253,7 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         marginTop: 10,
+        marginBottom: 10,
     },
     ageDescription: {
         fontSize: 14,
