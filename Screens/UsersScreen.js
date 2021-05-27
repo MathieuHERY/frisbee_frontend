@@ -41,7 +41,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.188.162:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.9:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             // console.log('log de usersResponse', usersResponse);
@@ -89,14 +89,14 @@ function UsersScreen(props) {
                         {user.description}
                     </Text>
 
-                    <View>
+                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <Text h2 style={styles.h2StyleOverlay}>
                             {user.firstname} est disponible :
                                 </Text>
 
                         <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF', marginBottom: 10 }}>
 
-                            <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                            <View style={{ flexDirection: 'row', marginLeft: 30, marginRight: 30 }}>
                                 <EvilIcons name="calendar"
                                     size={24}
                                     color="#838383"
@@ -358,7 +358,7 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         width: vw(47),
         marginTop: 20,
-        marginLeft: 30,
+        marginLeft: 20,
     },
     h1StyleOverlay: {
         fontSize: 20,
@@ -370,9 +370,6 @@ const styles = StyleSheet.create({
     h2StyleOverlay: {
         fontSize: 13,
         fontFamily: 'Montserrat_300Light',
-        textAlign: 'center',
-        marginLeft: 30,
-        marginRight: 30,
     },
     ageDescriptionOverlay: {
         fontSize: 14,

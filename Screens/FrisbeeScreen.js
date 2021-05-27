@@ -38,7 +38,7 @@ var radio_props = [
 
     useEffect(() => {
         async function loadFrisbeeReceived() {
-            var frisbeeRequest = await fetch(`http://172.16.188.162:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://172.16.190.9:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
 
           var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.newUser.token)
@@ -46,7 +46,7 @@ var radio_props = [
             console.log('frisbee', frisbeeReceived)
         };
         async function loadFrisbeeSent() {
-            var frisbeeRequest = await fetch(`http://172.16.188.162:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://172.16.190.9:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
             var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.newUser.token)
             setFrisbeeSent(FrisbeeFiltered)
