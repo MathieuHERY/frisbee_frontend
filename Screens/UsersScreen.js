@@ -98,14 +98,14 @@ function UsersScreen(props) {
                         {user.description}
                     </Text>
 
-                    <View>
+                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <Text h2 style={styles.h2StyleOverlay}>
                             {user.firstname} est disponible :
                                 </Text>
 
                         <Card containerStyle={{ borderWidth: 0.1, borderRadius: 10, borderColor: '#D1CFCF', marginBottom: 10 }}>
 
-                            <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                            <View style={{ flexDirection: 'row', marginLeft: 30, marginRight: 30 }}>
                                 <EvilIcons name="calendar"
                                     size={24}
                                     color="#838383"
@@ -367,7 +367,6 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         width: vw(47),
         marginTop: 20,
-        marginLeft: 30,
     },
     h1StyleOverlay: {
         fontSize: 20,
@@ -379,9 +378,6 @@ const styles = StyleSheet.create({
     h2StyleOverlay: {
         fontSize: 13,
         fontFamily: 'Montserrat_300Light',
-        textAlign: 'center',
-        marginLeft: 30,
-        marginRight: 30,
     },
     ageDescriptionOverlay: {
         fontSize: 14,
