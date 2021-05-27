@@ -119,7 +119,7 @@ function InscriptionScreen5(props) {
         // console.log(userToken, 'token utilisateur avec photo');
       } else {
         setIsLogin(false);
-        SetErrorSignUp(responseSignUp.error)
+        setErrorSignUp(responseSignUp.error)
       }
     }
   

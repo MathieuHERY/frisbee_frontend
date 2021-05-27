@@ -29,9 +29,9 @@ import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import newUser from './reducers/newUser';
 import userToken from './reducers/token_reducer';
+import userInvited from "./reducers/userInvited";
 import frisbee from './reducers/frisbees';
 import resultAnswer from './reducers/answerFrisbee';
-import userInvited from './reducers/userInvited';
 const store = createStore(combineReducers({newUser, userToken, frisbee,resultAnswer, userInvited})) // Added
 
 
