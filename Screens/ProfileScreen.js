@@ -16,35 +16,12 @@ import {
 
 function ProfileScreen(props) {
 
-    console.log('userprofile', props.newUser)
-
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
     });
 
-
-    const [user, setUser] = useState([]);
-
-
-    useEffect(() => {
-
-        const user = async function () {
-
-            const data = await fetch('http://172.16.188.162:3000/user');
-            const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
-            // console.log(body.result);
-            setUser(body.userData); //récupère tous les users
-
-        };
-        user()
-
-    }, []);
-
-    console.log('log usersList', user)
-    var userData = user.filter(user => user.token === props.userToken); // je veux que tu me ressorte l'utilisateur avec mon token, token de la personne qui vient de se connecter)
-    console.log('token dans ProfileScreen', props.userToken);
-
+    console.log('userprofile', props.newUser)
 
     if (!fontsLoaded) {
         return <AppLoading />;
@@ -66,13 +43,27 @@ function ProfileScreen(props) {
 
                             <Text style={styles.ageDescription}>{props.newUser.Age}</Text>
 
+                            <View style={{ flexDirection: "row", alignItems: "center", justifyContent:'center', width:370, flexWrap:'wrap', marginTop:30, marginBottom:5 }}>
+
+                            {props.newUser.FavoritesSports.map(function (sport, i) {
+                        return (
+                    <Chip
+                        buttonStyle={styles.ChipFocus}
+                        title={sport}
+                        titleStyle={styles.ChipFocusTitle}
+                        type="outline"
+                    />
+                        )})}
+
+</View>
+
                             <Text style={styles.description}>{props.newUser.Description}
                             </Text>
 
                             <Text style={styles.description}> Mes disponibilités : </Text>
 
 
-                            <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center", marginBottom: 150 }}>
+                            <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center", marginBottom: 50 }}>
 
                                 <Text style={styles.disponibilités1}>
                                     <EvilIcons
@@ -83,7 +74,7 @@ function ProfileScreen(props) {
                                     {props.newUser.SportsHabits}
                                 </Text>
 
-                                <Text style={styles.disponibilités}>
+                                <Text style={styles.disponibilités1}>
                                     <EvilIcons name="clock"
                                         size={24}
                                         color="#838383"
@@ -144,15 +135,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat_300Light',
     },
     ChipFocus: {
-        backgroundColor: '#7C4DFF',
-        marginBottom: 20,
-        marginTop: 30,
+        backgroundColor: '#FFFFFF',
+        marginBottom: 5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        marginRight: 15,
+        marginRight: 5,
     },
     ChipFocusTitle: {
-        color: '#ffffff',
+        color: '#7C4DFF',
         fontFamily: 'Nunito_400Regular'
     },
     description: {
@@ -167,11 +157,9 @@ const styles = StyleSheet.create({
     disponibilités1: {
         fontSize: 17,
         fontFamily: 'Montserrat_300Light',
-        marginLeft: 30,
-        marginRight: 30,
         /* marginTop: 10, */
-        textAlign: 'justify',
         marginBottom: 10,
+        textAlign:'left',
     },
     disponibilités: {
         fontSize: 17,

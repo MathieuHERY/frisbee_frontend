@@ -14,7 +14,6 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
-import userInvited from '../reducers/userInvited';
 
 
 function UsersScreen(props) {
@@ -57,6 +56,9 @@ function UsersScreen(props) {
     var usersListFiltered = usersList.filter(user => user.token != props.newUser.token); // Retourne tous les utilisateurs sauf moi
 
     var sendFrisbee = (e, id, user) => { //user est l'argument, donc doit être la même que dans le dispatch
+        setVisibleOverlay(false);
+        setFocusUser([]);
+        props.navigation.navigate('SendFrisbee');
         props.sendFrisbee(user) //dispatch
     }
 
@@ -142,7 +144,9 @@ function UsersScreen(props) {
                                 />
                             }
                             // onPress={() => console.log('Appui sur FRISBEE')}
-                            onPress={() => { props.navigation.navigate('SendFrisbee'), setVisibleOverlay(false), setFocusUser([]) }}
+                            onPress={e => sendFrisbee(e, user._id, { id: user._id, Firstname: user.Firstname, userPicture: user.UserPicture, token: user.token })}
+                            
+                            
                         />
 
                     </View>
@@ -272,7 +276,7 @@ function UsersScreen(props) {
                                                     />
                                                 }
                                                 // onPress={() => { props.navigation.navigate('SendFrisbee'), setVisibleOverlay(false), setFocusUser([]) }}
-                                                onPress={e => sendFrisbee(e, user._id, { id: user._id, Firstname: user.Firstname, userPicture: user.UserPicture, token: user.token }, props.navigation.navigate('SendFrisbee'))}
+                                                onPress={e => sendFrisbee(e, user._id, { id: user._id, Firstname: user.Firstname, userPicture: user.UserPicture, token: user.token })}
 
                                             />
                                         </View>

@@ -106,12 +106,13 @@ function InscriptionScreen5(props) {
       })
 
       var responseSignUp = await SignupWithPic.json()
+      console.log(responseSignUp)
       if (responseSignUp.result) {
         console.log(responseSignUp.result)
         setIsLogin(true)
         setUserConnected(responseSignUp.saveUser)
         setUserToken(responseSignUp.saveUser.token)
-        let user = {token : responseSignUp.saveUser.token, id : responseSignUp.saveUser._id, picture : responseSignUp.saveUser.userPicture }
+        let user = {token : responseSignUp.saveUser.token, id : responseSignUp.saveUser._id, picture : responseSignUp.saveUser.UserPicture }
         props.UserInfo(user)
         props.navigation.navigate('BottomBar', { screen: "ACCUEIL" })
         // props.getTokenFromUser(userToken) // Dispatch the token into the reducer

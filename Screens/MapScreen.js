@@ -317,13 +317,13 @@ function MapScreen(props) {
     var overlayFocus = focusInfo.map(function (item, i) {
         return (
             <Card containerStyle={styles.focusPin}>
-                <Card.Image source={{ uri: item.image }} />
-                <Text style={{ marginTop: 30, marginBottom: 15, textAlign: 'center', fontFamily: 'Nunito_400Regular', fontSize: 30 }}>
+                <Card.Image style={{borderRadius:17}} source={{ uri: item.image }} />
+                <Text style={{ marginTop: 30, marginBottom: 15, textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 25 }}>
                     {item.title}
                 </Text>
                 <Card.Divider style={{ marginBottom: 20 }} />
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', marginBottom: 30 }}>
-                    <Chip buttonStyle={styles.ChipFocus} title='Custom Badge' titleStyle={styles.ChipFocusTitle} type="outline" />
+                    <Chip buttonStyle={styles.ChipFocus} title={item.sport} titleStyle={styles.ChipFocusTitle} type="outline" />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 30 }}>
                     <Ionicons name="location-sharp" size={20} color="#838383" />
@@ -331,7 +331,7 @@ function MapScreen(props) {
                         {item.address}</Text>
                 </View>
 
-                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 18 }}>
+                <Text style={{ textAlign: 'justify', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
                     {item.description}</Text>
             </Card>
         )
@@ -490,11 +490,11 @@ function MapScreen(props) {
                             />
 
                             {imagePOI ? (<Image source={{ uri: imagePOI }}
-                                style={{ width: 250, height: 150, marginTop: 20 }}
-                            />) : (<Image style={{ width: 250, height: 150, marginTop: 20 }}
+                                style={{ width: 250, height: 150, marginTop: 20, borderRadius:17}}
+                            />) : (<Image style={{ width: 250, height: 150, marginTop: 20, borderRadius:17 }}
                             />)}
 
-                            {imagePOI ? (<Text style={{ fontFamily: 'Nunito_400Regular', color: "#7C4DFF", textDecorationLine: 'underline', marginTop: 10 }} onPress={() => openImagePickerAsync()}>Pas satisfait ? Changes donc de photo !</Text>) : (<Text style={{ fontFamily: 'Nunito_400Regular', color: "#7C4DFF", textDecorationLine: 'underline', marginTop: 10 }} onPress={() => openImagePickerAsync()}>Importez une photo</Text>)}
+                            {imagePOI ? (<Text style={{ fontFamily: 'Nunito_400Regular', color: "#7C4DFF", textDecorationLine: 'underline', marginTop: 10 }} onPress={() => openImagePickerAsync()}>Pas satisfait ? Change donc de photo !</Text>) : (<Text style={{ fontFamily: 'Nunito_400Regular', color: "#7C4DFF", textDecorationLine: 'underline', marginTop: 10 }} onPress={() => openImagePickerAsync()}>Importez une photo</Text>)}
 
                             <Input
                                 containerStyle={{ marginBottom: 15, marginTop: 25, width: '90%' }}
@@ -506,8 +506,8 @@ function MapScreen(props) {
                             />
 
                             <View style={{
-                                borderColor: '#7C4DFF',
-                                borderWidth: 2,
+                                borderColor: "#979797",
+                                borderWidth: 1,
                                 borderRadius: 17,
                             }}>
                                 <RNPickerSelect style={pickerStyle}
@@ -545,7 +545,7 @@ function MapScreen(props) {
 
                             <Button
                                 title="Ajouter ce lieu sur la carte"
-                                buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Nunito_400Regular', borderRadius: 5 }}
+                                buttonStyle={{ backgroundColor: "#00CEC9", titleStyle: 'Nunito_400Regular', borderRadius: 17 }}
                                 onPress={() => handleSubmit()}
                                 type="solid"
                                 titleStyle={{
@@ -692,7 +692,7 @@ const styles = StyleSheet.create({
     overlayButton: {
         backgroundColor: "#00CEC9",
         width: 250,
-        borderRadius: 5,
+        borderRadius:17,
         fontFamily: 'Nunito_400Regular',
         alignItems: "center"
     },
@@ -728,14 +728,14 @@ const styles = StyleSheet.create({
 const pickerStyle = {
     inputIOS: {
       fontSize:15,
-        color: '#7C4DFF',
+        color: '#949494',
         paddingHorizontal: 40,
         paddingVertical: 15,
         backgroundColor: '#white',
         borderRadius: 17,
     },
     placeholder: {
-        color: '#7C4DFF',
+        color: '#949494',
         fontSize:15,
       },
     inputAndroid: {
