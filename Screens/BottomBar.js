@@ -24,7 +24,7 @@ export default function BottomBar(props) {
             } else if (route.name == 'SPORTIFS') {
               return <FontAwesome name='users' size={25} color={color} />;
 
-            } else if (route.name == 'FRISBEE') {
+            } else if (route.name == 'FRISBEES') {
               return <Ionicons name='disc-outline' size={25} color={color} />;
 
             } else if (route.name == 'MON PROFIL') {
@@ -43,7 +43,7 @@ export default function BottomBar(props) {
       >
         <Tab.Screen name="ACCUEIL" component={MapScreen} />
         <Tab.Screen name="SPORTIFS" component={UsersScreen} />
-        <Tab.Screen name="FRISBEE" component={FrisbeeScreen} />
+        <Tab.Screen name="FRISBEES" component={FrisbeeScreen} />
         <Tab.Screen name="MON PROFIL" component={ProfileScreen} />
       </Tab.Navigator>
     );

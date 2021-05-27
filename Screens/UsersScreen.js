@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Input, Button, Avatar, Chip, FAB, Overlay, Card, Badge } from 'react-native-elements';
+import { Icon, Input, Button, Avatar, Chip, Overlay, Card, Badge } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -14,7 +14,6 @@ import {
     Montserrat_300Light,
 } from '@expo-google-fonts/montserrat';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
-import userInvited from '../reducers/userInvited';
 
 
 function UsersScreen(props) {
@@ -30,7 +29,7 @@ function UsersScreen(props) {
 
     var onPressAvatar = (e, id, user) => {
         setVisibleOverlay(true)
-        setFocusUser([...focusUser, user]) //doit vider le tableau et ajouter uniquement sur celui que l'on a cliqué
+        setFocusUser([...focusUser, user]) // doit vider le tableau et ajouter uniquement sur celui que l'on a cliqué
     }
     // console.log(focusUser, "Log sur MapScreen focusUser");
     // console.log(props.userToken, "tout l'objet avec token sur UserScreen");
@@ -42,7 +41,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.188.162:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.190.9:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             /* console.log('log de usersResponse', usersResponse); */
@@ -61,14 +60,7 @@ function UsersScreen(props) {
     }
 
     
-/* 
-        var sendFrisbee = (e, id, userInvited) => { //user est l'argument, donc doit être la même que dans le dispatch
-            props.sendFrisbee(userInvited) //dispatch
-        } */
-
-
     
-
     {/* OVERLAY: PRESS ON AVATAR = VIEW ON A SPECIFIC USER */ }
     var userOverlay = focusUser.map(function (user, i) {
         return (
@@ -116,7 +108,7 @@ function UsersScreen(props) {
                                     size={24}
                                     color="#838383"
                                 />
-                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
                                     {user.SportsHabits}</Text>
                             </View>
 
@@ -125,7 +117,7 @@ function UsersScreen(props) {
                                     size={24}
                                     color="#838383"
                                 />
-                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
+                                <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15, flexWrap: 'wrap' }}>
                                     {user.SportsHours}</Text>
                             </View>
 
@@ -247,7 +239,7 @@ function UsersScreen(props) {
                                                 size={24}
                                                 color="#838383"
                                             />
-                                            <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13 }}>
+                                            <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15 }}>
                                                 {user.SportsHabits}</Text>
                                         </View>
 
@@ -256,7 +248,7 @@ function UsersScreen(props) {
                                                 size={24}
                                                 color="#838383"
                                             />
-                                            <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 13, flexWrap: 'wrap' }}>
+                                            <Text style={{ textAlign: 'center', fontFamily: 'Montserrat_300Light', fontSize: 15, flexWrap: 'wrap' }}>
                                                 {user.SportsHours}</Text>
                                         </View>
 
@@ -305,7 +297,7 @@ const styles = StyleSheet.create({
         marginRight:5,
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
-        width: vw(25),
+        width: vw(20),
     },
     SportBadge: {
         backgroundColor: '#FFF',
@@ -328,13 +320,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     h1Style: {
-        fontSize: 20,
+        fontSize: 22,
         fontFamily: 'Montserrat_300Light',
         marginRight: 10,
         marginBottom: 5
     },
     userDescriptionOverlay: {
-        fontSize: 14,
+        fontSize: 17,
         fontFamily: 'Montserrat_300Light',
         textAlign: 'justify',
         marginLeft: 40,
@@ -377,14 +369,14 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     h1StyleOverlay: {
-        fontSize: 20,
+        fontSize: 25,
         fontFamily: 'Montserrat_300Light',
         // marginRight: 10,
         marginBottom: 10,
         marginTop: 15,
     },
     h2StyleOverlay: {
-        fontSize: 13,
+        fontSize: 15,
         fontFamily: 'Montserrat_300Light',
     },
     ageDescriptionOverlay: {
@@ -398,18 +390,6 @@ const styles = StyleSheet.create({
         marginRight: 50,
     }
 });
-
-
-
-/* function mapStateToProps(state) {
-    return { userToken: state.userToken, newUser : state.newUser }
-} */
-
-/* function mapDispatchToProps(dispatch) {
-    return {
-        sendFrisbee: function (userInvited) {
-            console.log('log dans le Dispatch', userInvited);
-            dispatch({ type: 'userInvited', userInvited: userInvited }) */
 
 
 function mapDispatchToProps(dispatch) {

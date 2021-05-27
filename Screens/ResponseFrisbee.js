@@ -27,7 +27,7 @@ function ResponseFrisbee(props) {
 
     //accepter un frisbee
     var frisbeeAccepted = async (frisbeeId) => {
-        var submitAcceptedAnswer = await fetch('http://172.16.188.162:3000/accept-frisbee', {
+        var submitAcceptedAnswer = await fetch('http://172.16.190.9:3000/accept-frisbee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
         body: `_id=${frisbeeId}&isAccepted=true`
@@ -43,7 +43,7 @@ function ResponseFrisbee(props) {
 
     //refuser un frisbee
     var frisbeeRejected = async (frisbeeId) => {
-        var submitRejectedAnswer = await fetch('http://172.16.188.162:3000/reject-frisbee', {
+        var submitRejectedAnswer = await fetch('http://172.16.190.9:3000/reject-frisbee', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
             body: `_id=${frisbeeId}&isAccepted=false`
@@ -97,7 +97,7 @@ function ResponseFrisbee(props) {
                                 </Text>
                             </Card>
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
                                 <Text h1 style={styles.h1Style}>
                                     <Chip
                                         buttonStyle={styles.ChipFocus}
@@ -107,7 +107,7 @@ function ResponseFrisbee(props) {
                                     />
                                 </Text>
                             </View>
-                            <View >
+                            <View style={{ marginBottom: 10 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <EvilIcons
                                         name="calendar"
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     h1Style: {
-        fontSize: 20,
+        fontSize: 25,
         fontFamily: 'Montserrat_300Light',
         textAlign: 'center',
         justifyContent: 'center',
@@ -248,6 +248,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'Montserrat_300Light',
         textAlign: 'justify',
+        marginLeft: 30,
+        marginRight: 30,
+        marginTop: 10,
     },
     ageDescription: {
         fontSize: 14,
