@@ -83,7 +83,7 @@ if (signUpDescription && signUpAge) {
             onValueChange={(value) => setSignUpAge(value)}
             items={[
                 { label:'18 - 25 ans', value:'18 - 25 ans'},
-                { label:'26 - 35 ans', value:'26 - 35 ans'  },
+                { label:'26 - 35 ans', value:'26 - 35 ans' },
                 { label:'36 - 45 ans', value:'36 - 45 ans' },
                 { label:'46 - 55 ans', value:'46 - 55 ans' },
 
@@ -97,7 +97,7 @@ if (signUpDescription && signUpAge) {
 <Text style={{marginBottom: 20, marginTop:30, fontSize: 16, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center'}}>Vends-nous du rêve ! </Text>
 </View>
 <View>
-      <TextInput style={{borderColor:'#dfe6e9', borderWidth:1, borderRadius:5, height:100, width:250}}
+      <TextInput style={{borderColor:'#dfe6e9', borderWidth:1, borderRadius:5, height:100, width:250, }}
       editable
       multiline
       numberOfLines={6}

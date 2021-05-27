@@ -68,7 +68,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
       />
 </View>
 <View style={styles.content}>
-    <Text h3 style={{marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center' }}>Quand pratiques-tu tes activités préférées ?</Text>
+    <Text h3 style={{marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center' }}>Quand fais-tu du sport ?</Text>
     <Text style={{marginBottom: 20, fontSize: 16, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center'}}>Tu pratiques tes activités :</Text>
     <View style={{
           borderColor: '#7C4DFF',

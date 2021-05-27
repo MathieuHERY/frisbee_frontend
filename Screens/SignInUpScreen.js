@@ -104,7 +104,7 @@ function SignInUpScreen(props) {
 
       {/* sign-in */}
       <Button
-        buttonStyle={{ backgroundColor: "#00CEC9", marginBottom: 70, titleStyle: 'Montserrat_300Light', borderRadius: 17  }}
+        buttonStyle={{ backgroundColor: "#00CEC9", marginBottom: 70, titleStyle: 'Nunito_400Regular', borderRadius: 17  }}
         title="Se connecter"
         onPress={() => { handleSubmitSignin() }}
         titleStyle={{
@@ -116,7 +116,7 @@ function SignInUpScreen(props) {
       </Button>
 
       {/* sign-up */}
-      <Text style={{ marginBottom: 15, fontFamily: 'Nunito_400Regular', fontSize: 15 }}>Pas encore de compte ?</Text>
+      <Text style={{ color: "#838383", marginBottom: 15, fontFamily: 'Nunito_400Regular', fontSize: 15 }}>Pas encore de compte ?</Text>
       <Button
         buttonStyle={{ backgroundColor: "#7C4DFF", borderRadius: 17 }}
         title="Je m'inscris !"

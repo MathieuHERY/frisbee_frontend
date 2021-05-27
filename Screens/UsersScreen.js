@@ -296,6 +296,7 @@ const styles = StyleSheet.create({
         borderColor: '#7C4DFF',
         borderWidth: 1.5,
         marginRight: 3,
+        marginBottom: 3,
     },
     ChipFocusTitle: {
         fontSize: 10,
