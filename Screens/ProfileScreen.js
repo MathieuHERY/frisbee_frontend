@@ -16,6 +16,8 @@ import {
 
 function ProfileScreen(props) {
 
+    console.log('userprofile', props.newUser)
+
     let [fontsLoaded] = useFonts({
         Montserrat_300Light,
         Nunito_400Regular,
@@ -49,12 +51,8 @@ function ProfileScreen(props) {
     } else {
         return (
             <ScrollView>
-
                 <View style={styles.container}>
-
-                    {
-                        userData.map((user, i) => (
-                            <View key={i}>
+            <View>
                                 <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
 
                                     <Icon
@@ -70,19 +68,14 @@ function ProfileScreen(props) {
                                     <Avatar
                                         rounded
                                         size="xlarge"
-                                        source={{ uri: user.UserPicture }} // À Dynamiser
+                                        source={{ uri: props.newUser.UserPicture }} // À Dynamiser
                                     />
 
-                                    <Text h1 style={styles.h1Style}>{user.Firstname}</Text>
+                                    <Text h1 style={styles.h1Style}>{props.newUser.Firstname}</Text>
 
-                                    <Text style={styles.ageDescription}>{user.Age}</Text>
+                                    <Text style={styles.ageDescription}>{props.newUser.Age}</Text>
 
-
-                                    <Text style={{ justifyContent: "center", alignItems: "center", color: "#7C4DFF", /* backgroundColor: "#7C4DFF", */ marginTop: 20 }}>{user.FavoritesSports}</Text>
-
-
-
-                                    <Text style={styles.description}>{user.Description}
+                                    <Text style={styles.description}>{props.newUser.Description}
                                     </Text>
 
                                     <Text style={styles.description}> Mes disponibilités : </Text>
@@ -96,7 +89,7 @@ function ProfileScreen(props) {
                                                 size={24}
                                                 color="#838383"
                                             />
-                                            {user.SportsHabits}
+                                            {props.newUser.SportsHabits}
                                         </Text>
 
                                         <Text style={styles.disponibilités}>
@@ -104,26 +97,18 @@ function ProfileScreen(props) {
                                                 size={24}
                                                 color="#838383"
                                             />
-                                            {user.SportsHours}
+                                            {props.newUser.SportsHours}
                                         </Text>
                                     </View>
                                 </View></View>
-                        ))
-
-                    }
-
-                    <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
-
-                    </View>
-
-                </View>
+                                </View>
             </ScrollView>
-        )
-    }
-}
+                        )
+                    }
+                }
 
 function mapStateToProps(state) {
-    return { newUser: state.newUser, userToken: state.userToken }
+    return { newUser: state.newUser}
 }
 
 export default connect(

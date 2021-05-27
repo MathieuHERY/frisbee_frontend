@@ -65,7 +65,7 @@ function HomeScreen(props) {
 };
 
 function mapStateToProps(state) {
-    return { userToken: state.userToken }
+    return { newUser : state.newUser }
 }
 
 export default connect(

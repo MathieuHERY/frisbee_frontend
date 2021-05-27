@@ -35,6 +35,7 @@ function ResponseFrisbee(props) {
       var responseFromDB = await submitAcceptedAnswer.json();
 
       if (responseFromDB.result) {
+        props.sendAnswerFrisbee(!props.resultAnswer)
         props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
       }
     }
@@ -50,6 +51,7 @@ function ResponseFrisbee(props) {
           var responseFromDB = await submitRejectedAnswer.json();
     
           if (responseFromDB.result) {
+            props.sendAnswerFrisbee(!props.resultAnswer)
             props.navigation.navigate('BottomBar', { screen: "FRISBEE" })
           }
     }
@@ -182,13 +184,22 @@ function ResponseFrisbee(props) {
     }
 }
 
+function mapDispatchToProps(dispatch) {
+    return {
+      sendAnswerFrisbee : function (answerFrisbee) {
+          console.log('sendAnswerFrisbee dans réponse :', answerFrisbee)
+        dispatch({ type: 'SubmitAnswerFrisbee', resultAnswer : answerFrisbee })
+      }
+    }
+  };
+
 function mapStateToProps(state) {
-    return { frisbee: state.frisbee }
+    return { frisbee: state.frisbee, resultAnswer : state.resultAnswer }
 }
 
 export default connect(
     mapStateToProps,
-    null,
+    mapDispatchToProps,
 )(ResponseFrisbee);
 
 

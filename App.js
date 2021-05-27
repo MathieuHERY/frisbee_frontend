@@ -30,8 +30,9 @@ import newUser from './reducers/newUser';
 import userToken from './reducers/token_reducer';
 import userInvited from "./reducers/userInvited";
 import frisbee from './reducers/frisbees';
-const store = createStore(combineReducers({newUser, userToken, userInvited, frisbee})) // Added
-
+import resultAnswer from './reducers/answerFrisbee';
+import userInvited from './reducers/userInvited';
+const store = createStore(combineReducers({newUser, userToken, frisbee,resultAnswer, userInvited})) // Added
 
 
 /* import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; */

@@ -22,7 +22,7 @@ function FrisbeeScreen(props) {
 const [allFrisbees, setAllFrisbees] = useState([]);
 const [frisbeeReceived,setFrisbeeReceived] = useState([]);
 const [frisbeeSent,setFrisbeeSent] = useState([]);
-const [radioButtonValue, setRadioButtonValue] = useState(0);
+const [radioButtonValue, setRadioButtonValue] = useState({value:0});
 
 var radio_props = [
     {label: 'Reçus', value: 0 },
@@ -34,39 +34,27 @@ var radio_props = [
         Nunito_400Regular,
     });
 
-    /* useEffect(() => {
-        async function getAllFrisbee() {
-            var userInfoRequest = await fetch(`http://192.168.1.67:3000/allfrisbees`);
-            var userInfoResponse = await userInfoRequest.json();
-            console.log(userInfoResponse)
-            var FrisbeeFiltered;
-            if (radioButtonValue.value === 0) {
-               FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userInvited.token === props.userToken)
-            } else {
-                FrisbeeFiltered =  userInfoResponse.frisbees.filter(item => item.userCreator.token === props.userToken)
-            }
-            setAllFrisbees(FrisbeeFiltered)
-        };
-        getAllFrisbee();
-    }, [radioButtonValue]); */
-
+    console.log('info user in Frisbee', props.newUser)
 
     useEffect(() => {
         async function loadFrisbeeReceived() {
             var frisbeeRequest = await fetch(`http://192.168.1.67:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
-            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.userToken)
+
+          var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.newUser.token)
             setFrisbeeReceived(FrisbeeFiltered)
+            console.log('frisbee', frisbeeReceived)
         };
         async function loadFrisbeeSent() {
             var frisbeeRequest = await fetch(`http://192.168.1.67:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
-            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.userToken)
+            var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.newUser.token)
             setFrisbeeSent(FrisbeeFiltered)
         };
         loadFrisbeeReceived();
         loadFrisbeeSent();
-    }, [radioButtonValue]); 
+
+    }, [radioButtonValue,props.resultAnswer]); 
 
 
 
@@ -250,7 +238,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
             </Card>
         )
     })
-
+console.log(radioButtonValue)
 
     return (
         <View style={styles.container}>
@@ -263,7 +251,7 @@ var optionsDate = {weekday: "long", year: "numeric", month: "long", day: "numeri
                 <View style={styles.buttonGroup}>
                 <RadioForm
                 radio_props={radio_props}
-                initial={0}
+                initial={radioButtonValue.value}
                 formHorizontal={true}
                 labelHorizontal={false}
                 buttonColor={'#7C4DFF'}
@@ -289,7 +277,7 @@ function mapDispatchToProps(dispatch) {
   };
 
 function mapStateToProps(state) {
-    return { userToken: state.userToken }
+    return { newUser: state.newUser, resultAnswer : state.resultAnswer }
 }
 
 export default connect(

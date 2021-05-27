@@ -1,4 +1,4 @@
-export default function(userToken = "", action) {
+export default function(userToken = {}, action) {
     if (action.type == 'getUserToken' ) {
         return action.userToken;
     } else {
@@ -7,4 +7,3 @@ export default function(userToken = "", action) {
 }
 
 
-// TO DO : Ajouter le MapDispatchToProps sur la page ScreenInscription5

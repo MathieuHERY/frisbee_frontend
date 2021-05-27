@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //traitement de l'action réalisée sur la page UsersFrisbee via le onPress
 // traitement de l'ordre 
 //Le rôle du reduceur est de gérer une et une seule valeur stockée dans le store de Redux.
@@ -19,4 +20,13 @@ export default function(userInvited = {}, action) {
     } else {
     return userInvited; 
 }
+=======
+export default function(userInvited = {}, action) {
+    if(action.type === "getUserInvitedInfo") {
+        console.log('console log dans le reducer:', action.userInvited)
+        return action.userInvited
+        } else {
+            return userInvited; 
+        }
+>>>>>>> eb63040c27843ea8e00a168ab70bf026b7efd041
 }

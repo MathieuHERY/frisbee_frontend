@@ -135,7 +135,6 @@ function MapScreen(props) {
 }
 
 
-
     //Exploitez l’état addPOI pour ajouter le marqueur uniquement si l’utilisateur a cliqué sur le bouton “Add POI”.
     var isDisabled = false;
     if (addPOI) {
