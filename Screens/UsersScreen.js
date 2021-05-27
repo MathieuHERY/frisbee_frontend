@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-    return { userToken: state.userToken }
+    return { userToken: state.userToken, newUser : state.newUser }
 }
 
 /* function mapDispatchToProps(dispatch) {
@@ -388,6 +388,8 @@ function mapStateToProps(state) {
         sendFrisbee: function (userInvited) {
             console.log('log dans le Dispatch', userInvited);
             dispatch({ type: 'userInvited', userInvited: userInvited }) */
+
+
 function mapDispatchToProps(dispatch) {
     return {
         sendFrisbee: function (user) {
@@ -397,9 +399,9 @@ function mapDispatchToProps(dispatch) {
     } 
 }
 
-function mapStateToProps(state) {
+/* function mapStateToProps(state) {
     return {newUser : state.newUser}
-}
+} */
 
 
 export default connect(

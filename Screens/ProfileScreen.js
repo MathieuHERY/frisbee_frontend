@@ -52,63 +52,67 @@ function ProfileScreen(props) {
         return (
             <ScrollView>
                 <View style={styles.container}>
-            <View>
-                                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
+                    <View>
+                        <View style={{ justifyContent: "center", alignItems: "center", marginTop: 80 }}>
 
-                                    <Icon
+
+                            <Avatar
+                                rounded
+                                size="xlarge"
+                                source={{ uri: props.newUser.UserPicture }} // À Dynamiser
+                            />
+
+                            <Text h1 style={styles.h1Style}>{props.newUser.Firstname}</Text>
+
+                            <Text style={styles.ageDescription}>{props.newUser.Age}</Text>
+
+                            <Text style={styles.description}>{props.newUser.Description}
+                            </Text>
+
+                            <Text style={styles.description}> Mes disponibilités : </Text>
+
+
+                            <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
+
+                                <Text style={styles.disponibilités1}>
+                                    <EvilIcons
+                                        name="calendar"
+                                        size={24}
+                                        color="#838383"
+                                    />
+                                    {props.newUser.SportsHabits}
+                                </Text>
+
+                                <Text style={styles.disponibilités}>
+                                    <EvilIcons name="clock"
+                                        size={24}
+                                        color="#838383"
+                                    />
+                                    {props.newUser.SportsHours}
+                                </Text>
+
+                                
+                                <Icon
                                         raised
-                                        name='ios-arrow-back'
+                                        name='ion-ios-log-out-outline'
                                         type='ionicon'
                                         color='#7C4DFF'
                                         onPress={() => props.navigation.navigate('SignInUpScreen')}
                                         size={30}
+                                        marginBottom={20}
                                     />
 
-
-                                    <Avatar
-                                        rounded
-                                        size="xlarge"
-                                        source={{ uri: props.newUser.UserPicture }} // À Dynamiser
-                                    />
-
-                                    <Text h1 style={styles.h1Style}>{props.newUser.Firstname}</Text>
-
-                                    <Text style={styles.ageDescription}>{props.newUser.Age}</Text>
-
-                                    <Text style={styles.description}>{props.newUser.Description}
-                                    </Text>
-
-                                    <Text style={styles.description}> Mes disponibilités : </Text>
-
-
-                                    <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
-
-                                        <Text style={styles.disponibilités1}>
-                                            <EvilIcons
-                                                name="calendar"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {props.newUser.SportsHabits}
-                                        </Text>
-
-                                        <Text style={styles.disponibilités}>
-                                            <EvilIcons name="clock"
-                                                size={24}
-                                                color="#838383"
-                                            />
-                                            {props.newUser.SportsHours}
-                                        </Text>
-                                    </View>
-                                </View></View>
-                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
             </ScrollView>
-                        )
-                    }
-                }
+        )
+    }
+}
 
 function mapStateToProps(state) {
-    return { newUser: state.newUser}
+    return { newUser: state.newUser }
 }
 
 export default connect(
