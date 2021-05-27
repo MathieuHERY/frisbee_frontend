@@ -358,7 +358,6 @@ const styles = StyleSheet.create({
         borderRadius: 17,
         width: vw(47),
         marginTop: 20,
-        marginLeft: 20,
     },
     h1StyleOverlay: {
         fontSize: 20,
