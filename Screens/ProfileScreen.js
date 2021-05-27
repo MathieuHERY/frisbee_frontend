@@ -72,7 +72,7 @@ function ProfileScreen(props) {
                             <Text style={styles.description}> Mes disponibilités : </Text>
 
 
-                            <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250, justifyContent: "center", alignItems: "center", marginBottom: 150 }}>
 
                                 <Text style={styles.disponibilités1}>
                                     <EvilIcons
@@ -91,18 +91,21 @@ function ProfileScreen(props) {
                                     {props.newUser.SportsHours}
                                 </Text>
 
-                                
-                                <Icon
+                            
+
+                            </View>
+
+                            <Icon
                                         raised
-                                        name='ion-ios-log-out-outline'
+                                        name='ios-log-out-outline'
                                         type='ionicon'
                                         color='#7C4DFF'
                                         onPress={() => props.navigation.navigate('SignInUpScreen')}
                                         size={30}
-                                        marginBottom={20}
+                                       
                                     />
 
-                            </View>
+
                         </View>
                     </View>
                 </View>
@@ -131,13 +134,13 @@ const styles = StyleSheet.create({
         alignContent: "center"
     },
     h1Style: {
-        fontSize: 30,
+        fontSize: 25,
         fontFamily: 'Montserrat_300Light',
         marginBottom: 10,
         marginTop: 15,
     },
     ageDescription: {
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: 'Montserrat_300Light',
     },
     ChipFocus: {

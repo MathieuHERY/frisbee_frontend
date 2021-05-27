@@ -61,10 +61,10 @@ function UsersScreen(props) {
     }
 
     
-
+/* 
         var sendFrisbee = (e, id, userInvited) => { //user est l'argument, donc doit être la même que dans le dispatch
             props.sendFrisbee(userInvited) //dispatch
-        }
+        } */
 
 
     
@@ -397,9 +397,9 @@ const styles = StyleSheet.create({
 
 
 
-function mapStateToProps(state) {
+/* function mapStateToProps(state) {
     return { userToken: state.userToken, newUser : state.newUser }
-}
+} */
 
 /* function mapDispatchToProps(dispatch) {
     return {

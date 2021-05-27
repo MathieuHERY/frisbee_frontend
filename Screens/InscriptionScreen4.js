@@ -224,7 +224,7 @@ const pickerStyle = {
       color: '#7C4DFF',
       paddingHorizontal: 40,
       paddingVertical: 15,
-      backgroundColor: '#white',
+      backgroundColor: '#fff',
       borderRadius: 17,
   },
   placeholder: {
