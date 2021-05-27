@@ -37,7 +37,7 @@ function SendFrisbee(props) {
 
         const allUsersData = async function () {
 
-            const data = await fetch('http://172.16.190.9:3000/user');
+            const data = await fetch('http://192.168.1.7:3000/user');
             const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
             // console.log("log de body dans SendFrisbee", body);
             setUsersList(body.userData);
@@ -62,7 +62,7 @@ function SendFrisbee(props) {
 
  
     var submitFrisbee = async function() {
-        var frisbeeData = await fetch("http://172.16.190.9:3000/send-frisbee", {
+        var frisbeeData = await fetch("http://192.168.1.7:3000/send-frisbee", {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `userCreator=${props.userInvited}&userInvited=${props.userInvited._id}&AddressMeeting=${lieu}&Message=${message}&Sport=${sport}&DateMeeting=${date}&HoursMeeting=${`${begin}-${end}`}`

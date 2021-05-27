@@ -37,13 +37,13 @@ var radio_props = [
 
     useEffect(() => {
         async function loadFrisbeeReceived() {
-            var frisbeeRequest = await fetch(`http://172.16.188.156:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://192.168.1.7:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
             var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userInvited.token === props.userToken)
             setFrisbeeReceived(FrisbeeFiltered)
         };
         async function loadFrisbeeSent() {
-            var frisbeeRequest = await fetch(`http://172.16.188.156:3000/allfrisbees`);
+            var frisbeeRequest = await fetch(`http://192.168.1.7:3000/allfrisbees`);
             var frisbeeResponse = await frisbeeRequest.json();
             var FrisbeeFiltered =  frisbeeResponse.frisbees.filter(item => item.userCreator.token === props.userToken)
             setFrisbeeSent(FrisbeeFiltered)

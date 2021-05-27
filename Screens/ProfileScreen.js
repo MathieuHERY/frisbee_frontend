@@ -29,7 +29,7 @@ function ProfileScreen(props) {
 
         const user = async function () {
 
-            const data = await fetch('http://172.16.188.156:3000/user');
+            const data = await fetch('http://192.168.1.7:3000/user');
             const body = await data.json(); // Réponse du back transformé au format Json - tableau de tous les utilisateurs
             // console.log(body.result);
             setUser(body.userData); //récupère tous les users
