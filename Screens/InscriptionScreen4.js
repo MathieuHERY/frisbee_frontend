@@ -71,7 +71,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
     <Text h3 style={{marginBottom: 40, fontSize: 25, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center' }}>Quand fais-tu du sport ?</Text>
     <Text style={{marginBottom: 20, fontSize: 16, width: "70%", fontFamily: 'Montserrat_300Light', textAlign:'center'}}>Tu pratiques tes activités :</Text>
     <View style={{
-          borderColor: '#7C4DFF',
+          borderColor: '#dfe6e9',
           borderWidth: 2,
           borderRadius:17,
         }}>
@@ -80,7 +80,7 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
             onValueChange={(value) => setSignUpSportsHabits(value)}
             items={[
               { label: 'En semaine', value: 'En semaine' },
-              { label: 'Le weekend', value: 'Le weekend' },
+              { label: 'Le week-end', value: 'Le week-end' },
               { label: 'Tous les jours', value: 'Tous les jours' },
             ]}
         />
@@ -104,7 +104,8 @@ if (signUpSportsHabits && signUpSportsHoursStart && signUpSportsHoursEnd ) {
               { label: '03h', value: '03h' },
               { label: '04h', value: '04h' },
               { label: '05h', value: '05h' },
-              { label: '06h', value: '07h' },
+              { label: '06h', value: '06h' },
+              { label: '07h', value: '07h' },
               { label: '08h', value: '08h' },
               { label: '09h', value: '09h' },
               { label: '10h', value: '10h' },
@@ -143,7 +144,8 @@ placeholder={{ label: "Heure", value: null }}
               { label: '03h', value: '03h' },
               { label: '04h', value: '04h' },
               { label: '05h', value: '05h' },
-              { label: '06h', value: '07h' },
+              { label: '06h', value: '06h' },
+              { label: '07h', value: '07h' },
               { label: '08h', value: '08h' },
               { label: '09h', value: '09h' },
               { label: '10h', value: '10h' },
@@ -220,37 +222,34 @@ const styles = StyleSheet.create({
 
 const pickerStyle = {
   inputIOS: {
-    fontSize:15,
-      color: '#7C4DFF',
-      paddingHorizontal: 40,
-      paddingVertical: 15,
-      backgroundColor: '#fff',
-      borderRadius: 17,
+    color: '#838383',
+    paddingHorizontal: 40,
+    paddingVertical: 15,
+    backgroundColor: '#fff',
+    borderRadius: 17,
   },
   placeholder: {
-      color: '#7C4DFF',
-      fontSize:15,
-    },
+    color: '#838383',
+  },
   inputAndroid: {
-    fontSize:15,
-      color: 'white',
-      paddingHorizontal: 10,
-      backgroundColor: 'red',
-      borderRadius: 5,
+    color: '#ffffff',
+    paddingHorizontal: 10,
+    backgroundColor: 'red',
+    borderRadius: 5,
   },
 };
 
 const DatePicker = {
   inputIOS: {
     fontSize:17,
-      color: '#7C4DFF',
+      color: '#838383',
       paddingHorizontal: 40,
       paddingVertical: 15,
       backgroundColor: '#white',
       borderRadius: 17,
   },
   placeholder: {
-      color: '#7C4DFF',
+      color: '#838383',
       fontSize:17,
     },
   inputAndroid: {

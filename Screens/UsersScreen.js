@@ -42,7 +42,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://172.16.188.162:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://192.168.1.67:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             /* console.log('log de usersResponse', usersResponse); */

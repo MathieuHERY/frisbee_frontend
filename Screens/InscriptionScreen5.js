@@ -34,7 +34,7 @@ function InscriptionScreen5(props) {
 
   /*   Save user without picture */
   var saveUserWithoutPic = async function () {
-    var SignupWithoutPic = await fetch("http://172.16.188.162:3000/sign-up", {
+    var SignupWithoutPic = await fetch("http://192.168.1.67:3000/sign-up", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `Email=${props.newUser.Email}&Firstname=${props.newUser.Firstname}&Password=${props.newUser.Password}&Age=${props.newUser.Age}&Description=${props.newUser.Description}&FavoritesSports=${JSON.stringify(props.newUser.FavoritesSports)}&SportsHabits=${props.newUser.SportsHabits}&SportsHours=${props.newUser.SportsHours}&UserPicture=null&UserLatitude=0&UserLongitude=0`
@@ -90,7 +90,7 @@ function InscriptionScreen5(props) {
       name: 'user_photo.jpeg',
     });
 
-    var request = await fetch("http://172.16.188.162:3000/upload-user-picture", {
+    var request = await fetch("http://192.168.1.67:3000/upload-user-picture", {
       method: 'post',
       body: data
     });
@@ -99,7 +99,7 @@ function InscriptionScreen5(props) {
 
     if (response.imageSaved) {
 
-      var SignupWithPic = await fetch("http://172.16.188.162:3000/sign-up", {
+      var SignupWithPic = await fetch("http://192.168.1.67:3000/sign-up", {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `Email=${props.newUser.Email}&Firstname=${props.newUser.Firstname}&Password=${props.newUser.Password}&Age=${props.newUser.Age}&Description=${props.newUser.Description}&FavoritesSports=${JSON.stringify(props.newUser.FavoritesSports)}&SportsHabits=${props.newUser.SportsHabits}&SportsHours=${props.newUser.SportsHours}&UserPicture=${response.url}&UserLatitude=0&UserLongitude=0`
@@ -154,7 +154,7 @@ function InscriptionScreen5(props) {
         />) : (<MaterialIcons name="add-a-photo" size={100} color="#dfe6e9" onPress={openImagePickerAsync} />)}
 
         {image ? (<Text style={{ marginBottom: 80, marginTop: 20, color: "#7C4DFF", textDecorationLine: 'underline' }}
-          onPress={openImagePickerAsync}>Pas satisfait ? Changes donc de photo ! </Text>) : (<Text style={{ marginBottom: 80, marginTop: 20, color: "#7C4DFF", textDecorationLine: 'underline' }}
+          onPress={openImagePickerAsync}>Pas satisfait ? Change donc de photo ! </Text>) : (<Text style={{ marginBottom: 80, marginTop: 20, color: "#7C4DFF", textDecorationLine: 'underline' }}
             onPress={openImagePickerAsync}>Ajouter votre plus belle photo ! </Text>)}
 
 
