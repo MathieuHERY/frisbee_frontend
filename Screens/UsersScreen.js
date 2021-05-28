@@ -41,7 +41,7 @@ function UsersScreen(props) {
 
         const usersAroundMe = async function () {
 
-            const usersRawResponse = await fetch('http://192.168.1.7:3000/users-filtered'); // Appel à la route
+            const usersRawResponse = await fetch('http://172.16.188.158:3000/users-filtered'); // Appel à la route
             const usersResponse = await usersRawResponse.json(); // Réponse du back transformé au format Json
             // console.log(usersResponse.usersData, 'Tous les users du Back'); // Je récupère un tableau avec tous les users
             /* console.log('log de usersResponse', usersResponse); */
@@ -179,7 +179,7 @@ function UsersScreen(props) {
                                             rounded
                                             source={{ uri: user.UserPicture }}
                                             // onPress={() => console.log('Appui sur photo profil')}
-                                            onPress={e => onPressAvatar(e, user._id, { Firstname: user.Firstname, Age: user.Age, Description: user.Description, FavoritesSports: user.FavoritesSports, SportsHabits: user.SportsHabits, SportsHours : user.SportsHours, UserPicture: user.UserPicture })
+                                            onPress={e => onPressAvatar(e, user._id, { Firstname: user.Firstname, Age: user.Age, Description: user.Description, FavoritesSports: user.FavoritesSports, SportsHabits: user.SportsHabits, SportsHours : user.SportsHours, UserPicture: user.UserPicture, _id: user._id, token: user.token})
                                             }
                                         />
 

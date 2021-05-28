@@ -101,8 +101,8 @@ function InscriptionScreen2(props) {
                 <TextInput style={{ borderColor: '#dfe6e9', borderWidth: 1, borderRadius: 5, height: 100, width: 250 }}
                   editable
                   multiline
-                  numberOfLines={6}
-                  maxLength={200}
+                  numberOfLines={10}
+                  maxLength={500}
                   onChangeText={(value) => setSignUpDescription(value)}
                   placeholder="Une petite description s'impose à toi :)"
                 />
