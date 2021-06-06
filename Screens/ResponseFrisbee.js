@@ -28,7 +28,7 @@ function ResponseFrisbee(props) {
 
     //accepter un frisbee
     var frisbeeAccepted = async (frisbeeId) => {
-        var submitAcceptedAnswer = await fetch('http://172.16.188.158:3000/accept-frisbee', {
+        var submitAcceptedAnswer = await fetch('http://192.168.1.63:3000/accept-frisbee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
         body: `_id=${frisbeeId}&isAccepted=true`
@@ -44,7 +44,7 @@ function ResponseFrisbee(props) {
 
     //refuser un frisbee
     var frisbeeRejected = async (frisbeeId) => {
-        var submitRejectedAnswer = await fetch('http://172.16.188.158:3000/reject-frisbee', {
+        var submitRejectedAnswer = await fetch('http://192.168.1.63:3000/reject-frisbee', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded'  },
             body: `_id=${frisbeeId}&isAccepted=false`
